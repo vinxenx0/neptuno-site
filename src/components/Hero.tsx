@@ -1,0 +1,91 @@
+
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Code, Shield, Zap } from 'lucide-react';
+
+const Hero: React.FC = () => {
+  return (
+    <div className="relative overflow-hidden bg-gradient-to-br from-neptuno-navy via-[#1a365d] to-neptuno-navy text-white">
+      {/* Abstract shapes */}
+      <div className="absolute inset-0 overflow-hidden opacity-10">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-neptuno-blue rounded-full filter blur-3xl"></div>
+        <div className="absolute top-60 -right-20 w-60 h-60 bg-neptuno-teal rounded-full filter blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-neptuno-amber rounded-full filter blur-3xl"></div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-12 items-center">
+          <div className="lg:w-1/2 space-y-8 animate-fade-in">
+            <div className="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium">
+              <span className="flex h-2 w-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+              ¡Nuevo! Versión 1.0 disponible
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+              Starter Kit Full-Stack para Marketing y Gamificación
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-gray-300">
+              Construye aplicaciones con autenticación, gamificación y pagos integrados en minutos, no en meses.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+              <Button size="lg" className="bg-neptuno-blue hover:bg-blue-600 text-white">
+                Descargar Gratis <ArrowRight size={16} className="ml-2" />
+              </Button>
+              <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 border-white/30 text-white">
+                Ver documentación
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 text-sm">
+              <div className="flex items-center">
+                <Shield size={18} className="mr-2 text-neptuno-teal" />
+                <span>Autenticación robusta</span>
+              </div>
+              <div className="flex items-center">
+                <Zap size={18} className="mr-2 text-neptuno-amber" />
+                <span>Gamificación integrada</span>
+              </div>
+              <div className="flex items-center">
+                <Code size={18} className="mr-2 text-neptuno-blue" />
+                <span>API lista para producción</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="lg:w-1/2 animate-slide-in">
+            <div className="glass-card overflow-hidden">
+              <div className="bg-neptuno-navy text-white px-4 py-2 flex items-center space-x-2 text-sm">
+                <div className="flex space-x-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <span className="font-mono flex-1 text-center">api.neptuno.dev</span>
+              </div>
+              <div className="bg-[#1E293B] p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                <pre>{`# Instalar Neptuno
+pip install neptuno
+
+# Iniciar el proyecto
+neptuno start my-app
+
+# Tu API está lista en http://localhost:8000
+✓ FastAPI backend corriendo
+✓ Next.js frontend corriendo
+✓ Autenticación configurada
+✓ Gamificación habilitada
+✓ Pagos integrados`}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent"></div>
+    </div>
+  );
+};
+
+export default Hero;
