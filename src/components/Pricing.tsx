@@ -83,7 +83,7 @@ const Pricing: React.FC = () => {
                 </li>
                 <li className="flex items-start">
                   <Check size={18} className="text-neptuno-teal mt-0.5 mr-2 shrink-0" />
-                  <span className="text-sm">Tiempo de respuesta < 24h</span>
+                  <span className="text-sm">Tiempo de respuesta &lt; 24h</span>
                 </li>
                 <li className="flex items-start">
                   <Check size={18} className="text-neptuno-teal mt-0.5 mr-2 shrink-0" />
