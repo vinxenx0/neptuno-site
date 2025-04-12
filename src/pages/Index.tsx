@@ -9,6 +9,8 @@ import UseCases from '@/components/UseCases';
 import Pricing from '@/components/Pricing';
 import Cta from '@/components/Cta';
 import Footer from '@/components/Footer';
+import ProductionReady from '@/components/ProductionReady';
+import SdkSection from '@/components/SdkSection';
 
 const Index = () => {
   return (
@@ -16,9 +18,11 @@ const Index = () => {
       <Navbar />
       <Hero />
       <Features />
+      <ProductionReady />
       <ApiExplorer />
       <UseCases />
       <GamificationDemo />
+      <SdkSection />
       <Pricing />
       <Cta />
       <Footer />
