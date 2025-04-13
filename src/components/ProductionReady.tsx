@@ -5,7 +5,8 @@ import {
   Server, 
   Database, 
   GitBranch,
-  ArrowRight
+  ArrowRight,
+  Layers
 } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -30,7 +31,7 @@ const ProductionReady: React.FC = () => {
                     {/* Animated Architecture Diagram */}
                     <div className="relative">
                       {/* Nginx Layer */}
-                      <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20 mb-8 shadow-lg animate-pulse-gentle">
+                      <div className="bg-indigo-900/80 backdrop-blur-sm rounded-lg p-4 border border-indigo-500/30 mb-8 shadow-lg animate-pulse-gentle">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Server size={20} className="text-neptuno-teal" />
@@ -43,8 +44,8 @@ const ProductionReady: React.FC = () => {
                       </div>
                       
                       {/* Backend & Frontend Containers */}
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20 animate-float shadow-lg">
+                      <div className="grid grid-cols-3 gap-4 mb-8">
+                        <div className="bg-blue-900/70 backdrop-blur-sm rounded-lg p-4 border border-blue-500/30 animate-float shadow-lg">
                           <div className="flex items-center space-x-2 mb-2">
                             <GitBranch size={18} className="text-neptuno-blue" />
                             <span className="font-medium">FastAPI</span>
@@ -53,9 +54,18 @@ const ProductionReady: React.FC = () => {
                             container:8000
                           </div>
                         </div>
-                        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20 animate-float shadow-lg">
+                        <div className="bg-blue-900/70 backdrop-blur-sm rounded-lg p-4 border border-blue-500/30 animate-float shadow-lg">
                           <div className="flex items-center space-x-2 mb-2">
-                            <GitBranch size={18} className="text-neptuno-amber" />
+                            <GitBranch size={18} className="text-neptuno-blue" />
+                            <span className="font-medium">FastAPI</span>
+                          </div>
+                          <div className="text-xs text-gray-300">
+                            container:8001
+                          </div>
+                        </div>
+                        <div className="bg-amber-900/70 backdrop-blur-sm rounded-lg p-4 border border-amber-500/30 animate-float shadow-lg">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Layers size={18} className="text-neptuno-amber" />
                             <span className="font-medium">Next.js</span>
                           </div>
                           <div className="text-xs text-gray-300">
@@ -65,25 +75,39 @@ const ProductionReady: React.FC = () => {
                       </div>
                       
                       {/* Database Layer */}
-                      <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Database size={18} className="text-green-400" />
-                            <span className="font-medium">MariaDB</span>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-green-900/70 backdrop-blur-sm rounded-lg p-4 border border-green-500/30 shadow-lg">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <Database size={18} className="text-green-400" />
+                              <span className="font-medium">MariaDB</span>
+                            </div>
+                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded">
+                              Primary
+                            </span>
                           </div>
-                          <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded">
-                            with Replicas
-                          </span>
+                        </div>
+                        <div className="bg-green-900/50 backdrop-blur-sm rounded-lg p-4 border border-green-500/20 shadow-lg">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <Database size={18} className="text-green-400/70" />
+                              <span className="font-medium">MariaDB</span>
+                            </div>
+                            <span className="text-xs bg-green-500/10 text-green-400/70 px-2 py-0.5 rounded">
+                              Replica
+                            </span>
+                          </div>
                         </div>
                       </div>
                       
                       {/* Connection Lines (Simplified) */}
                       <div className="absolute inset-0 pointer-events-none">
                         <svg className="w-full h-full" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M200 80 L140 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                          <path d="M200 80 L260 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                          <path d="M140 180 L200 230" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                          <path d="M260 180 L200 230" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
+                          <path d="M200 80 L110 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
+                          <path d="M200 80 L200 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
+                          <path d="M200 80 L290 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
+                          <path d="M110 180 L150 230" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
+                          <path d="M290 180 L250 230" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
                         </svg>
                       </div>
                     </div>
@@ -95,7 +119,7 @@ const ProductionReady: React.FC = () => {
           
           {/* Right side: Features */}
           <div className="space-y-6">
-            <div className="glass-card p-6">
+            <div className="bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-500/30">
               <div className="flex items-start">
                 <div className="h-10 w-10 rounded-lg bg-neptuno-teal/20 flex items-center justify-center mr-4 shrink-0">
                   <Shield size={20} className="text-neptuno-teal" />
@@ -105,16 +129,17 @@ const ProductionReady: React.FC = () => {
                   <p className="text-gray-300 mb-3">
                     Implementación completa de OAuth2, JWT, HTTPS, CORS, y protección CSRF lista para usar.
                   </p>
-                  <div className="bg-neptuno-navy/80 rounded-md p-3 font-mono text-sm mb-2 overflow-x-auto">
-                    <code className="text-gray-300">
-                      curl -X POST 127.0.0.1:8000/v1/auth/token -d 'grant_type=password&username=admin%40example.com&password=admin123'
-                    </code>
+                  <div className="text-sm mb-2">
+                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 mr-2 rounded-md">OAuth2</span>
+                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 mr-2 rounded-md">JWT</span>
+                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 mr-2 rounded-md">HTTPS</span>
+                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 rounded-md">CSRF</span>
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="glass-card p-6">
+            <div className="bg-amber-900/40 backdrop-blur-sm rounded-2xl p-6 border border-amber-500/30">
               <div className="flex items-start">
                 <div className="h-10 w-10 rounded-lg bg-neptuno-blue/20 flex items-center justify-center mr-4 shrink-0">
                   <Server size={20} className="text-neptuno-blue" />
@@ -124,15 +149,11 @@ const ProductionReady: React.FC = () => {
                   <p className="text-gray-300 mb-3">
                     Balanceo de carga con Nginx, replicación de servicios y configuración Docker optimizada.
                   </p>
-                  <div className="bg-neptuno-navy/80 rounded-md p-3 font-mono text-sm text-gray-300 overflow-x-auto">
-                    <pre>{`services:
-  fastapi:
-    build: ./backend
-    deploy:
-      replicas: 2 # 2 instancias por defecto
-    ports:
-      - "8000-8001:8000" # Rango para múltiples instancias
-    restart: unless-stopped`}</pre>
+                  <div className="text-sm">
+                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 mr-2 rounded-md">Docker</span>
+                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 mr-2 rounded-md">Nginx</span>
+                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 mr-2 rounded-md">Gunicorn</span>
+                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 rounded-md">Réplicas</span>
                   </div>
                 </div>
               </div>

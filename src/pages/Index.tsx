@@ -11,6 +11,7 @@ import Cta from '@/components/Cta';
 import Footer from '@/components/Footer';
 import ProductionReady from '@/components/ProductionReady';
 import SdkSection from '@/components/SdkSection';
+import DashboardInfo from '@/components/DashboardInfo';
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       <Features />
+      <DashboardInfo />
       <ProductionReady />
       <ApiExplorer />
       <UseCases />

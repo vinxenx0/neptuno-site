@@ -62,21 +62,22 @@ const Hero: React.FC = () => {
                   <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                 </div>
-                <span className="font-mono flex-1 text-center">api.neptuno.dev</span>
+                <span className="font-mono flex-1 text-center">deploy.neptuno.dev</span>
               </div>
               <div className="bg-[#1E293B] p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                <pre>{`# Instalar Neptuno
-pip install neptuno
+                <pre>{`# Despliegue de Neptuno
+docker compose up -d
 
-# Iniciar el proyecto
-neptuno start my-app
+# Inicializando contenedores...
+✓ Iniciando neptuno-proxy      (Nginx + SSL)
+✓ Iniciando neptuno-api        (FastAPI en puerto 8000)
+✓ Iniciando neptuno-dashboard  (Next.js en puerto 3000)
+✓ Iniciando neptuno-db         (MariaDB con réplica)
 
-# Tu API está lista en http://localhost:8000
-✓ FastAPI backend corriendo
-✓ Next.js frontend corriendo
-✓ Autenticación configurada
-✓ Gamificación habilitada
-✓ Pagos integrados`}</pre>
+# Servicios activos y conectados
+✓ API disponible en https://api.neptuno.local
+✓ Dashboard en https://dashboard.neptuno.local
+✓ Sistema listo para producción!`}</pre>
               </div>
             </div>
           </div>
