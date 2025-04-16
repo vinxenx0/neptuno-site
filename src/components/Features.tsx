@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Lock, 
@@ -264,7 +263,7 @@ const featuresList = [
           <div>&nbsp;&nbsp;version=<span className="text-yellow-300">{"\"1.0.0\""}</span></div>
           <div>)</div>
           <br/>
-          <div><span className="text-blue-300">@app.post</span>(<span className="text-yellow-300">"/gamification/points"</span>)</div>
+          <div><span className="text-blue-300">@app.post</span>(<span className="text-yellow-300">{"\"/gamification/points\""}</span>)</div>
           <div><span className="text-blue-400">async</span> <span className="text-blue-400">def</span> <span className="text-yellow-400">award_points</span>(</div>
           <div>&nbsp;&nbsp;event: GamificationEvent,</div>
           <div>&nbsp;&nbsp;user: User = Depends(get_current_user)</div>
