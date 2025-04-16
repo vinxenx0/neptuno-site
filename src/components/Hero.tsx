@@ -74,21 +74,21 @@ const Hero: React.FC = () => {
 docker compose up -d
 
 # Inicializando contenedores...
-\x1b[32m✓ Iniciando neptuno-proxy      \x1b[0m(Nginx + SSL)
-\x1b[32m✓ Iniciando neptuno-api        \x1b[0m(FastAPI en puerto 8000)
-\x1b[32m✓ Iniciando neptuno-dashboard  \x1b[0m(Next.js en puerto 3000)
-\x1b[32m✓ Iniciando neptuno-db         \x1b[0m(PostgreSQL con réplica)
-\x1b[32m✓ Iniciando neptuno-cache      \x1b[0m(Redis en puerto 6379)
-\x1b[32m✓ Iniciando neptuno-queue      \x1b[0m(RabbitMQ en puerto 5672)
+✓ Iniciando neptuno-proxy      (Nginx + SSL)
+✓ Iniciando neptuno-api        (FastAPI en puerto 8000)
+✓ Iniciando neptuno-dashboard  (Next.js en puerto 3000)
+✓ Iniciando neptuno-db         (PostgreSQL con réplica)
+✓ Iniciando neptuno-cache      (Redis en puerto 6379)
+✓ Iniciando neptuno-queue      (RabbitMQ en puerto 5672)
 
 # Servicios activos y escalables
-\x1b[32m✓ API\x1b[0m: https://api.neptuno.local \x1b[33m(2 réplicas)\x1b[0m
-\x1b[32m✓ Dashboard\x1b[0m: https://dashboard.neptuno.local
-\x1b[32m✓ SSL\x1b[0m: Certificados auto-renovables con Let's Encrypt
-\x1b[32m✓ Logs\x1b[0m: Centralizados con rotación automática
-\x1b[32m✓ Backups\x1b[0m: Configurados cada 6 horas
+✓ API: https://api.neptuno.local (2 réplicas)
+✓ Dashboard: https://dashboard.neptuno.local
+✓ SSL: Certificados auto-renovables con Let's Encrypt
+✓ Logs: Centralizados con rotación automática
+✓ Backups: Configurados cada 6 horas
 
-\x1b[36mSistema listo para producción!\x1b[0m`}</pre>
+Sistema listo para producción!`}</pre>
               </div>
             </div>
           </div>

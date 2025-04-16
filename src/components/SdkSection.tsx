@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const SdkSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("auth");
+  const [activeTab, setActiveTab] = useState("gamification");
   const [copied, setCopied] = useState<string | null>(null);
 
   const handleCopy = (code: string, id: string) => {
@@ -117,36 +117,8 @@ await neptuno.gamification.updateChallengeProgress({
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Code Examples */}
-          <div className="bg-gray-900 rounded-xl shadow-xl overflow-hidden">
-            <div className="flex items-center justify-between bg-gray-800 px-4 py-3">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="w-full grid grid-cols-4 bg-gray-700/50">
-                  <TabsTrigger value="auth" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300">Auth</TabsTrigger>
-                  <TabsTrigger value="gamification" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300">Gamificación</TabsTrigger>
-                  <TabsTrigger value="payments" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-300">Pagos</TabsTrigger>
-                  <TabsTrigger value="events" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white text-gray-300">Eventos</TabsTrigger>
-                </TabsList>
-              </Tabs>
-              
-              <button 
-                onClick={() => handleCopy(codeExamples[activeTab as keyof typeof codeExamples], activeTab)}
-                className="ml-2 p-1.5 text-gray-400 hover:text-white rounded-md hover:bg-gray-700 transition-colors flex-shrink-0"
-                title="Copiar código"
-              >
-                {copied === activeTab ? <Check size={18} className="text-green-400" /> : <Copy size={18} />}
-              </button>
-            </div>
-            
-            <div className="p-4 overflow-x-auto">
-              <pre className="text-sm font-mono text-gray-300 whitespace-pre">
-                <code>{codeExamples[activeTab as keyof typeof codeExamples]}</code>
-              </pre>
-            </div>
-          </div>
-          
-          {/* Features */}
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          {/* Features - Now on the left */}
           <div className="space-y-8">
             <div>
               <h3 className="text-2xl font-bold mb-4">¿Qué hace este SDK tan especial?</h3>
@@ -190,6 +162,34 @@ await neptuno.gamification.updateChallengeProgress({
               <Button className="bg-neptuno-blue hover:bg-blue-600">
                 Ver documentación completa
               </Button>
+            </div>
+          </div>
+          
+          {/* Code Examples - Now on the right */}
+          <div className="bg-gray-900 rounded-xl shadow-xl overflow-hidden">
+            <div className="flex items-center justify-between bg-gray-800 px-4 py-3">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="w-full grid grid-cols-4 bg-gray-700/50">
+                  <TabsTrigger value="auth" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300">Auth</TabsTrigger>
+                  <TabsTrigger value="gamification" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300">Gamificación</TabsTrigger>
+                  <TabsTrigger value="payments" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-300">Pagos</TabsTrigger>
+                  <TabsTrigger value="events" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white text-gray-300">Eventos</TabsTrigger>
+                </TabsList>
+              </Tabs>
+              
+              <button 
+                onClick={() => handleCopy(codeExamples[activeTab as keyof typeof codeExamples], activeTab)}
+                className="ml-2 p-1.5 text-gray-400 hover:text-white rounded-md hover:bg-gray-700 transition-colors flex-shrink-0"
+                title="Copiar código"
+              >
+                {copied === activeTab ? <Check size={18} className="text-green-400" /> : <Copy size={18} />}
+              </button>
+            </div>
+            
+            <div className="p-4 overflow-x-auto">
+              <pre className="text-sm font-mono text-gray-300 whitespace-pre">
+                <code>{codeExamples[activeTab as keyof typeof codeExamples]}</code>
+              </pre>
             </div>
           </div>
         </div>

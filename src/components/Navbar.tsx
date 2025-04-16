@@ -93,7 +93,7 @@ const Navbar: React.FC = () => {
           
           {/* Mobile menu button and essential icons */}
           <div className="md:hidden flex items-center space-x-4">
-            {/* Mobile icons - Only Messages, Followed, and Settings */}
+            {/* Only show Messages, Followed and Settings on mobile top bar */}
             <div className="relative">
               <Mail className="h-5 w-5 text-gray-600" />
               <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-purple-500 text-white rounded-full text-xs font-bold">
@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
         </div>
       )}
       
-      {/* Mobile fixed bottom bar with notifications */}
+      {/* Mobile fixed bottom bar with notifications - rearranged order: Credits, Cupones, Perfil, Puntos, Medallas */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 z-50">
         <div className="grid grid-cols-5 gap-2">
           <div className="flex flex-col items-center">
@@ -159,6 +159,13 @@ const Navbar: React.FC = () => {
           </div>
           
           <div className="flex flex-col items-center">
+            <Avatar className="h-7 w-7 border border-neptuno-blue">
+              <AvatarFallback className="bg-neptuno-blue text-white text-xs">A</AvatarFallback>
+            </Avatar>
+            <span className="text-xs mt-1">Perfil</span>
+          </div>
+          
+          <div className="flex flex-col items-center">
             <div className="relative">
               <Trophy className="h-5 w-5 text-gray-600" />
               <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-yellow-300 text-neptuno-navy rounded-full text-xs font-bold">
@@ -175,14 +182,7 @@ const Navbar: React.FC = () => {
                 1
               </span>
             </div>
-            <span className="text-xs mt-1">Logros</span>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <Avatar className="h-7 w-7 border border-neptuno-blue">
-              <AvatarFallback className="bg-neptuno-blue text-white text-xs">A</AvatarFallback>
-            </Avatar>
-            <span className="text-xs mt-1">Perfil</span>
+            <span className="text-xs mt-1">Medallas</span>
           </div>
         </div>
       </div>

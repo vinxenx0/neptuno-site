@@ -104,6 +104,96 @@ def subscribe():
         price_id=price.id
     )
     return {"subscription_id": subscription.id}`
+    },
+    coupons: {
+      title: "Cupones y Descuentos",
+      description: "Sistema de cupones y promociones completo.",
+      code: `# Configurar sistema de cupones
+from neptuno import CouponSystem, DiscountType
+
+coupon_system = CouponSystem()
+
+# Crear un nuevo cupón
+@app.route("/admin/coupons", methods=["POST"])
+def create_coupon():
+    coupon = coupon_system.create_coupon(
+        code="WELCOME25",
+        discount_type=DiscountType.PERCENTAGE,
+        discount_value=25,
+        valid_from=datetime.now(),
+        valid_until=datetime.now() + timedelta(days=30),
+        usage_limit=100,
+        minimum_purchase=1000  # $10.00
+    )
+    return {"coupon_id": coupon.id}
+
+# Validar y aplicar un cupón
+@app.route("/checkout/apply-coupon", methods=["POST"])
+def apply_coupon():
+    data = request.json
+    validation = coupon_system.validate_coupon(
+        code=data["coupon_code"],
+        user_id=current_user.id,
+        order_amount=data["cart_total"]
+    )
+    
+    if validation["valid"]:
+        return {
+            "discount_amount": validation["discount_amount"],
+            "final_amount": validation["final_amount"]
+        }
+    else:
+        return {"error": validation["message"]}, 400`
+    },
+    sitesettings: {
+      title: "Configuración del Sitio",
+      description: "Gestiona configuraciones y parámetros del sistema.",
+      code: `# Sistema de configuración dinámica
+from neptuno import SiteSettings, SettingType
+
+# Inicializar sistema de configuración
+settings = SiteSettings()
+
+# Definir configuraciones predeterminadas
+settings.register([
+    {
+        "key": "site_name",
+        "type": SettingType.STRING,
+        "default": "Neptuno App",
+        "description": "Nombre del sitio"
+    },
+    {
+        "key": "enable_registration",
+        "type": SettingType.BOOLEAN,
+        "default": True,
+        "description": "Permitir registro de nuevos usuarios"
+    },
+    {
+        "key": "theme_color",
+        "type": SettingType.STRING,
+        "default": "#3B82F6",
+        "description": "Color principal del tema"
+    },
+    {
+        "key": "maintenance_mode",
+        "type": SettingType.BOOLEAN,
+        "default": False,
+        "description": "Activar modo mantenimiento"
+    }
+])
+
+# API para leer configuraciones
+@app.route("/api/settings")
+def get_settings():
+    return settings.get_all(include_private=current_user.is_admin)
+
+# API para actualizar configuraciones (solo admin)
+@app.route("/api/settings", methods=["PUT"])
+@admin_required
+def update_settings():
+    data = request.json
+    updated = settings.update(data["key"], data["value"])
+    return {"success": updated}`
     }
   };
 
@@ -121,10 +211,12 @@ def subscribe():
         
         <div className="glass-card p-6 sm:p-8">
           <Tabs defaultValue="auth" className="w-full" onValueChange={(value) => setActiveExample(value)}>
-            <TabsList className="grid grid-cols-3 mb-8">
+            <TabsList className="grid grid-cols-5 mb-8">
               <TabsTrigger value="auth">Autenticación</TabsTrigger>
               <TabsTrigger value="gamification">Gamificación</TabsTrigger>
               <TabsTrigger value="payments">Pagos</TabsTrigger>
+              <TabsTrigger value="coupons">Cupones</TabsTrigger>
+              <TabsTrigger value="sitesettings">Configuración</TabsTrigger>
             </TabsList>
             
             <TabsContent value={activeExample} className="animate-fade-in">
@@ -194,6 +286,48 @@ def subscribe():
                           <li className="flex items-center">
                             <Check size={16} className="text-green-500 mr-2" />
                             Webhooks para eventos de pago
+                          </li>
+                        </>
+                      )}
+
+                      {activeExample === "coupons" && (
+                        <>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Cupones con fecha de caducidad
+                          </li>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Descuentos porcentuales o fijos
+                          </li>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Límites de uso por cupón y usuario
+                          </li>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Validación automática de condiciones
+                          </li>
+                        </>
+                      )}
+
+                      {activeExample === "sitesettings" && (
+                        <>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Configuración dinámica del sitio
+                          </li>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Múltiples tipos de ajustes
+                          </li>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Interfaz de administración
+                          </li>
+                          <li className="flex items-center">
+                            <Check size={16} className="text-green-500 mr-2" />
+                            Control de acceso por rol
                           </li>
                         </>
                       )}

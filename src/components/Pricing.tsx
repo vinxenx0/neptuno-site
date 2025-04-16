@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 
 const Pricing: React.FC = () => {
+  const [hoveredPlan, setHoveredPlan] = useState<string | null>(null);
+  
   return (
     <section id="pricing" className="section">
       <div className="max-w-5xl mx-auto">
@@ -16,7 +18,13 @@ const Pricing: React.FC = () => {
         
         <div className="grid md:grid-cols-3 gap-8">
           {/* Plan gratuito */}
-          <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden transition-all hover:shadow-lg">
+          <div 
+            className={`bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden transition-all duration-300 ${
+              hoveredPlan === 'free' ? 'shadow-lg scale-105' : 'hover:shadow-lg'
+            }`}
+            onMouseEnter={() => setHoveredPlan('free')}
+            onMouseLeave={() => setHoveredPlan(null)}
+          >
             <div className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-1">Starter Kit</h3>
               <div className="flex items-baseline mb-4">
@@ -54,8 +62,14 @@ const Pricing: React.FC = () => {
             </div>
           </div>
           
-          {/* Plan premium */}
-          <div className="bg-neptuno-navy text-white rounded-xl shadow-md border border-neptuno-blue overflow-hidden transition-all hover:shadow-lg relative">
+          {/* Plan premium - siempre un poco más grande */}
+          <div 
+            className={`bg-neptuno-navy text-white rounded-xl shadow-md border border-neptuno-blue overflow-hidden transition-all duration-300 ${
+              hoveredPlan === 'premium' ? 'scale-110 shadow-xl' : 'scale-105 hover:shadow-xl'
+            }`}
+            onMouseEnter={() => setHoveredPlan('premium')}
+            onMouseLeave={() => setHoveredPlan(null)}
+          >
             <div className="absolute top-0 right-0 bg-neptuno-amber text-xs font-bold px-3 py-1 uppercase tracking-wider">
               Popular
             </div>
@@ -98,7 +112,13 @@ const Pricing: React.FC = () => {
           </div>
           
           {/* Plan personalizado */}
-          <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden transition-all hover:shadow-lg">
+          <div 
+            className={`bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden transition-all duration-300 ${
+              hoveredPlan === 'custom' ? 'shadow-lg scale-105' : 'hover:shadow-lg'
+            }`}
+            onMouseEnter={() => setHoveredPlan('custom')}
+            onMouseLeave={() => setHoveredPlan(null)}
+          >
             <div className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-1">Desarrollo a Medida</h3>
               <div className="flex items-baseline mb-4">
