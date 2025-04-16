@@ -6,7 +6,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root,
+  .theme-blue {
     --background: 222 47% 93%;
     --foreground: 222 47% 11%;
     
@@ -36,6 +37,151 @@
     --ring: 221 83% 53%;
     
     --radius: 0.75rem;
+    
+    --neptuno-navy: #0F172A;
+    --neptuno-blue: #3B82F6;
+    --neptuno-teal: #0EA5E9;
+    --neptuno-amber: #F59E0B;
+  }
+  
+  .theme-green {
+    --background: 158 47% 93%;
+    --foreground: 158 47% 11%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 158 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 158 47% 11%;
+    
+    --primary: 158 84% 45%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 170 89% 48%;
+    --secondary-foreground: 158 47% 11%;
+    
+    --muted: 158 40% 96.1%;
+    --muted-foreground: 158 16% 47%;
+    
+    --accent: 170 89% 48%;
+    --accent-foreground: 158 47% 11%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 158 31.8% 91.4%;
+    --input: 158 31.8% 91.4%;
+    --ring: 158 83% 45%;
+    
+    --neptuno-navy: #064E3B;
+    --neptuno-blue: #10B981;
+    --neptuno-teal: #14B8A6;
+    --neptuno-amber: #34D399;
+  }
+  
+  .theme-purple {
+    --background: 270 47% 93%;
+    --foreground: 270 47% 11%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 270 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 47% 11%;
+    
+    --primary: 270 84% 60%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 280 89% 60%;
+    --secondary-foreground: 270 47% 11%;
+    
+    --muted: 270 40% 96.1%;
+    --muted-foreground: 270 16% 47%;
+    
+    --accent: 280 89% 60%;
+    --accent-foreground: 270 47% 11%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 270 31.8% 91.4%;
+    --input: 270 31.8% 91.4%;
+    --ring: 270 83% 60%;
+    
+    --neptuno-navy: #2E1065;
+    --neptuno-blue: #8B5CF6;
+    --neptuno-teal: #A78BFA;
+    --neptuno-amber: #C4B5FD;
+  }
+  
+  .theme-coral {
+    --background: 16 47% 93%;
+    --foreground: 16 47% 11%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 16 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 16 47% 11%;
+    
+    --primary: 16 84% 60%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 30 89% 60%;
+    --secondary-foreground: 16 47% 11%;
+    
+    --muted: 16 40% 96.1%;
+    --muted-foreground: 16 16% 47%;
+    
+    --accent: 30 89% 60%;
+    --accent-foreground: 16 47% 11%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 16 31.8% 91.4%;
+    --input: 16 31.8% 91.4%;
+    --ring: 16 83% 60%;
+    
+    --neptuno-navy: #7C2D12;
+    --neptuno-blue: #F97316;
+    --neptuno-teal: #FB923C;
+    --neptuno-amber: #FDBA74;
+  }
+  
+  .theme-slate {
+    --background: 222 47% 93%;
+    --foreground: 222 47% 11%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    --primary: 215 25% 27%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 215 16% 47%;
+    --secondary-foreground: 222 47% 11%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    
+    --accent: 215 16% 47%;
+    --accent-foreground: 222 47% 11%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 215 25% 27%;
+    
+    --neptuno-navy: #1E293B;
+    --neptuno-blue: #475569;
+    --neptuno-teal: #64748B;
+    --neptuno-amber: #94A3B8;
   }
   
   * {
@@ -58,4 +204,18 @@
   .section {
     @apply py-20 px-4 md:px-8 lg:px-16;
   }
+}
+
+/* Theme transition effect */
+:root,
+[data-theme] {
+  transition: all 0.3s ease;
+}
+
+.theme-switcher {
+  @apply p-2 rounded-full cursor-pointer border-2 border-transparent transition-all;
+}
+
+.theme-switcher.active {
+  @apply border-white shadow-lg;
 }

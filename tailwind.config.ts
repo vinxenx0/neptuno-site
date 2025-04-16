@@ -30,10 +30,10 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				neptuno: {
-					navy: '#0F172A',
-					blue: '#3B82F6',
-					teal: '#0EA5E9',
-					amber: '#F59E0B',
+					navy: 'var(--neptuno-navy)',
+					blue: 'var(--neptuno-blue)',
+					teal: 'var(--neptuno-teal)',
+					amber: 'var(--neptuno-amber)',
 				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
