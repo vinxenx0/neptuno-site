@@ -1,5 +1,7 @@
+
 import React from 'react';
 import ThemeSwitcher from './ThemeSwitcher';
+import { Github, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -57,9 +59,10 @@ const Footer: React.FC = () => {
           </p>
           <div className="mt-4 md:mt-0 flex space-x-4">
             <a href="#" className="text-gray-400 hover:text-neptuno-blue transition-colors">
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.663 9.156 8.432 9.829v-6.299h-2.363v-3.529h2.363V8.237c0-3.005 1.792-4.669 4.533-4.669 1.315 0 2.473.147 2.829.216v3.195h-1.911c-1.447 0-1.723.695-1.723 1.708v2.241h3.017l-.394 3.062h-2.623v6.299C18.337 21.156 22 16.991 22 12z" clipRule="evenodd" />
-              </svg>
+              <Github className="h-5 w-5" />
+            </a>
+            <a href="#" className="text-gray-400 hover:text-neptuno-blue transition-colors">
+              <Linkedin className="h-5 w-5" />
             </a>
             <a href="#" className="text-gray-400 hover:text-neptuno-blue transition-colors">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -11,7 +11,7 @@ import Cta from '@/components/Cta';
 import Footer from '@/components/Footer';
 import ProductionReady from '@/components/ProductionReady';
 import SdkSection from '@/components/SdkSection';
-import DashboardInfo from '@/components/DashboardInfo';
+import DashboardInfoWrapper from '@/components/DashboardInfoWrapper';
 import CeoMessage from '@/components/CeoMessage';
 
 const Index = () => {
@@ -21,7 +21,7 @@ const Index = () => {
       <Hero />
       <Features />
       <ProductionReady />
-      <DashboardInfo />
+      <DashboardInfoWrapper />
       <SdkSection />
       <ApiExplorer />
       <UseCases />

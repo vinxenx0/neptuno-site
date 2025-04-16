@@ -5,12 +5,12 @@ import { ChevronRight } from 'lucide-react';
 
 const CeoMessage: React.FC = () => {
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-gray-100 py-16">
+    <section className="bg-gradient-to-br from-gray-900 to-neptuno-navy py-16 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center gap-8 bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="flex flex-col lg:flex-row items-center gap-8 bg-gray-800/70 rounded-2xl shadow-xl overflow-hidden border border-white/10">
           {/* CEO Image */}
           <div className="lg:w-1/3 relative h-full">
-            <div className="h-full w-full bg-gradient-to-br from-neptuno-navy to-neptuno-blue p-8 flex items-center justify-center">
+            <div className="h-full w-full bg-gradient-to-br from-neptuno-blue/80 to-neptuno-teal/80 p-8 flex items-center justify-center">
               <div className="relative">
                 <div className="w-48 h-48 bg-white rounded-full overflow-hidden border-4 border-white shadow-lg">
                   <img 
@@ -31,11 +31,11 @@ const CeoMessage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-2">
               A letter from the CEO
             </h2>
-            <h3 className="text-xl text-gray-600 mb-6">
+            <h3 className="text-xl text-gray-300 mb-6">
               Conoce todo sobre Neptuno de la mano de su creador
             </h3>
             
-            <div className="space-y-4 text-gray-600">
+            <div className="space-y-4 text-gray-300">
               <p>
                 Cuando comencé este proyecto, tenía en mente un objetivo claro: simplificar el proceso de creación de MVPs sin sacrificar la calidad o la seguridad.
               </p>
@@ -44,7 +44,7 @@ const CeoMessage: React.FC = () => {
                 Como desarrollador, siempre me frustraba tener que reinventar la rueda con cada nuevo proyecto - configurar bases de datos, implementar sistemas de autenticación, gestionar pagos, y todo lo necesario para crear un producto mínimo viable de calidad.
               </p>
               
-              <p className="font-medium">
+              <p className="font-medium text-white">
                 Neptuno nació de esa frustración y de la firme creencia de que es posible lanzar ideas al mercado rápidamente sin comprometer la estructura técnica.
               </p>
               
