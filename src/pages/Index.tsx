@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import ProductionReady from '@/components/ProductionReady';
 import SdkSection from '@/components/SdkSection';
 import DashboardInfo from '@/components/DashboardInfo';
+import CeoMessage from '@/components/CeoMessage';
 
 const Index = () => {
   return (
@@ -25,6 +26,7 @@ const Index = () => {
       <ApiExplorer />
       <UseCases />
       <GamificationDemo />
+      <CeoMessage />
       <Pricing />
       <Cta />
       <Footer />

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Lock, 
@@ -330,8 +331,169 @@ const featuresList = [
   }
 ];
 
+// Additional demo screens to enrich the visual experience
+const additionalDemos = [
+  {
+    title: "Análisis de Datos",
+    demo: (
+      <div className="bg-gradient-to-br from-blue-800 to-indigo-900 rounded-lg p-5 h-full flex flex-col">
+        <div className="flex justify-between items-center mb-4 border-b border-blue-700/50 pb-4">
+          <div className="text-xl font-bold text-white">Dashboard Analítico</div>
+          <div className="bg-blue-500/20 text-blue-300 text-xs px-2 py-1 rounded">En Tiempo Real</div>
+        </div>
+        
+        <div className="flex flex-col space-y-4 text-sm flex-1">
+          <div className="bg-blue-800/50 p-3 rounded-lg">
+            <div className="flex justify-between mb-1">
+              <span className="text-blue-200">Usuarios activos</span>
+              <span className="text-white">1,248</span>
+            </div>
+            <div className="w-full h-12 bg-blue-900/50 rounded-lg overflow-hidden mt-2">
+              <div className="h-full w-full flex">
+                <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-500" style={{width: '65%'}}></div>
+                <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500" style={{width: '20%'}}></div>
+                <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{width: '15%'}}></div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-blue-800/50 p-3 rounded-lg">
+              <div className="text-blue-200 mb-1">Tasa de Conversión</div>
+              <div className="text-2xl font-bold text-white">6.4%</div>
+              <div className="text-green-400 text-xs flex items-center">
+                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+                +1.8% vs mes anterior
+              </div>
+            </div>
+            <div className="bg-blue-800/50 p-3 rounded-lg">
+              <div className="text-blue-200 mb-1">Ingresos</div>
+              <div className="text-2xl font-bold text-white">€9,842</div>
+              <div className="text-green-400 text-xs flex items-center">
+                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+                +24% vs mes anterior
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "Console CLI",
+    demo: (
+      <div className="bg-gradient-to-br from-gray-900 to-black rounded-lg p-5 h-full flex flex-col font-mono">
+        <div className="flex items-center mb-4 pb-2 border-b border-gray-800">
+          <div className="flex space-x-1.5">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          </div>
+          <div className="text-gray-400 text-xs ml-3">Terminal</div>
+        </div>
+        
+        <div className="flex-1 text-green-400 text-sm flex flex-col">
+          <div className="mb-2">
+            <span className="text-blue-400">$ </span>
+            <span className="text-gray-200">neptuno init my-saas-project</span>
+          </div>
+          <div className="mb-1 text-gray-400">🚀 Iniciando proyecto Neptuno...</div>
+          <div className="mb-1 text-gray-400">🧪 Configurando servidor de desarrollo...</div>
+          <div className="mb-1 text-gray-400">🔐 Generando claves de seguridad...</div>
+          <div className="mb-1 text-gray-400">📦 Instalando dependencias...</div>
+          <div className="mb-3 text-gray-400">✅ Proyecto creado con éxito!</div>
+          
+          <div className="mb-2">
+            <span className="text-blue-400">$ </span>
+            <span className="text-gray-200">neptuno deploy --production</span>
+          </div>
+          <div className="mb-1 text-gray-400">📡 Desplegando en producción...</div>
+          <div className="mb-1 text-gray-400">🌐 Configurando dominio...</div>
+          <div className="mb-1 text-gray-400">🔒 Instalando certificados SSL...</div>
+          <div className="mb-1 text-green-400 font-bold">✨ ¡Listo! Tu aplicación está en producción.</div>
+          <div className="text-gray-400">📝 URL: https://my-saas-project.neptuno.app</div>
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "Mobile App",
+    demo: (
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-5 h-full flex flex-col">
+        <div className="mx-auto w-56 h-full bg-black rounded-xl overflow-hidden border-4 border-gray-800 flex flex-col">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-3">
+            <div className="flex justify-between items-center">
+              <div className="text-white text-sm font-bold">Neptuno App</div>
+              <div className="flex space-x-1">
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+                <div className="w-1 h-1 bg-white rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex-1 bg-gray-100 p-2">
+            <div className="rounded-lg bg-white shadow-sm p-2 mb-2">
+              <div className="text-xs font-medium">Resultados de ventas</div>
+              <div className="text-sm font-bold mt-1">€12,458</div>
+              <div className="h-1.5 bg-gray-100 rounded-full mt-1">
+                <div className="h-1.5 bg-green-500 rounded-full" style={{width: '75%'}}></div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2">
+              <div className="rounded-lg bg-white shadow-sm p-2">
+                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mb-1">
+                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                </div>
+                <div className="text-xs font-medium">Usuarios</div>
+                <div className="text-xs font-bold">1,248</div>
+              </div>
+              <div className="rounded-lg bg-white shadow-sm p-2">
+                <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mb-1">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="text-xs font-medium">Conversiones</div>
+                <div className="text-xs font-bold">842</div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="h-4 bg-black flex justify-center items-center">
+            <div className="w-20 h-1 bg-gray-700 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+];
+
 const Features: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState<number>(0);
+  const [isOpen, setIsOpen] = useState<number | null>(0);
+  const [currentDemoIndex, setCurrentDemoIndex] = useState<number>(0);
+  
+  // Auto-rotate demos every 5 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDemoIndex((prev) => (prev + 1) % additionalDemos.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleCollapsibleChange = (index: number, open: boolean) => {
+    if (open) {
+      setActiveFeature(index);
+      setIsOpen(index);
+    } else {
+      setIsOpen(null);
+    }
+  };
 
   return (
     <section id="features" className="section bg-white py-16 md:py-24">
@@ -348,22 +510,30 @@ const Features: React.FC = () => {
             {featuresList.map((feature, index) => (
               <Collapsible
                 key={index}
-                open={activeFeature === index}
-                onOpenChange={(isOpen) => isOpen && setActiveFeature(index)}
-                className="bg-white rounded-xl shadow-sm hover:shadow transition-shadow border border-gray-100 overflow-hidden"
+                open={isOpen === index}
+                onOpenChange={(open) => handleCollapsibleChange(index, open)}
+                className={`bg-white rounded-xl shadow-sm transition-all duration-300 border overflow-hidden ${
+                  isOpen === index 
+                    ? 'border-neptuno-blue ring-2 ring-neptuno-blue/20' 
+                    : 'border-gray-100 hover:shadow'
+                }`}
               >
                 <CollapsibleTrigger className="flex items-center justify-between w-full p-6">
                   <div className="flex items-center">
-                    <div className="h-12 w-12 rounded-lg bg-gray-50 flex items-center justify-center mr-4">
+                    <div className={`h-12 w-12 rounded-lg flex items-center justify-center mr-4 ${
+                      isOpen === index ? 'bg-neptuno-blue/10' : 'bg-gray-50'
+                    }`}>
                       {feature.icon}
                     </div>
                     <div className="text-left">
-                      <h3 className="text-xl font-semibold">{feature.title}</h3>
+                      <h3 className={`text-xl font-semibold ${isOpen === index ? 'text-neptuno-blue' : ''}`}>
+                        {feature.title}
+                      </h3>
                       <p className="text-gray-600 text-sm mt-1 pr-8">{feature.description}</p>
                     </div>
                   </div>
-                  {activeFeature === index ? 
-                    <ChevronUp size={20} className="text-gray-400 flex-shrink-0" /> : 
+                  {isOpen === index ? 
+                    <ChevronUp size={20} className="text-neptuno-blue flex-shrink-0" /> : 
                     <ChevronDown size={20} className="text-gray-400 flex-shrink-0" />
                   }
                 </CollapsibleTrigger>
@@ -382,15 +552,48 @@ const Features: React.FC = () => {
           </div>
           
           <div className="lg:w-1/2">
-            <div className="h-full rounded-xl overflow-hidden shadow-lg border border-gray-200">
-              {featuresList.map((feature, index) => (
-                <div 
-                  key={index} 
-                  className={`h-full transition-opacity duration-300 ${activeFeature === index ? 'opacity-100' : 'opacity-0 hidden'}`}
-                >
-                  {feature.demo}
+            <div className="h-full rounded-xl overflow-hidden shadow-lg border border-gray-200 flex flex-col">
+              {/* Main demo feature */}
+              <div className="flex-1 min-h-[300px] max-h-[400px] overflow-hidden">
+                {featuresList.map((feature, index) => (
+                  <div 
+                    key={index} 
+                    className={`h-full transition-opacity duration-300 ${activeFeature === index ? 'opacity-100' : 'opacity-0 hidden'}`}
+                  >
+                    {feature.demo}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Additional demo screens */}
+              <div className="border-t border-gray-200 p-4">
+                <h4 className="text-sm font-medium text-gray-500 mb-3">Más ejemplos de utilidad</h4>
+                <div className="relative overflow-hidden">
+                  <div className="flex transition-transform duration-500 ease-in-out" 
+                       style={{ transform: `translateX(-${currentDemoIndex * 100}%)` }}>
+                    {additionalDemos.map((demo, index) => (
+                      <div key={index} className="w-full flex-shrink-0 px-1">
+                        <div className="h-40 rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                          {demo.demo}
+                        </div>
+                        <p className="text-xs text-center text-gray-500 mt-1">{demo.title}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+                <div className="flex justify-center mt-3 space-x-1">
+                  {additionalDemos.map((_, index) => (
+                    <button 
+                      key={index}
+                      onClick={() => setCurrentDemoIndex(index)} 
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        currentDemoIndex === index ? 'bg-neptuno-blue' : 'bg-gray-300'
+                      }`}
+                      aria-label={`Ver demo ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -22,15 +22,15 @@ const Hero: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Deploy your MVP in minutes, launch your project in weeks
+              Deploy MVP in minutes, launch in a week
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300">
-              Ship fast no significa lanzar MPV pobres, deficientes y con fallos
+              De la idea al MRR en tiempo record: no arranques de cero, empieza desde Neptuno.
             </p>
             
             <p className="text-lg md:text-xl text-gray-300">
-              Lanza tu MVP con postgress db, auth, OpenAPI + GraphQL, gamification, subscriptions, dashboards, con SSL, backups y logs ya configurados.
+              Crea MVP ilimitados con autenficación, seguridad, balanceo, cache, api abierta, dashboard, etc todo configurado de inicio
             </p>
             
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
@@ -49,7 +49,7 @@ const Hero: React.FC = () => {
               </div>
               <div className="flex items-center">
                 <Zap size={18} className="mr-2 text-neptuno-amber" />
-                <span>SDK para desarrolladores</span>
+                <span>SDK disponible</span>
               </div>
               <div className="flex items-center">
                 <Code size={18} className="mr-2 text-neptuno-blue" />
