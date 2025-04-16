@@ -1,217 +1,195 @@
 
 import React, { useState } from 'react';
-import { Check, ChevronsUpDown, Copy, Terminal, ArrowRight, FileCode, BarChart3 } from 'lucide-react';
-import { Button } from './ui/button';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "./ui/collapsible";
-import { Card, CardContent } from "./ui/card";
+import { Code2, Copy, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const codeExamples = [
-  {
-    name: "Autenticación",
-    icon: <Terminal size={16} />,
-    code: `import { Neptuno } from '@neptuno/sdk'
+const SdkSection: React.FC = () => {
+  const [activeTab, setActiveTab] = useState("auth");
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const handleCopy = (code: string, id: string) => {
+    navigator.clipboard.writeText(code);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  const codeExamples = {
+    auth: `import { Neptuno } from '@neptuno/sdk'
 
 const neptuno = new Neptuno({ baseUrl: 'https://api.tunea.io' })
 
+// Login con usuario y contraseña
 await neptuno.auth.login({
   username: 'user@example.com',
   password: 'securepassword123'
-})`
-  },
-  {
-    name: "Gamificación",
-    icon: <BarChart3 size={16} />,
-    code: `// Otorgar puntos por completar un reto
+})
+
+// Obtener datos del usuario actual
+const profile = await neptuno.users.me()
+console.log(\`👋 Bienvenido \${profile.username}, nivel \${profile.level}\`)`,
+
+    gamification: `import { Neptuno } from '@neptuno/sdk'
+
+const neptuno = new Neptuno({ baseUrl: 'https://api.tunea.io' })
+
+// Otorgar puntos por completar un reto
 await neptuno.gamification.awardPoints({
-  userId: user.id,
+  userId: 'user_123',
   amount: 100,
   reason: 'completed_quiz'
 })
 
 // Desbloquear un badge al superar un desafío
 await neptuno.gamification.unlockBadge({
-  userId: user.id,
+  userId: 'user_123',
   badgeId: 'knowledge_master'
 })
 
 // Subir de nivel automáticamente si cumple requisitos
 const eligible = await neptuno.gamification.checkLevelUp({ 
-  userId: user.id 
+  userId: 'user_123' 
 })
 
 if (eligible.canLevelUp) {
-  await neptuno.gamification.levelUp({ userId: user.id })
+  await neptuno.gamification.levelUp({ userId: 'user_123' })
   console.log(\`🎉 ¡Nivel aumentado a \${eligible.nextLevel}!\`)
-}`
-  },
-  {
-    name: "Eventos y desafíos",
-    icon: <FileCode size={16} />,
-    code: `// Registrar un evento personalizado con impacto en la gamificación
+}`,
+
+    payments: `import { Neptuno } from '@neptuno/sdk'
+
+const neptuno = new Neptuno({ baseUrl: 'https://api.tunea.io' })
+
+// Crear una suscripción
+const subscription = await neptuno.payments.subscribe({
+  userId: 'user_123',
+  planId: 'premium_monthly'
+})
+
+// Verificar estado de suscripción
+const status = await neptuno.payments.checkSubscription({ 
+  userId: 'user_123' 
+})
+
+// Procesar un pago único
+const payment = await neptuno.payments.createCharge({
+  userId: 'user_123',
+  amount: 49.99,
+  currency: 'EUR',
+  description: 'Compra de créditos'
+})`,
+
+    events: `import { Neptuno } from '@neptuno/sdk'
+
+const neptuno = new Neptuno({ baseUrl: 'https://api.tunea.io' })
+
+// Registrar eventos personalizados
 await neptuno.events.track({
   name: 'shared_on_twitter',
   metadata: { campaign: 'spring_launch' }
 })
 
-// Activar un desafío diario y registrar el progreso
+// Activar un desafío diario
 await neptuno.gamification.startChallenge({
-  userId: user.id,
+  userId: 'user_123',
   challengeId: 'daily_login_streak'
 })
 
+// Registrar progreso en el desafío
 await neptuno.gamification.updateChallengeProgress({
-  userId: user.id,
+  userId: 'user_123',
   challengeId: 'daily_login_streak',
   progress: 1
-})`
-  }
-];
-
-const SdkSection: React.FC = () => {
-  const [activeExample, setActiveExample] = useState(0);
-  const [copied, setCopied] = useState(false);
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(codeExamples[activeExample].code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+})`,
   };
 
   return (
-    <section id="sdk" className="section bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">SDK para TypeScript</h2>
+    <section id="sdk" className="section bg-white py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center px-3 py-1.5 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
+            <Code2 size={18} className="mr-2" />
+            TypeScript SDK
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold my-4">Conecta. Crea. Convierte. En minutos.</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Conecta. Crea. Convierte. En minutos.
+            El SDK oficial de Neptuno para TypeScript te da acceso inmediato a toda la potencia de nuestra API: autenticación avanzada, gamificación, monetización, tracking y más.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-12 items-start">
-          {/* Left column: Features */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold mb-4 text-neptuno-navy">¿Por qué usar el SDK de Neptuno?</h3>
-              <p className="text-gray-600 mb-6">
-                Te ahorra <span className="font-semibold">meses de trabajo</span> en lógica de negocio. Conecta y comienza a usar autenticación, gamificación y monetización de inmediato.
-              </p>
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Code Examples */}
+          <div className="bg-gray-900 rounded-xl shadow-xl overflow-hidden">
+            <div className="flex items-center justify-between bg-gray-800 px-4 py-3">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="w-full grid grid-cols-4 bg-gray-700/50">
+                  <TabsTrigger value="auth" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300">Auth</TabsTrigger>
+                  <TabsTrigger value="gamification" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300">Gamificación</TabsTrigger>
+                  <TabsTrigger value="payments" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-300">Pagos</TabsTrigger>
+                  <TabsTrigger value="events" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white text-gray-300">Eventos</TabsTrigger>
+                </TabsList>
+              </Tabs>
               
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <Check size={18} className="text-green-500 mt-0.5 mr-2 shrink-0" />
-                  <span className="text-sm">100% preparado para producción</span>
+              <button 
+                onClick={() => handleCopy(codeExamples[activeTab as keyof typeof codeExamples], activeTab)}
+                className="ml-2 p-1.5 text-gray-400 hover:text-white rounded-md hover:bg-gray-700 transition-colors flex-shrink-0"
+                title="Copiar código"
+              >
+                {copied === activeTab ? <Check size={18} className="text-green-400" /> : <Copy size={18} />}
+              </button>
+            </div>
+            
+            <div className="p-4 overflow-x-auto">
+              <pre className="text-sm font-mono text-gray-300 whitespace-pre">
+                <code>{codeExamples[activeTab as keyof typeof codeExamples]}</code>
+              </pre>
+            </div>
+          </div>
+          
+          {/* Features */}
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-2xl font-bold mb-4">¿Qué hace este SDK tan especial?</h3>
+              <ul className="space-y-4">
+                <li className="flex">
+                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold mr-3">1</div>
+                  <div>
+                    <h4 className="font-bold">Sencillo por fuera, potente por dentro</h4>
+                    <p className="text-gray-600">Con una sola importación, conecta tu app a toda la lógica de negocio: usuarios, puntos, niveles, pagos, suscripciones.</p>
+                  </div>
                 </li>
-                <li className="flex items-start">
-                  <Check size={18} className="text-green-500 mt-0.5 mr-2 shrink-0" />
-                  <span className="text-sm">Diseñado para integrarse en segundos</span>
+                <li className="flex">
+                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3">2</div>
+                  <div>
+                    <h4 className="font-bold">Gamificación como servicio</h4>
+                    <p className="text-gray-600">Asigna puntos, sube de nivel, entrega badges y activa desafíos con funciones ya listas en el SDK.</p>
+                  </div>
                 </li>
-                <li className="flex items-start">
-                  <Check size={18} className="text-green-500 mt-0.5 mr-2 shrink-0" />
-                  <span className="text-sm">Sencillo por fuera, potente por dentro</span>
+                <li className="flex">
+                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold mr-3">3</div>
+                  <div>
+                    <h4 className="font-bold">Pagos integrados al instante</h4>
+                    <p className="text-gray-600">Activa modelos freemium, suscripciones o compras únicas. Integra pasarelas de pago sin reinventar la rueda.</p>
+                  </div>
                 </li>
-                <li className="flex items-start">
-                  <Check size={18} className="text-green-500 mt-0.5 mr-2 shrink-0" />
-                  <span className="text-sm">API auto-documentada con OpenAPI</span>
+                <li className="flex">
+                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-bold mr-3">4</div>
+                  <div>
+                    <h4 className="font-bold">API auto-documentada con OpenAPI</h4>
+                    <p className="text-gray-600">Todas las rutas, modelos y respuestas están tipadas y disponibles directamente desde el SDK.</p>
+                  </div>
                 </li>
               </ul>
             </div>
             
-            <Collapsible className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <CollapsibleTrigger className="flex w-full items-center justify-between">
-                <span className="text-lg font-semibold text-neptuno-navy">Funcionalidades del SDK (v1)</span>
-                <ChevronsUpDown size={16} />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4 space-y-3">
-                <div className="flex items-start">
-                  <div className="bg-neptuno-blue/10 p-1 rounded text-neptuno-blue mr-2">🔐</div>
-                  <div>
-                    <p className="font-medium">Auth</p>
-                    <p className="text-sm text-gray-600">Login, registro, recuperación, refresh tokens, roles</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="bg-neptuno-teal/10 p-1 rounded text-neptuno-teal mr-2">🧑</div>
-                  <div>
-                    <p className="font-medium">Usuarios</p>
-                    <p className="text-sm text-gray-600">CRUD, perfiles, permisos, datos extendidos</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="bg-neptuno-amber/10 p-1 rounded text-neptuno-amber mr-2">🏅</div>
-                  <div>
-                    <p className="font-medium">Gamificación</p>
-                    <p className="text-sm text-gray-600">puntos, créditos, niveles, badges, desafíos</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="bg-purple-100 p-1 rounded text-purple-500 mr-2">💳</div>
-                  <div>
-                    <p className="font-medium">Monetización</p>
-                    <p className="text-sm text-gray-600">planes, pagos únicos, suscripciones</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="bg-green-100 p-1 rounded text-green-500 mr-2">🎯</div>
-                  <div>
-                    <p className="font-medium">Leads & tracking</p>
-                    <p className="text-sm text-gray-600">eventos personalizados, CRM-ready</p>
-                  </div>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-            
-            <Button className="w-full">
-              Explorar documentación completa <ArrowRight size={16} className="ml-2" />
-            </Button>
-          </div>
-          
-          {/* Right column: Code examples */}
-          <div className="lg:col-span-3">
-            <Card className="overflow-hidden border-gray-200">
-              <div className="bg-neptuno-navy text-white text-sm p-3 flex items-center justify-between">
-                <div className="flex space-x-4">
-                  {codeExamples.map((example, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveExample(index)}
-                      className={`flex items-center px-3 py-1.5 rounded ${
-                        activeExample === index 
-                          ? "bg-white/20" 
-                          : "hover:bg-white/10"
-                      }`}
-                    >
-                      {example.icon}
-                      <span className="ml-2">{example.name}</span>
-                    </button>
-                  ))}
-                </div>
-                <button 
-                  onClick={copyToClipboard} 
-                  className="p-1.5 rounded hover:bg-white/10"
-                  title="Copiar código"
-                >
-                  {copied ? <Check size={16} /> : <Copy size={16} />}
-                </button>
+            <div className="border-t border-gray-200 pt-8">
+              <h3 className="text-lg font-bold mb-4">¡Empezar nunca fue tan rápido!</h3>
+              <div className="bg-gray-50 p-4 rounded-md font-mono text-sm mb-4">
+                npm install @neptuno/sdk
               </div>
-              <CardContent className="p-0">
-                <pre className="font-mono text-sm bg-[#1E293B] text-gray-300 p-5 overflow-x-auto">
-                  <code>{codeExamples[activeExample].code}</code>
-                </pre>
-              </CardContent>
-            </Card>
-            
-            <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <p className="font-semibold mb-2">⏱️ Empezar nunca fue tan rápido</p>
-              <div className="bg-neptuno-navy rounded-md p-2 mb-4 font-mono text-sm text-white overflow-x-auto">
-                <code>npm install @neptuno/sdk</code>
-              </div>
-              <p className="text-sm text-gray-600">
-                Con solo unas líneas puedes convertir una app normal en una experiencia gamificada, dinámica y centrada en la conversión.
-              </p>
+              <Button className="bg-neptuno-blue hover:bg-blue-600">
+                Ver documentación completa
+              </Button>
             </div>
           </div>
         </div>

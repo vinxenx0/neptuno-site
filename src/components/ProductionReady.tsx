@@ -1,169 +1,186 @@
 
 import React from 'react';
-import { 
-  Shield, 
-  Server, 
-  Database, 
-  GitBranch,
-  ArrowRight,
-  Layers
-} from 'lucide-react';
-import { Button } from './ui/button';
+import { Shield, Database, Scale, Server, Cpu, Network, BarChart, Lock } from 'lucide-react';
 
 const ProductionReady: React.FC = () => {
   return (
-    <section className="section bg-gradient-to-br from-neptuno-navy via-[#1e3a8a] to-[#1e294b] text-white">
-      <div className="max-w-7xl mx-auto">
+    <section id="production-ready" className="section py-24 bg-gradient-to-br from-gray-900 to-neptuno-navy text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Listo para Producción desde el Día Uno</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Listo para Producción</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Arquitectura dockerizada, balanceada y escalable con configuraciones optimizadas para entornos de producción.
+            Neptuno se despliega con una arquitectura robusta, escalable y segura desde el primer minuto.
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left side: Architecture visualization */}
-          <div className="relative">
-            <div className="glass-card p-6 overflow-hidden">
-              <div className="aspect-video relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-full max-w-md">
-                    {/* Animated Architecture Diagram */}
-                    <div className="relative">
-                      {/* Nginx Layer */}
-                      <div className="bg-indigo-900/80 backdrop-blur-sm rounded-lg p-4 border border-indigo-500/30 mb-8 shadow-lg animate-pulse-gentle">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Server size={20} className="text-neptuno-teal" />
-                            <span className="font-medium">NGINX</span>
-                          </div>
-                          <span className="text-xs bg-neptuno-teal/20 text-neptuno-teal px-2 py-0.5 rounded">
-                            Proxy + Cache + SSL
-                          </span>
-                        </div>
-                      </div>
-                      
-                      {/* Backend & Frontend Containers */}
-                      <div className="grid grid-cols-3 gap-4 mb-8">
-                        <div className="bg-blue-900/70 backdrop-blur-sm rounded-lg p-4 border border-blue-500/30 animate-float shadow-lg">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <GitBranch size={18} className="text-neptuno-blue" />
-                            <span className="font-medium">FastAPI</span>
-                          </div>
-                          <div className="text-xs text-gray-300">
-                            container:8000
-                          </div>
-                        </div>
-                        <div className="bg-blue-900/70 backdrop-blur-sm rounded-lg p-4 border border-blue-500/30 animate-float shadow-lg">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <GitBranch size={18} className="text-neptuno-blue" />
-                            <span className="font-medium">FastAPI</span>
-                          </div>
-                          <div className="text-xs text-gray-300">
-                            container:8001
-                          </div>
-                        </div>
-                        <div className="bg-amber-900/70 backdrop-blur-sm rounded-lg p-4 border border-amber-500/30 animate-float shadow-lg">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <Layers size={18} className="text-neptuno-amber" />
-                            <span className="font-medium">Next.js</span>
-                          </div>
-                          <div className="text-xs text-gray-300">
-                            container:3000
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Database Layer */}
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-green-900/70 backdrop-blur-sm rounded-lg p-4 border border-green-500/30 shadow-lg">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                              <Database size={18} className="text-green-400" />
-                              <span className="font-medium">MariaDB</span>
-                            </div>
-                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded">
-                              Primary
-                            </span>
-                          </div>
-                        </div>
-                        <div className="bg-green-900/50 backdrop-blur-sm rounded-lg p-4 border border-green-500/20 shadow-lg">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                              <Database size={18} className="text-green-400/70" />
-                              <span className="font-medium">MariaDB</span>
-                            </div>
-                            <span className="text-xs bg-green-500/10 text-green-400/70 px-2 py-0.5 rounded">
-                              Replica
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Connection Lines (Simplified) */}
-                      <div className="absolute inset-0 pointer-events-none">
-                        <svg className="w-full h-full" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M200 80 L110 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                          <path d="M200 80 L200 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                          <path d="M200 80 L290 130" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                          <path d="M110 180 L150 230" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                          <path d="M290 180 L250 230" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="4 2" />
-                        </svg>
-                      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Architecture Card */}
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-xl overflow-hidden col-span-1 lg:col-span-2 border border-gray-700">
+            <div className="p-6">
+              <h3 className="text-xl font-bold mb-6">Arquitectura Dockerizada y Balanceada</h3>
+              
+              <div className="relative h-80 overflow-hidden">
+                {/* Animated Architecture Diagram */}
+                <div className="absolute w-full h-full">
+                  {/* Internet/Users */}
+                  <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-gray-700/50 border border-gray-600 rounded-lg p-2 text-center w-36 animate-pulse-gentle">
+                    <div className="text-sm font-medium">Usuario/Internet</div>
+                  </div>
+                  
+                  {/* Connection line */}
+                  <div className="absolute top-[60px] left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-gray-600"></div>
+                  
+                  {/* Nginx Proxy */}
+                  <div className="absolute top-[70px] left-1/2 transform -translate-x-1/2 bg-blue-900/70 border border-blue-700 rounded-lg p-3 text-center w-60">
+                    <div className="flex items-center justify-center mb-1">
+                      <Network size={18} className="text-blue-400 mr-2" />
+                      <span className="font-medium">Neptuno Proxy</span>
                     </div>
+                    <div className="text-xs text-blue-300">Nginx + SSL + HTTP/2 + Cache</div>
+                  </div>
+                  
+                  {/* Connection lines */}
+                  <div className="absolute top-[125px] left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gray-600"></div>
+                  <div className="absolute top-[130px] left-[calc(50%-60px)] transform -translate-x-1/2 w-0.5 h-20 bg-gray-600 rotate-45"></div>
+                  <div className="absolute top-[130px] left-[calc(50%+60px)] transform -translate-x-1/2 w-0.5 h-20 bg-gray-600 -rotate-45"></div>
+                  
+                  {/* API Containers */}
+                  <div className="absolute top-[170px] left-1/4 transform -translate-x-1/2 bg-green-900/70 border border-green-700 rounded-lg p-3 text-center w-40 animate-float">
+                    <div className="flex items-center justify-center mb-1">
+                      <Server size={18} className="text-green-400 mr-2" />
+                      <span className="font-medium">Neptuno API</span>
+                    </div>
+                    <div className="text-xs text-green-300">FastAPI + OpenAPI</div>
+                    <div className="mt-2 bg-green-800/50 px-2 py-1 rounded text-xs">Replica 1</div>
+                  </div>
+                  
+                  <div className="absolute top-[145px] left-[40%] transform -translate-x-1/2 bg-green-900/70 border border-green-700 rounded-lg p-3 text-center w-40 animate-float" style={{animationDelay: '0.5s'}}>
+                    <div className="flex items-center justify-center mb-1">
+                      <Server size={18} className="text-green-400 mr-2" />
+                      <span className="font-medium">Neptuno API</span>
+                    </div>
+                    <div className="text-xs text-green-300">FastAPI + OpenAPI</div>
+                    <div className="mt-2 bg-green-800/50 px-2 py-1 rounded text-xs">Replica 2</div>
+                  </div>
+                  
+                  {/* Dashboard Container */}
+                  <div className="absolute top-[140px] right-[30%] bg-indigo-900/70 border border-indigo-700 rounded-lg p-3 text-center w-44 animate-float" style={{animationDelay: '0.7s'}}>
+                    <div className="flex items-center justify-center mb-1">
+                      <BarChart size={18} className="text-indigo-400 mr-2" />
+                      <span className="font-medium">Neptuno Dashboard</span>
+                    </div>
+                    <div className="text-xs text-indigo-300">Next.js + TailwindCSS</div>
+                  </div>
+                  
+                  <div className="absolute top-[185px] right-[15%] bg-indigo-900/70 border border-indigo-700 rounded-lg p-3 text-center w-44 animate-float" style={{animationDelay: '0.9s'}}>
+                    <div className="flex items-center justify-center mb-1">
+                      <BarChart size={18} className="text-indigo-400 mr-2" />
+                      <span className="font-medium">Neptuno Dashboard</span>
+                    </div>
+                    <div className="text-xs text-indigo-300">Next.js + TailwindCSS</div>
+                    <div className="mt-2 bg-indigo-800/50 px-2 py-1 rounded text-xs">Replica</div>
+                  </div>
+                  
+                  {/* Connection lines to DB */}
+                  <div className="absolute top-[230px] left-1/4 transform -translate-x-1/2 w-0.5 h-12 bg-gray-600"></div>
+                  <div className="absolute top-[230px] left-[40%] transform -translate-x-1/2 w-0.5 h-12 bg-gray-600"></div>
+                  <div className="absolute top-[230px] right-[30%] w-0.5 h-12 bg-gray-600"></div>
+                  <div className="absolute top-[230px] right-[15%] w-0.5 h-12 bg-gray-600"></div>
+                  
+                  {/* DB Container */}
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-purple-900/70 border border-purple-700 rounded-lg p-3 text-center w-48">
+                    <div className="flex items-center justify-center mb-1">
+                      <Database size={18} className="text-purple-400 mr-2" />
+                      <span className="font-medium">Neptuno DB</span>
+                    </div>
+                    <div className="text-xs text-purple-300">PostgreSQL + Replicación</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Right side: Features */}
-          <div className="space-y-6">
-            <div className="bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-500/30">
-              <div className="flex items-start">
-                <div className="h-10 w-10 rounded-lg bg-neptuno-teal/20 flex items-center justify-center mr-4 shrink-0">
-                  <Shield size={20} className="text-neptuno-teal" />
+          {/* Features Cards */}
+          <div className="col-span-1 space-y-6">
+            <div className="bg-gradient-to-br from-blue-900/70 to-blue-800/50 rounded-xl shadow-lg overflow-hidden border border-blue-700/50 p-6">
+              <div className="flex items-center mb-4">
+                <div className="h-10 w-10 rounded-lg bg-blue-800/50 flex items-center justify-center">
+                  <Shield className="text-blue-400" size={24} />
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Seguridad desde el inicio</h3>
-                  <p className="text-gray-300 mb-3">
-                    Implementación completa de OAuth2, JWT, HTTPS, CORS, y protección CSRF lista para usar.
-                  </p>
-                  <div className="text-sm mb-2">
-                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 mr-2 rounded-md">OAuth2</span>
-                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 mr-2 rounded-md">JWT</span>
-                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 mr-2 rounded-md">HTTPS</span>
-                    <span className="badge bg-neptuno-teal/20 text-neptuno-teal px-2 py-1 rounded-md">CSRF</span>
-                  </div>
-                </div>
+                <h3 className="text-lg font-bold ml-3">Seguridad Integrada</h3>
               </div>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mr-2"></span>
+                  SSL/TLS automático con renovación
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mr-2"></span>
+                  OAuth2, JWT y roles avanzados
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mr-2"></span>
+                  Protección contra CSRF y XSS
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mr-2"></span>
+                  Firewall y limitación de peticiones
+                </li>
+              </ul>
             </div>
             
-            <div className="bg-amber-900/40 backdrop-blur-sm rounded-2xl p-6 border border-amber-500/30">
-              <div className="flex items-start">
-                <div className="h-10 w-10 rounded-lg bg-neptuno-blue/20 flex items-center justify-center mr-4 shrink-0">
-                  <Server size={20} className="text-neptuno-blue" />
+            <div className="bg-gradient-to-br from-teal-900/70 to-teal-800/50 rounded-xl shadow-lg overflow-hidden border border-teal-700/50 p-6">
+              <div className="flex items-center mb-4">
+                <div className="h-10 w-10 rounded-lg bg-teal-800/50 flex items-center justify-center">
+                  <Scale className="text-teal-400" size={24} />
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Preparado para escalar</h3>
-                  <p className="text-gray-300 mb-3">
-                    Balanceo de carga con Nginx, replicación de servicios y configuración Docker optimizada.
-                  </p>
-                  <div className="text-sm">
-                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 mr-2 rounded-md">Docker</span>
-                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 mr-2 rounded-md">Nginx</span>
-                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 mr-2 rounded-md">Gunicorn</span>
-                    <span className="badge bg-neptuno-blue/20 text-neptuno-blue px-2 py-1 rounded-md">Réplicas</span>
-                  </div>
-                </div>
+                <h3 className="text-lg font-bold ml-3">Escalabilidad</h3>
               </div>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-teal-400 mr-2"></span>
+                  Balanceo de carga automático
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-teal-400 mr-2"></span>
+                  Réplicas de DB para alta disponibilidad
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-teal-400 mr-2"></span>
+                  Escalado horizontal de contenedores
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-teal-400 mr-2"></span>
+                  Caché en múltiples niveles
+                </li>
+              </ul>
             </div>
             
-            <div className="flex">
-              <Button className="ml-auto" variant="outline">
-                <span>Ver arquitectura completa</span>
-                <ArrowRight size={16} className="ml-2" />
-              </Button>
+            <div className="bg-gradient-to-br from-amber-900/70 to-amber-800/50 rounded-xl shadow-lg overflow-hidden border border-amber-700/50 p-6">
+              <div className="flex items-center mb-4">
+                <div className="h-10 w-10 rounded-lg bg-amber-800/50 flex items-center justify-center">
+                  <Cpu className="text-amber-400" size={24} />
+                </div>
+                <h3 className="text-lg font-bold ml-3">DevOps Ready</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 mr-2"></span>
+                  Logs centralizados y rotativos
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 mr-2"></span>
+                  Monitorización y métricas
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 mr-2"></span>
+                  Backup automático cada 6h
+                </li>
+                <li className="flex items-center">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 mr-2"></span>
+                  CI/CD compatible con GitHub Actions
+                </li>
+              </ul>
             </div>
           </div>
         </div>

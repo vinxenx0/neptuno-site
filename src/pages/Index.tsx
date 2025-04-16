@@ -19,12 +19,12 @@ const Index = () => {
       <Navbar />
       <Hero />
       <Features />
-      <DashboardInfo />
       <ProductionReady />
+      <DashboardInfo />
+      <SdkSection />
       <ApiExplorer />
       <UseCases />
       <GamificationDemo />
-      <SdkSection />
       <Pricing />
       <Cta />
       <Footer />
