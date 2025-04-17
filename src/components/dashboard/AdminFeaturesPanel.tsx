@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Switch } from '@/components/ui/sheet';
+import { Switch } from '@/components/ui/switch';
 
 const AdminFeaturesPanel: React.FC = () => {
   const features = [

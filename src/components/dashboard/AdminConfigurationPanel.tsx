@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/sheet';
+import { Switch } from '@/components/ui/switch';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
 const AdminConfigurationPanel: React.FC = () => {

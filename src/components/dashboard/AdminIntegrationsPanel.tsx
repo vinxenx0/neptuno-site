@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Switch } from '@/components/ui/sheet';
+import { Switch } from '@/components/ui/switch';
 import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
