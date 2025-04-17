@@ -5,10 +5,12 @@ import { Menu, X, Trophy, CreditCard, Tag, Award, Settings, User, Mail, Heart } 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -51,7 +53,10 @@ const Navbar: React.FC = () => {
               
               {/* Credits */}
               <div className="relative">
-                <CreditCard className="h-5 w-5 text-gray-600 hover:text-neptuno-blue transition-colors cursor-pointer" />
+                <CreditCard 
+                  className="h-5 w-5 text-gray-600 hover:text-neptuno-blue transition-colors cursor-pointer"
+                  onClick={() => navigate('/user-dashboard')}
+                />
                 <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-yellow-400 text-neptuno-navy rounded-full text-xs font-bold">
                   1k
                 </span>
@@ -83,12 +88,18 @@ const Navbar: React.FC = () => {
               
               {/* Settings (admin only) */}
               <div className="relative">
-                <Settings className="h-5 w-5 text-gray-600 hover:text-neptuno-blue transition-colors cursor-pointer" />
+                <Settings 
+                  className="h-5 w-5 text-gray-600 hover:text-neptuno-blue transition-colors cursor-pointer" 
+                  onClick={() => navigate('/admin-dashboard')}
+                />
               </div>
               
               {/* Avatar */}
               <div className="relative">
-                <Avatar className="h-8 w-8 cursor-pointer border-2 border-neptuno-blue">
+                <Avatar 
+                  className="h-8 w-8 cursor-pointer border-2 border-neptuno-blue"
+                  onClick={() => navigate('/user-dashboard')}
+                >
                   <AvatarFallback className="bg-neptuno-blue text-white">A</AvatarFallback>
                 </Avatar>
               </div>
@@ -113,7 +124,10 @@ const Navbar: React.FC = () => {
               
               {/* Admin only */}
               <div className="relative">
-                <Settings className="h-5 w-5 text-gray-600" />
+                <Settings 
+                  className="h-5 w-5 text-gray-600"
+                  onClick={() => navigate('/admin-dashboard')}
+                />
               </div>
               
               <button
@@ -145,7 +159,10 @@ const Navbar: React.FC = () => {
           <div className="grid grid-cols-5 gap-2">
             <div className="flex flex-col items-center">
               <div className="relative">
-                <CreditCard className="h-5 w-5 text-gray-600" />
+                <CreditCard 
+                  className="h-5 w-5 text-gray-600"
+                  onClick={() => navigate('/user-dashboard')}
+                />
                 <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-yellow-400 text-neptuno-navy rounded-full text-xs font-bold">
                   1k
                 </span>
@@ -164,7 +181,10 @@ const Navbar: React.FC = () => {
             </div>
             
             <div className="flex flex-col items-center">
-              <Avatar className="h-7 w-7 border border-neptuno-blue">
+              <Avatar 
+                className="h-7 w-7 border border-neptuno-blue"
+                onClick={() => navigate('/user-dashboard')}
+              >
                 <AvatarFallback className="bg-neptuno-blue text-white text-xs">A</AvatarFallback>
               </Avatar>
               <span className="text-xs mt-1">Perfil</span>
