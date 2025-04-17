@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Link, useNavigate } from 'react-router-dom';
+import { MegaMenu } from './MegaMenu';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,12 +26,9 @@ const Navbar: React.FC = () => {
               </Link>
             </div>
             
-            {/* Desktop Navigation - Center */}
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-neptuno-blue transition-colors">Producto</a>
-              <a href="#use-cases" className="text-gray-600 hover:text-neptuno-blue transition-colors">Usos</a>
-              <a href="#sdk" className="text-gray-600 hover:text-neptuno-blue transition-colors">SDK</a>
-              <a href="#pricing" className="text-gray-600 hover:text-neptuno-blue transition-colors">Corporate</a>
+            {/* Desktop Navigation with MegaMenu - Center */}
+            <div className="hidden md:flex items-center justify-center flex-1">
+              <MegaMenu />
             </div>
             
             {/* Desktop Notification Icons - Right side */}
