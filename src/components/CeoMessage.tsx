@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Github, Linkedin } from 'lucide-react';
 
 const CeoMessage: React.FC = () => {
   return (
@@ -48,10 +48,18 @@ const CeoMessage: React.FC = () => {
                 Neptuno nació de esa frustración y de la firme creencia de que es posible lanzar ideas al mercado rápidamente sin comprometer la estructura técnica.
               </p>
               
-              <div className="pt-4">
+              <div className="pt-4 flex items-center space-x-4">
                 <Button className="bg-neptuno-blue hover:bg-blue-600">
                   Nuestra historia completa <ChevronRight size={16} className="ml-1" />
                 </Button>
+                
+                <a href="https://github.com/neptuno" className="text-white hover:text-neptuno-blue transition-colors" aria-label="GitHub">
+                  <Github size={24} />
+                </a>
+                
+                <a href="https://linkedin.com/company/neptuno" className="text-white hover:text-neptuno-blue transition-colors" aria-label="LinkedIn">
+                  <Linkedin size={24} />
+                </a>
               </div>
             </div>
           </div>

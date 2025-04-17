@@ -13,22 +13,27 @@ import ProductionReady from '@/components/ProductionReady';
 import SdkSection from '@/components/SdkSection';
 import DashboardInfoWrapper from '@/components/DashboardInfoWrapper';
 import CeoMessage from '@/components/CeoMessage';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <Hero />
-      <Features />
-      <ProductionReady />
-      <DashboardInfoWrapper />
-      <SdkSection />
-      <ApiExplorer />
-      <UseCases />
-      <GamificationDemo />
-      <CeoMessage />
-      <Pricing />
-      <Cta />
+      <main className={`flex-grow ${isMobile ? 'pb-20' : ''}`}>
+        <Hero />
+        <Features />
+        <ProductionReady />
+        <DashboardInfoWrapper />
+        <SdkSection />
+        <ApiExplorer />
+        <UseCases />
+        <GamificationDemo />
+        <CeoMessage />
+        <Pricing />
+        <Cta />
+      </main>
       <Footer />
     </div>
   );
