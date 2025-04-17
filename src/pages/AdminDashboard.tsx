@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import AdminDashboardHeader from '@/components/dashboard/AdminDashboardHeader';
-import AdminCardSummary from '@/components/dashboard/AdminCardSummary';
-import AdminTabsNavigation from '@/components/dashboard/AdminTabsNavigation';
+import { useNavigate } from 'react-router-dom';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import DashboardSummaryCard from '@/components/dashboard/DashboardSummaryCard';
+import DashboardTabs from '@/components/dashboard/DashboardTabs';
 import AdminConfigurationPanel from '@/components/dashboard/AdminConfigurationPanel';
 import AdminPaymentPanel from '@/components/dashboard/AdminPaymentPanel';
 import AdminCouponsPanel from '@/components/dashboard/AdminCouponsPanel';
@@ -14,14 +15,15 @@ import { Settings, Globe, Link, Trophy, Tag, CreditCard, Layers } from 'lucide-r
 
 const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('configuraciones');
+  const navigate = useNavigate();
 
-  // Summary cards data
+  // Summary cards data with modern gradients
   const summaryCards = [
-    { id: 'configuraciones', title: 'CONFIGURACIONES', value: '33', icon: <Settings className="text-white" />, color: 'from-indigo-600 to-purple-600' },
-    { id: 'origenes', title: 'ORÍGENES PERMITIDOS', value: '3', icon: <Globe className="text-white" />, color: 'from-blue-600 to-indigo-500' },
-    { id: 'integraciones', title: 'INTEGRACIONES', value: '3', icon: <Link className="text-white" />, color: 'from-blue-500 to-indigo-500' },
-    { id: 'gamificacion', title: 'GAMIFICACIÓN', value: '4', icon: <Trophy className="text-white" />, color: 'from-violet-500 to-purple-600' },
-    { id: 'pagos', title: 'PAGOS', value: '5', icon: <CreditCard className="text-white" />, color: 'from-blue-500 to-indigo-500' },
+    { id: 'configuraciones', title: 'CONFIGURACIONES', value: '33', icon: <Settings className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-indigo-600 to-purple-600' },
+    { id: 'origenes', title: 'ORÍGENES PERMITIDOS', value: '3', icon: <Globe className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-blue-600 to-indigo-500' },
+    { id: 'integraciones', title: 'INTEGRACIONES', value: '3', icon: <Link className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-cyan-500 to-blue-500' },
+    { id: 'gamificacion', title: 'GAMIFICACIÓN', value: '4', icon: <Trophy className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-violet-500 to-purple-600' },
+    { id: 'pagos', title: 'PAGOS', value: '5', icon: <CreditCard className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-emerald-500 to-teal-500' },
   ];
 
   // Navigation tabs
@@ -51,46 +53,47 @@ const AdminDashboard: React.FC = () => {
       case 'pagos':
         return <AdminPaymentPanel />;
       case 'configuraciones':
-        return <AdminConfigurationPanel />;
       default:
         return <AdminConfigurationPanel />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <AdminDashboardHeader />
-      
-      <main className="container mx-auto px-4 py-8">
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-          {summaryCards.map((card) => (
-            <AdminCardSummary 
-              key={card.id}
-              title={card.title}
-              value={card.value}
-              icon={card.icon}
-              colorClass={card.color}
-              onClick={() => setActiveTab(card.id.toLowerCase())}
-            />
-          ))}
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="bg-white rounded-lg shadow-sm mb-6">
-          <AdminTabsNavigation 
-            tabs={navigationTabs} 
-            activeTab={activeTab} 
-            onTabChange={setActiveTab} 
+    <DashboardLayout
+      title="Panel de Administración"
+      subtitle="Gestiona la configuración del sistema"
+      avatarText="A"
+      avatarColor="bg-red-500"
+      isAdmin={true}
+    >
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        {summaryCards.map((card) => (
+          <DashboardSummaryCard 
+            key={card.id}
+            title={card.title}
+            value={card.value}
+            icon={card.icon}
+            gradient={card.gradient}
+            onClick={() => setActiveTab(card.id)}
           />
-        </div>
+        ))}
+      </div>
 
-        {/* Content Panel */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          {renderActivePanel()}
-        </div>
-      </main>
-    </div>
+      {/* Navigation Tabs */}
+      <div className="bg-white rounded-lg shadow-sm mb-6 overflow-hidden">
+        <DashboardTabs 
+          tabs={navigationTabs} 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab} 
+        />
+      </div>
+
+      {/* Content Panel */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        {renderActivePanel()}
+      </div>
+    </DashboardLayout>
   );
 };
 

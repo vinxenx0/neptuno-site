@@ -14,15 +14,15 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo - Left side */}
             <div className="flex items-center">
-              <a href="#" className="flex items-center">
+              <Link to="/" className="flex items-center">
                 <div className="h-8 w-8 bg-gradient-to-br from-neptuno-blue to-neptuno-teal rounded-md flex items-center justify-center text-white font-bold">N</div>
                 <span className="ml-2 text-xl font-bold text-neptuno-navy">Neptuno</span>
-              </a>
+              </Link>
             </div>
             
             {/* Desktop Navigation - Center */}
@@ -100,7 +100,7 @@ const Navbar: React.FC = () => {
                   className="h-8 w-8 cursor-pointer border-2 border-neptuno-blue"
                   onClick={() => navigate('/user-dashboard')}
                 >
-                  <AvatarFallback className="bg-neptuno-blue text-white">A</AvatarFallback>
+                  <AvatarFallback className="bg-neptuno-blue text-white">U</AvatarFallback>
                 </Avatar>
               </div>
             </div>
@@ -148,6 +148,19 @@ const Navbar: React.FC = () => {
               <a href="#use-cases" className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-neptuno-blue hover:bg-gray-50">Usos</a>
               <a href="#sdk" className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-neptuno-blue hover:bg-gray-50">SDK</a>
               <a href="#pricing" className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-neptuno-blue hover:bg-gray-50">Corporate</a>
+              <div className="border-t border-gray-200 my-2"></div>
+              <Link 
+                to="/user-dashboard" 
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-neptuno-blue hover:bg-gray-50"
+              >
+                Mi Perfil
+              </Link>
+              <Link 
+                to="/admin-dashboard" 
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-neptuno-blue hover:bg-gray-50"
+              >
+                Administración
+              </Link>
             </div>
           </div>
         )}
@@ -180,12 +193,12 @@ const Navbar: React.FC = () => {
               <span className="text-xs mt-1">Cupones</span>
             </div>
             
-            <div className="flex flex-col items-center">
-              <Avatar 
-                className="h-7 w-7 border border-neptuno-blue"
-                onClick={() => navigate('/user-dashboard')}
-              >
-                <AvatarFallback className="bg-neptuno-blue text-white text-xs">A</AvatarFallback>
+            <div 
+              className="flex flex-col items-center"
+              onClick={() => navigate('/user-dashboard')}
+            >
+              <Avatar className="h-7 w-7 border border-neptuno-blue">
+                <AvatarFallback className="bg-neptuno-blue text-white text-xs">U</AvatarFallback>
               </Avatar>
               <span className="text-xs mt-1">Perfil</span>
             </div>
