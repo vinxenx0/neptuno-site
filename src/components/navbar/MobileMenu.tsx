@@ -1,12 +1,14 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface MobileMenuProps {
   isOpen: boolean;
 }
 
 export const MobileMenu = ({ isOpen }: MobileMenuProps) => {
+  const navigate = useNavigate();
+  
   if (!isOpen) return null;
 
   return (

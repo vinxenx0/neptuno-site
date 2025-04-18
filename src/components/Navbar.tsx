@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, Mail, Heart, Settings } from 'lucide-react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MegaMenu } from './MegaMenu';
 import { DesktopNotifications } from './navbar/DesktopNotifications';
@@ -12,6 +11,7 @@ import { MobileBottomBar } from './navbar/MobileBottomBar';
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -36,29 +36,7 @@ const Navbar: React.FC = () => {
             
             {/* Mobile menu button and essential icons */}
             <div className="md:hidden flex items-center space-x-4">
-              {/* Only show Messages and Heart on mobile top bar */}
-              <div className="relative">
-                <Mail className="h-5 w-5 text-gray-600" />
-                <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-purple-500 text-white rounded-full text-xs font-bold">
-                  3
-                </span>
-              </div>
-              
-              <div className="relative">
-                <Heart className="h-5 w-5 text-gray-600" />
-                <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-pink-500 text-white rounded-full text-xs font-bold">
-                  5
-                </span>
-              </div>
-              
-              {/* Admin only */}
-              <div className="relative">
-                <Settings 
-                  className="h-5 w-5 text-gray-600"
-                  onClick={() => navigate('/admin-dashboard')}
-                />
-              </div>
-              
+              {/* Mobile nav buttons */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-gray-600 hover:text-neptuno-blue"

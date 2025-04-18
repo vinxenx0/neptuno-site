@@ -1,6 +1,7 @@
 
 import React, { ReactNode } from 'react';
 import Navbar from '../Navbar';
+import Footer from '../Footer';
 import { Card } from '../ui/card';
 import { cn } from '@/lib/utils';
 
@@ -22,7 +23,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children
 }) => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
       
       <header className="pt-24 pb-6 px-4 bg-white border-b">
@@ -43,9 +44,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </header>
       
-      <main className="container mx-auto max-w-7xl px-4 py-6">
+      <main className="container mx-auto max-w-7xl px-4 py-6 flex-grow">
         {children}
       </main>
+
+      <Footer />
     </div>
   );
 };

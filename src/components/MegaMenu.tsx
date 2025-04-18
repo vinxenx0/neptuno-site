@@ -29,6 +29,9 @@ import {
   Award,
   CreditCard,
   AlignLeft,
+  Lightbulb,
+  Star,
+  TrendingUp,
 } from "lucide-react";
 
 const ListItem = React.forwardRef<
@@ -71,7 +74,7 @@ const IconListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "flex select-none items-start gap-3 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "flex select-none items-start gap-3 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-neptuno-blue/10 hover:text-neptuno-blue focus:bg-accent focus:text-accent-foreground",
             className
           )}
           {...props}
@@ -81,7 +84,7 @@ const IconListItem = React.forwardRef<
           </div>
           <div>
             <div className="text-sm font-medium leading-none mb-1">{title}</div>
-            <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+            <p className="line-clamp-2 text-xs leading-snug text-gray-600">
               {description}
             </p>
           </div>
@@ -92,16 +95,33 @@ const IconListItem = React.forwardRef<
 });
 IconListItem.displayName = "IconListItem";
 
+const FeaturedItem = ({ title, description, image, href }: { title: string; description: string; image: string; href: string }) => {
+  return (
+    <a 
+      href={href}
+      className="block bg-gradient-to-tr from-neptuno-blue/5 to-neptuno-blue/10 rounded-md overflow-hidden hover:shadow-md transition-shadow"
+    >
+      <div className="aspect-[16/9] overflow-hidden">
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+      </div>
+      <div className="p-3">
+        <h4 className="text-sm font-medium text-neptuno-blue">{title}</h4>
+        <p className="text-xs text-gray-600 mt-1">{description}</p>
+      </div>
+    </a>
+  );
+};
+
 export function MegaMenu() {
   return (
     <NavigationMenu className="hidden md:flex">
       <NavigationMenuList>
         {/* Producto Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Producto</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">Producto</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid w-[600px] grid-cols-2 gap-3 p-4">
-              <div className="col-span-2">
+            <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
+              <div className="col-span-3">
                 <h4 className="text-sm font-medium leading-none mb-3 text-muted-foreground">
                   Características Principales
                 </h4>
@@ -150,7 +170,15 @@ export function MegaMenu() {
                   />
                 </ul>
               </div>
-              <div className="col-span-2 mt-3 border-t pt-3">
+              <div className="col-span-1">
+                <FeaturedItem 
+                  title="Descubre nuestro sistema de análisis avanzado"
+                  description="Obtén insights profundos sobre el rendimiento de tu aplicación"
+                  image="/placeholder.svg"
+                  href="#dashboard-info"
+                />
+              </div>
+              <div className="col-span-3 mt-3 border-t pt-3">
                 <a 
                   href="#features"
                   className="flex items-center text-neptuno-blue text-sm hover:underline"
@@ -164,10 +192,10 @@ export function MegaMenu() {
 
         {/* Usos Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Usos</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">Usos</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid w-[600px] grid-cols-2 gap-3 p-4">
-              <div className="col-span-2">
+            <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
+              <div className="col-span-3">
                 <h4 className="text-sm font-medium leading-none mb-3 text-muted-foreground">
                   Casos de Uso
                 </h4>
@@ -204,7 +232,15 @@ export function MegaMenu() {
                   />
                 </ul>
               </div>
-              <div className="col-span-2 mt-3 border-t pt-3">
+              <div className="col-span-1">
+                <FeaturedItem 
+                  title="Caso de éxito: +200% de engagement"
+                  description="Descubre cómo nuestros clientes aumentaron la participación"
+                  image="/placeholder.svg"
+                  href="#use-cases"
+                />
+              </div>
+              <div className="col-span-3 mt-3 border-t pt-3">
                 <a 
                   href="#use-cases"
                   className="flex items-center text-neptuno-blue text-sm hover:underline"
@@ -218,10 +254,10 @@ export function MegaMenu() {
 
         {/* SDK Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger>SDK</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">SDK</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid w-[600px] grid-cols-2 gap-3 p-4">
-              <div className="col-span-2">
+            <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
+              <div className="col-span-3">
                 <h4 className="text-sm font-medium leading-none mb-3 text-muted-foreground">
                   Herramientas para Desarrolladores
                 </h4>
@@ -258,7 +294,15 @@ export function MegaMenu() {
                   />
                 </ul>
               </div>
-              <div className="col-span-2 mt-3 border-t pt-3">
+              <div className="col-span-1">
+                <FeaturedItem 
+                  title="Nuevo: SDK en tiempo real"
+                  description="Integra funcionalidades de tiempo real con solo unas líneas de código"
+                  image="/placeholder.svg"
+                  href="#sdk"
+                />
+              </div>
+              <div className="col-span-3 mt-3 border-t pt-3">
                 <a 
                   href="#sdk"
                   className="flex items-center text-neptuno-blue text-sm hover:underline"
@@ -272,10 +316,10 @@ export function MegaMenu() {
 
         {/* Corporate Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Corporate</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">Corporate</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid w-[600px] grid-cols-2 gap-3 p-4">
-              <div className="col-span-2">
+            <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
+              <div className="col-span-3">
                 <h4 className="text-sm font-medium leading-none mb-3 text-muted-foreground">
                   Información Corporativa
                 </h4>
@@ -312,7 +356,15 @@ export function MegaMenu() {
                   />
                 </ul>
               </div>
-              <div className="col-span-2 mt-3 border-t pt-3">
+              <div className="col-span-1">
+                <FeaturedItem 
+                  title="Neptuno en números"
+                  description="Crecimiento, impacto y resultados de nuestra plataforma"
+                  image="/placeholder.svg"
+                  href="#pricing"
+                />
+              </div>
+              <div className="col-span-3 mt-3 border-t pt-3">
                 <a 
                   href="#pricing"
                   className="flex items-center text-neptuno-blue text-sm hover:underline"
