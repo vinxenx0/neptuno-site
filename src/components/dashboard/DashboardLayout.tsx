@@ -28,15 +28,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       
       <header className="pt-24 pb-6 px-4 bg-white border-b">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 {title}
               </h1>
               <p className="text-gray-600 mt-1">{subtitle}</p>
             </div>
             
-            <div className={`${avatarColor} text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold shadow-md`}>
+            <div className={`${avatarColor} text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg relative`}>
               {avatarText}
               <span className="absolute bottom-1 right-1 bg-green-500 h-3 w-3 rounded-full border-2 border-white"></span>
             </div>
@@ -44,7 +44,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </header>
       
-      <main className="container mx-auto max-w-7xl px-4 py-6 flex-grow">
+      <main className="container mx-auto max-w-7xl px-4 py-8 flex-grow">
         {children}
       </main>
 

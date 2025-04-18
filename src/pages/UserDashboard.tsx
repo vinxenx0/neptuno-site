@@ -24,21 +24,21 @@ const UserDashboard: React.FC = () => {
       title: 'TUS CRÉDITOS', 
       value: '1017', 
       icon: <DollarSign className="text-white" size={24} />, 
-      gradient: 'bg-gradient-to-r from-blue-600 to-cyan-500' 
+      gradient: 'bg-gradient-to-r from-purple-600 to-indigo-600' 
     },
     { 
       id: 'transacciones', 
       title: 'TRANSACCIONES', 
       value: '4', 
       icon: <History className="text-white" size={24} />, 
-      gradient: 'bg-gradient-to-r from-violet-500 to-fuchsia-500' 
+      gradient: 'bg-gradient-to-r from-indigo-500 to-blue-500' 
     },
     { 
       id: 'metodos_pago', 
       title: 'MÉTODOS DE PAGO', 
       value: '1', 
       icon: <CreditCard className="text-white" size={24} />, 
-      gradient: 'bg-gradient-to-r from-rose-500 to-pink-500' 
+      gradient: 'bg-gradient-to-r from-blue-500 to-cyan-500' 
     },
   ];
 
@@ -80,11 +80,11 @@ const UserDashboard: React.FC = () => {
       title="Panel de Usuario"
       subtitle="Gestiona tu cuenta y configuración"
       avatarText="U"
-      avatarColor="bg-blue-500"
+      avatarColor="bg-purple-500"
       isAdmin={false}
     >
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {summaryCards.map((card) => (
           <DashboardSummaryCard 
             key={card.id}
@@ -98,7 +98,7 @@ const UserDashboard: React.FC = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white rounded-lg shadow-sm mb-6 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <DashboardTabs 
           tabs={navigationTabs} 
           activeTab={activeTab} 
@@ -107,7 +107,7 @@ const UserDashboard: React.FC = () => {
       </div>
 
       {/* Content Panel */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
         {renderActivePanel()}
       </div>
     </DashboardLayout>

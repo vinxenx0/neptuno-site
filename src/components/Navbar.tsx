@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Mail, Heart, Settings } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MegaMenu } from './MegaMenu';
 import { DesktopNotifications } from './navbar/DesktopNotifications';
@@ -21,8 +21,8 @@ const Navbar: React.FC = () => {
             {/* Logo - Left side */}
             <div className="flex items-center">
               <Link to="/" className="flex items-center">
-                <div className="h-8 w-8 bg-gradient-to-br from-neptuno-blue to-neptuno-teal rounded-md flex items-center justify-center text-white font-bold">N</div>
-                <span className="ml-2 text-xl font-bold text-neptuno-navy">Neptuno</span>
+                <div className="h-8 w-8 bg-gradient-to-br from-purple-600 to-indigo-500 rounded-md flex items-center justify-center text-white font-bold">N</div>
+                <span className="ml-2 text-xl font-bold text-gray-800">Neptuno</span>
               </Link>
             </div>
             
@@ -32,14 +32,21 @@ const Navbar: React.FC = () => {
             </div>
             
             {/* Desktop Notification Icons - Right side */}
-            <DesktopNotifications />
+            <div className="hidden md:block">
+              <DesktopNotifications />
+            </div>
             
-            {/* Mobile menu button and essential icons */}
+            {/* Mobile header icons */}
             <div className="md:hidden flex items-center space-x-4">
-              {/* Mobile nav buttons */}
+              <Heart className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
+              <Mail className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
+              <Settings 
+                className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" 
+                onClick={() => navigate('/admin-dashboard')}
+              />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-600 hover:text-neptuno-blue"
+                className="text-gray-600 hover:text-purple-600"
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
