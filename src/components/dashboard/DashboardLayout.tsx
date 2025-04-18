@@ -1,5 +1,6 @@
 
 import React, { ReactNode } from 'react';
+import { Link } from 'react-router-dom'; // Add this import
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import { Card } from '../ui/card';
