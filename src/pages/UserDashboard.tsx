@@ -11,7 +11,8 @@ import UserTransactionsPanel from '@/components/dashboard/UserTransactionsPanel'
 import UserPaymentMethodsPanel from '@/components/dashboard/UserPaymentMethodsPanel';
 import UserBuyCreditsPanel from '@/components/dashboard/UserBuyCreditsPanel';
 import UserIntegrationsPanel from '@/components/dashboard/UserIntegrationsPanel';
-import { DollarSign, History, CreditCard, User, Shield, Tag, Link } from 'lucide-react';
+import { DollarSign, History, CreditCard, User, Shield, Tag, Link as LinkIcon } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 
 const UserDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('perfil');
@@ -24,14 +25,14 @@ const UserDashboard: React.FC = () => {
       title: 'TUS CRÉDITOS', 
       value: '1017', 
       icon: <DollarSign className="text-white" size={24} />, 
-      gradient: 'bg-gradient-to-r from-purple-600 to-indigo-600' 
+      gradient: 'bg-gradient-to-r from-violet-500 to-purple-600' 
     },
     { 
       id: 'transacciones', 
       title: 'TRANSACCIONES', 
       value: '4', 
       icon: <History className="text-white" size={24} />, 
-      gradient: 'bg-gradient-to-r from-indigo-500 to-blue-500' 
+      gradient: 'bg-gradient-to-r from-indigo-500 to-blue-600' 
     },
     { 
       id: 'metodos_pago', 
@@ -50,7 +51,7 @@ const UserDashboard: React.FC = () => {
     { id: 'transacciones', label: 'TRANSACCIONES', icon: <History size={18} /> },
     { id: 'metodos_pago', label: 'MÉTODOS DE PAGO', icon: <CreditCard size={18} /> },
     { id: 'comprar_creditos', label: 'COMPRAR CRÉDITOS', icon: <DollarSign size={18} /> },
-    { id: 'integraciones', label: 'INTEGRACIONES', icon: <Link size={18} /> },
+    { id: 'integraciones', label: 'INTEGRACIONES', icon: <LinkIcon size={18} /> },
   ];
 
   // Render the appropriate panel based on active tab
@@ -80,7 +81,7 @@ const UserDashboard: React.FC = () => {
       title="Panel de Usuario"
       subtitle="Gestiona tu cuenta y configuración"
       avatarText="U"
-      avatarColor="bg-purple-500"
+      avatarColor="bg-purple-600"
       isAdmin={false}
     >
       {/* Summary Cards */}
@@ -98,18 +99,18 @@ const UserDashboard: React.FC = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+      <Card className="bg-white rounded-lg shadow-sm overflow-hidden mb-6 border-none">
         <DashboardTabs 
           tabs={navigationTabs} 
           activeTab={activeTab} 
           onTabChange={setActiveTab} 
         />
-      </div>
+      </Card>
 
       {/* Content Panel */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+      <Card className="bg-white rounded-lg shadow-sm p-6 border-none">
         {renderActivePanel()}
-      </div>
+      </Card>
     </DashboardLayout>
   );
 };

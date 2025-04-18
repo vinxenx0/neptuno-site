@@ -13,6 +13,10 @@ const Navbar: React.FC = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
 
+  const handleCloseMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -55,7 +59,7 @@ const Navbar: React.FC = () => {
         </div>
         
         {/* Mobile menu */}
-        <MobileMenu isOpen={isMenuOpen} />
+        <MobileMenu isOpen={isMenuOpen} onClose={handleCloseMenu} />
       </nav>
       
       {/* Mobile fixed bottom bar with notifications */}

@@ -12,6 +12,7 @@ import AdminIntegrationsPanel from '@/components/dashboard/AdminIntegrationsPane
 import AdminOriginsPanel from '@/components/dashboard/AdminOriginsPanel';
 import AdminFeaturesPanel from '@/components/dashboard/AdminFeaturesPanel';
 import { Settings, Globe, Link, Trophy, Tag, CreditCard, Layers } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 
 const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('configuraciones');
@@ -19,8 +20,8 @@ const AdminDashboard: React.FC = () => {
 
   // Summary cards data with modern gradients
   const summaryCards = [
-    { id: 'configuraciones', title: 'CONFIGURACIONES', value: '33', icon: <Settings className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-purple-700 to-indigo-600' },
-    { id: 'origenes', title: 'ORÍGENES PERMITIDOS', value: '3', icon: <Globe className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-indigo-600 to-blue-600' },
+    { id: 'configuraciones', title: 'CONFIGURACIONES', value: '33', icon: <Settings className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-violet-600 to-purple-700' },
+    { id: 'origenes', title: 'ORÍGENES', value: '3', icon: <Globe className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-indigo-600 to-blue-600' },
     { id: 'integraciones', title: 'INTEGRACIONES', value: '3', icon: <Link className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-blue-600 to-cyan-500' },
     { id: 'gamificacion', title: 'GAMIFICACIÓN', value: '4', icon: <Trophy className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-cyan-500 to-teal-500' },
     { id: 'pagos', title: 'PAGOS', value: '5', icon: <CreditCard className="text-white" size={24} />, gradient: 'bg-gradient-to-r from-teal-500 to-emerald-500' },
@@ -63,11 +64,11 @@ const AdminDashboard: React.FC = () => {
       title="Panel de Administración"
       subtitle="Gestiona la configuración del sistema"
       avatarText="A"
-      avatarColor="bg-purple-700"
+      avatarColor="bg-purple-800"
       isAdmin={true}
     >
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
         {summaryCards.map((card) => (
           <DashboardSummaryCard 
             key={card.id}
@@ -81,18 +82,18 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+      <Card className="bg-white rounded-lg shadow-sm overflow-hidden mb-6 border-none">
         <DashboardTabs 
           tabs={navigationTabs} 
           activeTab={activeTab} 
           onTabChange={setActiveTab} 
         />
-      </div>
+      </Card>
 
       {/* Content Panel */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+      <Card className="bg-white rounded-lg shadow-sm p-6 border-none">
         {renderActivePanel()}
-      </div>
+      </Card>
     </DashboardLayout>
   );
 };
