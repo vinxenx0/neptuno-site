@@ -32,6 +32,11 @@ import {
   Lightbulb,
   Star,
   TrendingUp,
+  Globe,
+  Headphones,
+  MessageSquare,
+  ChevronRight,
+  LayoutGrid
 } from "lucide-react";
 
 const ListItem = React.forwardRef<
@@ -118,7 +123,7 @@ export function MegaMenu() {
       <NavigationMenuList>
         {/* Producto Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">Producto</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">Producto</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">
@@ -192,7 +197,7 @@ export function MegaMenu() {
 
         {/* Usos Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">Usos</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">Usos</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">
@@ -214,6 +219,12 @@ export function MegaMenu() {
                     title="Landing Pages Monetizadas" 
                     description="Crea páginas con autenticación, pagos y análisis incluidos." 
                   />
+                  <IconListItem 
+                    href="#use-cases" 
+                    icon={<Globe size={20} />} 
+                    title="Experiencias Globales" 
+                    description="Crea aplicaciones multi-idioma con localización automática." 
+                  />
                 </ul>
               </div>
               <div className="col-span-1">
@@ -229,6 +240,12 @@ export function MegaMenu() {
                     icon={<Award size={20} />} 
                     title="Gamificación Empresarial" 
                     description="Implementa estrategias de gamificación para aumentar la retención." 
+                  />
+                  <IconListItem 
+                    href="#use-cases" 
+                    icon={<MessageSquare size={20} />} 
+                    title="ChatBots Inteligentes" 
+                    description="Integra asistentes IA para mejorar la experiencia del usuario." 
                   />
                 </ul>
               </div>
@@ -254,7 +271,7 @@ export function MegaMenu() {
 
         {/* SDK Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">SDK</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">SDK</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">
@@ -276,6 +293,12 @@ export function MegaMenu() {
                     title="Documentación Completa" 
                     description="Guías paso a paso y referencia de API detallada." 
                   />
+                  <IconListItem 
+                    href="#sdk" 
+                    icon={<LayoutGrid size={20} />} 
+                    title="Componentes UI" 
+                    description="Biblioteca de componentes preconfigurados para cada plataforma." 
+                  />
                 </ul>
               </div>
               <div className="col-span-1">
@@ -291,6 +314,12 @@ export function MegaMenu() {
                     icon={<BookOpen size={20} />} 
                     title="Ejemplos y Plantillas" 
                     description="Código de ejemplo listo para implementar en tu proyecto." 
+                  />
+                  <IconListItem 
+                    href="#sdk" 
+                    icon={<Headphones size={20} />} 
+                    title="Soporte Técnico 24/7" 
+                    description="Asistencia especializada para desarrolladores con tiempo de respuesta garantizado." 
                   />
                 </ul>
               </div>
@@ -316,7 +345,7 @@ export function MegaMenu() {
 
         {/* Corporate Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-gray-50">Corporate</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">Corporate</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">
@@ -338,6 +367,12 @@ export function MegaMenu() {
                     title="Inversores" 
                     description="Descubre quiénes apoyan nuestra visión de futuro." 
                   />
+                  <IconListItem 
+                    href="#ceo-message" 
+                    icon={<ChevronRight size={20} />} 
+                    title="Sostenibilidad" 
+                    description="Nuestro compromiso con el medio ambiente y la responsabilidad social." 
+                  />
                 </ul>
               </div>
               <div className="col-span-1">
@@ -353,6 +388,12 @@ export function MegaMenu() {
                     icon={<AlignLeft size={20} />} 
                     title="Mensaje del CEO" 
                     description="La visión que impulsa nuestra innovación." 
+                  />
+                  <IconListItem 
+                    href="#ceo-message" 
+                    icon={<Lightbulb size={20} />} 
+                    title="Innovación Abierta" 
+                    description="Participa en nuestros programas de colaboración e investigación." 
                   />
                 </ul>
               </div>

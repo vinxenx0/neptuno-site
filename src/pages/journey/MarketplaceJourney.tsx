@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import JourneyLayout from '@/components/journey/JourneyLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -7,7 +6,7 @@ import ProgressBar from '@/components/journey/ProgressBar';
 import RewardCard from '@/components/journey/RewardCard';
 import Badge from '@/components/journey/Badge';
 import RewardPopup from '@/components/journey/RewardPopup';
-import { ShoppingBag, Gift, Star, Trophy, Plus, Minus } from 'lucide-react';
+import { ShoppingBag, Gift, Star, Trophy, Plus, Minus, CheckCircle } from 'lucide-react';
 
 // Product data
 const products = [
@@ -37,35 +36,35 @@ const products = [
     name: "Sartén de titanio",
     price: 59.99,
     category: "Cocina",
-    image: "https://images.unsplash.com/photo-1593642634627-6fdaf35340f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2358&q=80"
+    image: "https://images.unsplash.com/photo-1593642634627-6fdaf35340f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=2358&q=80"
   },
   {
     id: 5,
     name: "Mancuernas ajustables",
     price: 149.99,
     category: "Fitness",
-    image: "https://images.unsplash.com/photo-1581009137042-c552e485697a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80"
+    image: "https://images.unsplash.com/photo-1581009137042-c552e485697a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80"
   },
   {
     id: 6,
     name: "Teclado mecánico RGB",
     price: 99.99,
     category: "Gaming",
-    image: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2376&q=80"
+    image: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=2376&q=80"
   },
   {
     id: 7,
     name: "Esterilla de yoga",
     price: 29.99,
     category: "Fitness",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
   },
   {
     id: 8,
     name: "Ratón gaming inalámbrico",
     price: 69.99,
     category: "Gaming",
-    image: "https://images.unsplash.com/photo-1618499890638-3f0ee1f8c91b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2372&q=80"
+    image: "https://images.unsplash.com/photo-1618499890638-3f0ee1f8c91b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=2372&q=80"
   }
 ];
 

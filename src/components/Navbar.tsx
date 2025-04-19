@@ -42,8 +42,18 @@ const Navbar: React.FC = () => {
             
             {/* Mobile header icons */}
             <div className="md:hidden flex items-center space-x-4">
-              <Heart className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
-              <Mail className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
+              <div className="relative">
+                <Heart className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
+                <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-purple-500 text-white rounded-full text-xs font-bold">
+                  2
+                </span>
+              </div>
+              <div className="relative">
+                <Mail className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
+                <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-yellow-400 text-purple-800 rounded-full text-xs font-bold">
+                  3
+                </span>
+              </div>
               <Settings 
                 className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" 
                 onClick={() => navigate('/admin-dashboard')}

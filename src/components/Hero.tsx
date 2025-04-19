@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Code, Shield, Zap } from 'lucide-react';
+import SlotMachine from './SlotMachine';
 
 const Hero: React.FC = () => {
   return (
@@ -59,38 +60,7 @@ const Hero: React.FC = () => {
           </div>
           
           <div className="lg:w-1/2 animate-slide-in">
-            <div className="glass-card overflow-hidden">
-              <div className="bg-neptuno-navy text-white px-4 py-2 flex items-center space-x-2 text-sm">
-                <div className="flex space-x-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-                <span className="font-mono flex-1 text-center">deploy.neptuno.dev</span>
-              </div>
-              <div className="bg-[#1E293B] p-4 font-mono text-sm overflow-x-auto">
-                <pre className="text-gray-300">
-{`# Despliegue de Neptuno
-docker compose up -d
-
-# Inicializando contenedores...
-✓ Iniciando neptuno-proxy      (Nginx + SSL)
-✓ Iniciando neptuno-api        (FastAPI en puerto 8000)
-✓ Iniciando neptuno-dashboard  (Next.js en puerto 3000)
-✓ Iniciando neptuno-db         (PostgreSQL con réplica)
-✓ Iniciando neptuno-cache      (Redis en puerto 6379)
-✓ Iniciando neptuno-queue      (RabbitMQ en puerto 5672)
-
-# Servicios activos y escalables
-✓ API: https://api.neptuno.local (2 réplicas)
-✓ Dashboard: https://dashboard.neptuno.local
-✓ SSL: Certificados auto-renovables con Let's Encrypt
-✓ Logs: Centralizados con rotación automática
-✓ Backups: Configurados cada 6 horas
-
-Sistema listo para producción!`}</pre>
-              </div>
-            </div>
+            <SlotMachine />
           </div>
         </div>
       </div>

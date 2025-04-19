@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from './ui/card';
 import { Link } from 'react-router-dom';
-import { ArrowRight, UserRound, Users, ShoppingBag, Pizza, FormInput } from 'lucide-react';
+import { ArrowRight, UserRound, Users, ShoppingBag, Pizza, FormInput, Mail } from 'lucide-react';
 
 const JourneysSection: React.FC = () => {
   const journeys = [
@@ -40,6 +40,13 @@ const JourneysSection: React.FC = () => {
       description: "Captura leads de calidad con incentivos por paso completado",
       color: "bg-gradient-to-br from-cyan-600 to-blue-700",
       path: "/journey/contact-form"
+    },
+    {
+      icon: <Mail className="h-8 w-8 text-white" />,
+      title: "Suscripción a newsletter",
+      description: "Aumenta suscriptores con recompensas por interacción",
+      color: "bg-gradient-to-br from-violet-600 to-purple-700",
+      path: "/journey/newsletter"
     }
   ];
 
