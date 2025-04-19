@@ -13,6 +13,8 @@ import ProductionReady from '@/components/ProductionReady';
 import SdkSection from '@/components/SdkSection';
 import DashboardInfoWrapper from '@/components/DashboardInfoWrapper';
 import CeoMessage from '@/components/CeoMessage';
+import JourneysSection from '@/components/JourneysSection';
+import CodeReadySection from '@/components/CodeReadySection';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -26,10 +28,12 @@ const Index = () => {
         <Features />
         <ProductionReady />
         <DashboardInfoWrapper />
+        <GamificationDemo />
+        <JourneysSection />
         <SdkSection />
+        <CodeReadySection />
         <ApiExplorer />
         <UseCases />
-        <GamificationDemo />
         <CeoMessage />
         <Pricing />
         <Cta />

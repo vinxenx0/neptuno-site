@@ -9,6 +9,11 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
+import RegistrationJourney from "./pages/journey/RegistrationJourney";
+import CorporateCultureJourney from "./pages/journey/CorporateCultureJourney";
+import MarketplaceJourney from "./pages/journey/MarketplaceJourney";
+import PizzaJourney from "./pages/journey/PizzaJourney";
+import ContactFormJourney from "./pages/journey/ContactFormJourney";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +28,14 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/user-dashboard" element={<UserDashboard />} />
+            
+            {/* Journey routes */}
+            <Route path="/journey/registration" element={<RegistrationJourney />} />
+            <Route path="/journey/corporate-culture" element={<CorporateCultureJourney />} />
+            <Route path="/journey/marketplace" element={<MarketplaceJourney />} />
+            <Route path="/journey/pizza" element={<PizzaJourney />} />
+            <Route path="/journey/contact-form" element={<ContactFormJourney />} />
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
