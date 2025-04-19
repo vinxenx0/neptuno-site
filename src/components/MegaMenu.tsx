@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   NavigationMenu,
@@ -123,7 +122,7 @@ export function MegaMenu() {
       <NavigationMenuList>
         {/* Producto Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">Producto</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">Producto</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">
@@ -197,7 +196,7 @@ export function MegaMenu() {
 
         {/* Usos Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">Usos</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">Usos</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">
@@ -271,7 +270,7 @@ export function MegaMenu() {
 
         {/* SDK Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">SDK</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">SDK</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">
@@ -345,7 +344,7 @@ export function MegaMenu() {
 
         {/* Corporate Menu */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue hover:bg-transparent">Corporate</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">Corporate</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid w-[800px] grid-cols-3 gap-3 p-4 bg-white shadow-lg rounded-md">
               <div className="col-span-3">

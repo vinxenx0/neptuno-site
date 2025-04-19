@@ -3,19 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-interface SlotMachineProps {
-  className?: string;
-}
-
-const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
+const SlotMachine: React.FC = () => {
   const symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '💰', '7️⃣'];
   const [credits, setCredits] = useState(100);
   const [isSpinning, setIsSpinning] = useState(false);
   const [reels, setReels] = useState(['❓', '❓', '❓']);
   const [win, setWin] = useState<number | null>(null);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
-  
-  // Refs for the animation
   const spinSound = useRef(new Audio('/slot-machine-spin.mp3'));
   const winSound = useRef(new Audio('/slot-machine-win.mp3'));
   
@@ -23,34 +17,44 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
     if (credits < 10 || isSpinning) return;
     
     setIsSpinning(true);
-    setCredits(prev => prev - 10); // Cost to play
+    setCredits(prev => prev - 10);
     setWin(null);
 
     try {
-      spinSound.current.play().catch(() => {}); // Ignore autoplay errors
+      spinSound.current.play().catch(() => {});
     } catch (error) {
-      // Silent fallback for browsers that don't support audio
+      // Silent fallback
     }
     
-    // Animate the spinning
-    const spinDuration = 2000; // 2 seconds spin
-    const spinInterval = 50; // Update every 50ms for smooth animation
-    const iterations = spinDuration / spinInterval;
-    let count = 0;
+    let spinsRemaining = 30;
+    let spinSpeed = 50;
+    let currentSpin = 0;
     
-    const spinIntervalId = setInterval(() => {
-      setReels(reels.map(() => symbols[Math.floor(Math.random() * symbols.length)]));
-      count++;
+    const spinInterval = setInterval(() => {
+      setReels(reels.map((_, index) => {
+        // Create a "reel" effect by showing symbols before and after
+        const reelPosition = Math.floor(Math.random() * symbols.length);
+        return symbols[reelPosition];
+      }));
       
-      if (count >= iterations) {
-        clearInterval(spinIntervalId);
+      currentSpin++;
+      
+      // Gradually slow down the spin
+      if (currentSpin > spinsRemaining * 0.7) {
+        spinSpeed = 100;
+      }
+      if (currentSpin > spinsRemaining * 0.9) {
+        spinSpeed = 150;
+      }
+      
+      if (currentSpin >= spinsRemaining) {
+        clearInterval(spinInterval);
         finalizeSpin();
       }
-    }, spinInterval);
+    }, spinSpeed);
   };
   
   const finalizeSpin = () => {
-    // Generate final results
     const finalResult = [
       symbols[Math.floor(Math.random() * symbols.length)],
       symbols[Math.floor(Math.random() * symbols.length)],
@@ -60,14 +64,13 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
     setReels(finalResult);
     setIsSpinning(false);
     
-    // Check for wins
     if (finalResult[0] === finalResult[1] && finalResult[1] === finalResult[2]) {
       const winAmount = getWinAmount(finalResult[0]);
       setWin(winAmount);
       setCredits(prev => prev + winAmount);
       
       try {
-        winSound.current.play().catch(() => {}); // Ignore autoplay errors
+        winSound.current.play().catch(() => {});
       } catch (error) {
         // Silent fallback
       }
@@ -76,7 +79,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
   
   const getWinAmount = (symbol: string) => {
     switch (symbol) {
-      case '7️⃣': return 500; // Jackpot
+      case '7️⃣': return 500;
       case '💰': return 200;
       case '🔔': return 100;
       case '🍇': return 50;
@@ -92,15 +95,21 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
     setBuyModalOpen(false);
   };
 
+  const generateCoupon = () => {
+    setCredits(prev => prev + 10);
+    setWin(10);
+    setTimeout(() => setWin(null), 2000);
+  };
+
   return (
-    <div className={`glass-card overflow-hidden ${className}`}>
+    <div className="glass-card overflow-hidden">
       <div className="bg-gray-800 text-white px-4 py-2 flex items-center space-x-2 text-sm">
         <div className="flex space-x-1.5">
           <div className="w-3 h-3 rounded-full bg-red-500"></div>
           <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
           <div className="w-3 h-3 rounded-full bg-green-500"></div>
         </div>
-        <span className="font-mono flex-1 text-center">neptuno slots</span>
+        <span className="font-mono flex-1 text-center">prueba Neptuno</span>
       </div>
       
       <div className="bg-[#1e293b] p-6">
@@ -129,7 +138,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
             )}
           </div>
           
-          <div className="grid grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-3 gap-4 w-full">
             <Button 
               variant="default" 
               onClick={spin}
@@ -146,45 +155,18 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
             >
               Comprar créditos
             </Button>
-          </div>
-          
-          <div className="mt-4 bg-gray-700/50 p-3 rounded text-xs text-gray-300 w-full">
-            <h3 className="font-bold mb-1">Premios:</h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-              <div className="flex justify-between">
-                <span>3 × 7️⃣</span>
-                <span>500 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 💰</span>
-                <span>200 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🔔</span>
-                <span>100 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍇</span>
-                <span>50 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍊</span>
-                <span>30 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍋</span>
-                <span>20 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍒</span>
-                <span>15 créditos</span>
-              </div>
-            </div>
+
+            <Button
+              variant="outline"
+              onClick={generateCoupon}
+              className="border-green-500 text-green-500 hover:bg-green-50"
+            >
+              Generar cupón
+            </Button>
           </div>
         </div>
       </div>
       
-      {/* Buy Credits Modal */}
       <Dialog open={buyModalOpen} onOpenChange={setBuyModalOpen}>
         <DialogContent>
           <DialogHeader>
