@@ -2,12 +2,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import SlotReel from './slot-machine/SlotReel';
+import SlotMachineControls from './slot-machine/SlotMachineControls';
+import SlotMachineHeader from './slot-machine/SlotMachineHeader';
+import SlotMachineResult from './slot-machine/SlotMachineResult';
 
 const SlotMachine: React.FC = () => {
   const symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '💰', '7️⃣'];
   const [credits, setCredits] = useState(100);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [reels, setReels] = useState(['❓', '❓', '❓']);
+  const [reels, setReels] = useState([
+    { top: '❓', current: '❓', bottom: '❓' },
+    { top: '❓', current: '❓', bottom: '❓' },
+    { top: '❓', current: '❓', bottom: '❓' }
+  ]);
   const [win, setWin] = useState<number | null>(null);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const spinSound = useRef(new Audio('/slot-machine-spin.mp3'));
@@ -26,46 +34,71 @@ const SlotMachine: React.FC = () => {
       // Silent fallback
     }
     
-    let spinsRemaining = 30;
-    let spinSpeed = 50;
-    let currentSpin = 0;
+    // Start the spinning animation
+    const spinDuration = 2000; // 2 seconds total
+    const reelDelay = 100; // Small delay between reels for natural effect
     
-    const spinInterval = setInterval(() => {
-      setReels(reels.map((_, index) => {
-        // Create a "reel" effect by showing symbols before and after
-        const reelPosition = Math.floor(Math.random() * symbols.length);
-        return symbols[reelPosition];
-      }));
+    // Create temporary state for animation
+    const animatedReels = [...reels];
+    let finalResults: { top: string, current: string, bottom: string }[] = [];
+    
+    // Prepare final results in advance for each reel
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * symbols.length);
+      const prevIndex = (randomIndex - 1 + symbols.length) % symbols.length;
+      const nextIndex = (randomIndex + 1) % symbols.length;
       
-      currentSpin++;
-      
-      // Gradually slow down the spin
-      if (currentSpin > spinsRemaining * 0.7) {
-        spinSpeed = 100;
-      }
-      if (currentSpin > spinsRemaining * 0.9) {
-        spinSpeed = 150;
-      }
-      
-      if (currentSpin >= spinsRemaining) {
-        clearInterval(spinInterval);
-        finalizeSpin();
-      }
-    }, spinSpeed);
+      finalResults.push({
+        top: symbols[prevIndex],
+        current: symbols[randomIndex],
+        bottom: symbols[nextIndex]
+      });
+    }
+    
+    // Animate each reel with slight delay between them
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        // Create spinning effect by changing symbols rapidly
+        const reelInterval = setInterval(() => {
+          setReels(prevReels => {
+            const newReels = [...prevReels];
+            const randomTop = symbols[Math.floor(Math.random() * symbols.length)];
+            const randomCurrent = symbols[Math.floor(Math.random() * symbols.length)];
+            const randomBottom = symbols[Math.floor(Math.random() * symbols.length)];
+            
+            newReels[i] = {
+              top: randomTop,
+              current: randomCurrent,
+              bottom: randomBottom
+            };
+            
+            return newReels;
+          });
+        }, 100); // Fast updates during spinning
+        
+        // Stop the reel and set final result
+        setTimeout(() => {
+          clearInterval(reelInterval);
+          setReels(prevReels => {
+            const newReels = [...prevReels];
+            newReels[i] = finalResults[i];
+            return newReels;
+          });
+          
+          // If this is the last reel, finalize the spin
+          if (i === 2) {
+            setTimeout(() => finalizeSpin(finalResults.map(r => r.current)), 500);
+          }
+        }, spinDuration - (i * reelDelay)); // Stagger the stopping of reels
+      }, i * reelDelay);
+    }
   };
   
-  const finalizeSpin = () => {
-    const finalResult = [
-      symbols[Math.floor(Math.random() * symbols.length)],
-      symbols[Math.floor(Math.random() * symbols.length)],
-      symbols[Math.floor(Math.random() * symbols.length)]
-    ];
-    
-    setReels(finalResult);
+  const finalizeSpin = (finalSymbols: string[]) => {
     setIsSpinning(false);
     
-    if (finalResult[0] === finalResult[1] && finalResult[1] === finalResult[2]) {
-      const winAmount = getWinAmount(finalResult[0]);
+    if (finalSymbols[0] === finalSymbols[1] && finalSymbols[1] === finalSymbols[2]) {
+      const winAmount = getWinAmount(finalSymbols[0]);
       setWin(winAmount);
       setCredits(prev => prev + winAmount);
       
@@ -103,67 +136,33 @@ const SlotMachine: React.FC = () => {
 
   return (
     <div className="glass-card overflow-hidden">
-      <div className="bg-gray-800 text-white px-4 py-2 flex items-center space-x-2 text-sm">
-        <div className="flex space-x-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-        </div>
-        <span className="font-mono flex-1 text-center">prueba Neptuno</span>
-      </div>
+      <SlotMachineHeader />
       
       <div className="bg-[#1e293b] p-6">
         <div className="flex flex-col items-center">
           <div className="bg-gradient-to-b from-gray-700 to-gray-900 p-5 rounded-lg mb-6 w-full">
-            <div className="text-center mb-3">
-              <span className="text-yellow-400 text-sm font-bold">Créditos: {credits}</span>
-            </div>
+            <SlotMachineHeader credits={credits} />
             
             <div className="grid grid-cols-3 gap-2 bg-white rounded-lg p-4">
-              {reels.map((symbol, index) => (
-                <div 
+              {reels.map((reel, index) => (
+                <SlotReel 
                   key={index} 
-                  className={`text-4xl aspect-square flex items-center justify-center rounded-md border-2 border-gray-300 bg-gray-50
-                    ${isSpinning ? 'animate-pulse' : ''}`}
-                >
-                  {symbol}
-                </div>
+                  reel={reel} 
+                  isSpinning={isSpinning} 
+                />
               ))}
             </div>
             
-            {win && (
-              <div className="mt-3 text-center animate-bounce">
-                <span className="text-yellow-300 font-bold">¡GANASTE {win} CRÉDITOS!</span>
-              </div>
-            )}
+            <SlotMachineResult win={win} />
           </div>
           
-          <div className="grid grid-cols-3 gap-4 w-full">
-            <Button 
-              variant="default" 
-              onClick={spin}
-              disabled={isSpinning || credits < 10}
-              className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700"
-            >
-              {isSpinning ? "Girando..." : "Jugar (10 créditos)"}
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              onClick={() => setBuyModalOpen(true)}
-              className="border-yellow-500 text-yellow-500 hover:bg-yellow-50"
-            >
-              Comprar créditos
-            </Button>
-
-            <Button
-              variant="outline"
-              onClick={generateCoupon}
-              className="border-green-500 text-green-500 hover:bg-green-50"
-            >
-              Generar cupón
-            </Button>
-          </div>
+          <SlotMachineControls
+            onSpin={spin}
+            onBuyCredits={() => setBuyModalOpen(true)}
+            onGenerateCoupon={generateCoupon}
+            isSpinning={isSpinning}
+            credits={credits}
+          />
         </div>
       </div>
       
