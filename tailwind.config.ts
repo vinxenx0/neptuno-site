@@ -67,7 +67,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: ["Inter", "var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
@@ -80,11 +80,8 @@ const config = {
         },
         "slot-spin": {
           "0%": { transform: "translateY(0)" },
-          "10%": { transform: "translateY(-50px)" }, 
-          "25%": { transform: "translateY(-200px)" },
-          "50%": { transform: "translateY(-400px)" },
-          "75%": { transform: "translateY(-600px)" },
-          "90%": { transform: "translateY(-750px)" },
+          "80%": { transform: "translateY(-800px)" },
+          "90%": { transform: "translateY(-780px)" },
           "100%": { transform: "translateY(-800px)" }
         },
       },

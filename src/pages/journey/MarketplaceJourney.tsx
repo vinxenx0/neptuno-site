@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import JourneyLayout from '@/components/journey/JourneyLayout';
-import { Button } from '@/components/ui/button';
 import RewardPopup from '@/components/journey/RewardPopup';
 import { Star, Trophy, Gift } from 'lucide-react';
 import MarketplaceWelcome from '@/components/marketplace/MarketplaceWelcome';
@@ -9,6 +8,8 @@ import MarketplaceCatalog from '@/components/marketplace/MarketplaceCatalog';
 import MarketplaceCheckout from '@/components/marketplace/MarketplaceCheckout';
 import MarketplaceComplete from '@/components/marketplace/MarketplaceComplete';
 import { products, rewardRules } from '@/data/marketplace-data';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const MarketplaceJourney: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -22,6 +23,14 @@ const MarketplaceJourney: React.FC = () => {
     description: string;
     icon: React.ReactNode;
   } | null>(null);
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  useEffect(() => {
+    // Scroll to top when the component mounts
+    window.scrollTo(0, 0);
+  }, [location]);
   
   // Calculate totals and category counts
   const cartItems = products.filter(product => cart.includes(product.id));
@@ -120,10 +129,12 @@ const MarketplaceJourney: React.FC = () => {
   
   const handleNext = () => {
     setCurrentStep(currentStep + 1);
+    window.scrollTo(0, 0);
   };
   
   const handleComplete = () => {
     setCurrentStep(3); // Final step
+    window.scrollTo(0, 0);
     
     // Extra bonus for completing purchase
     if (cart.length >= 3) {
@@ -141,6 +152,7 @@ const MarketplaceJourney: React.FC = () => {
     setTotalPoints(0);
     setBadges([]);
     setCoupons([]);
+    window.scrollTo(0, 0);
   };
   
   // Props to pass to components

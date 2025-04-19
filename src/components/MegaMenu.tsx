@@ -17,28 +17,28 @@ export function MegaMenu() {
     <NavigationMenu className="hidden md:flex">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">Producto</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue">Producto</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ProductMenu />
           </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">Usos</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue">Usos</NavigationMenuTrigger>
           <NavigationMenuContent>
             <UsesMenu />
           </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">SDK</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue">SDK</NavigationMenuTrigger>
           <NavigationMenuContent>
             <SdkMenu />
           </NavigationMenuContent>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue bg-transparent">Corporate</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-gray-700 hover:text-neptuno-blue">Corporate</NavigationMenuTrigger>
           <NavigationMenuContent>
             <CorporateMenu />
           </NavigationMenuContent>

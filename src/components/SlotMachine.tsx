@@ -36,10 +36,9 @@ const SlotMachine: React.FC = () => {
     
     // Start the spinning animation
     const spinDuration = 2000; // 2 seconds total
-    const reelDelay = 100; // Small delay between reels for natural effect
+    const reelDelay = 300; // Delay between reels for natural effect
     
     // Create temporary state for animation
-    const animatedReels = [...reels];
     let finalResults: { top: string, current: string, bottom: string }[] = [];
     
     // Prepare final results in advance for each reel
@@ -55,43 +54,33 @@ const SlotMachine: React.FC = () => {
       });
     }
     
-    // Animate each reel with slight delay between them
-    for (let i = 0; i < 3; i++) {
+    // Stop the reels sequentially
+    setTimeout(() => {
+      setReels(prev => {
+        const newReels = [...prev];
+        newReels[0] = finalResults[0];
+        return newReels;
+      });
+      
       setTimeout(() => {
-        // Create spinning effect by changing symbols rapidly
-        const reelInterval = setInterval(() => {
-          setReels(prevReels => {
-            const newReels = [...prevReels];
-            const randomTop = symbols[Math.floor(Math.random() * symbols.length)];
-            const randomCurrent = symbols[Math.floor(Math.random() * symbols.length)];
-            const randomBottom = symbols[Math.floor(Math.random() * symbols.length)];
-            
-            newReels[i] = {
-              top: randomTop,
-              current: randomCurrent,
-              bottom: randomBottom
-            };
-            
-            return newReels;
-          });
-        }, 100); // Fast updates during spinning
+        setReels(prev => {
+          const newReels = [...prev];
+          newReels[1] = finalResults[1];
+          return newReels;
+        });
         
-        // Stop the reel and set final result
         setTimeout(() => {
-          clearInterval(reelInterval);
-          setReels(prevReels => {
-            const newReels = [...prevReels];
-            newReels[i] = finalResults[i];
+          setReels(prev => {
+            const newReels = [...prev];
+            newReels[2] = finalResults[2];
             return newReels;
           });
           
-          // If this is the last reel, finalize the spin
-          if (i === 2) {
-            setTimeout(() => finalizeSpin(finalResults.map(r => r.current)), 500);
-          }
-        }, spinDuration - (i * reelDelay)); // Stagger the stopping of reels
-      }, i * reelDelay);
-    }
+          // Finalize the spin
+          setTimeout(() => finalizeSpin(finalResults.map(r => r.current)), 300);
+        }, reelDelay);
+      }, reelDelay);
+    }, spinDuration);
   };
   
   const finalizeSpin = (finalSymbols: string[]) => {
@@ -135,12 +124,12 @@ const SlotMachine: React.FC = () => {
   };
 
   return (
-    <div className="glass-card overflow-hidden">
+    <div className="glass-card overflow-hidden transform hover:scale-[1.02] transition-all duration-300">
       <SlotMachineHeader />
       
-      <div className="bg-[#1e293b] p-6">
+      <div className="bg-gradient-to-b from-[#1e293b] to-[#0f172a] p-6">
         <div className="flex flex-col items-center">
-          <div className="bg-gradient-to-b from-gray-700 to-gray-900 p-5 rounded-lg mb-6 w-full">
+          <div className="bg-gradient-to-b from-gray-700 to-gray-900 p-5 rounded-lg mb-6 w-full shadow-inner">
             <SlotMachineHeader credits={credits} />
             
             <div className="grid grid-cols-3 gap-2 bg-white rounded-lg p-4">
@@ -148,7 +137,7 @@ const SlotMachine: React.FC = () => {
                 <SlotReel 
                   key={index} 
                   reel={reel} 
-                  isSpinning={isSpinning} 
+                  isSpinning={isSpinning && index >= reels.findIndex(r => r.current === '❓')} 
                 />
               ))}
             </div>
@@ -179,7 +168,7 @@ const SlotMachine: React.FC = () => {
             <Button 
               variant="outline" 
               onClick={() => buyCredits(10)}
-              className="flex flex-col h-auto py-6"
+              className="flex flex-col h-auto py-6 hover:bg-yellow-50 hover:scale-105 transition-all"
             >
               <span className="text-xl font-bold">10</span>
               <span className="text-sm">créditos</span>
@@ -188,7 +177,7 @@ const SlotMachine: React.FC = () => {
             <Button 
               variant="outline" 
               onClick={() => buyCredits(50)}
-              className="flex flex-col h-auto py-6 border-yellow-500"
+              className="flex flex-col h-auto py-6 border-yellow-500 hover:bg-yellow-50 hover:scale-105 transition-all"
             >
               <span className="text-xl font-bold text-yellow-600">50</span>
               <span className="text-sm">créditos</span>
@@ -198,7 +187,7 @@ const SlotMachine: React.FC = () => {
             <Button 
               variant="outline" 
               onClick={() => buyCredits(100)}
-              className="flex flex-col h-auto py-6 border-yellow-600"
+              className="flex flex-col h-auto py-6 border-yellow-600 hover:bg-yellow-50 hover:scale-105 transition-all"
             >
               <span className="text-xl font-bold text-yellow-700">100</span>
               <span className="text-sm">créditos</span>

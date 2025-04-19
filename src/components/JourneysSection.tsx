@@ -3,8 +3,16 @@ import React from 'react';
 import { Card } from './ui/card';
 import { Link } from 'react-router-dom';
 import { ArrowRight, UserRound, Users, ShoppingBag, Pizza, FormInput, Mail } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const JourneysSection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+  
   const journeys = [
     {
       icon: <UserRound className="h-8 w-8 text-white" />,
@@ -62,7 +70,11 @@ const JourneysSection: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {journeys.map((journey, index) => (
-            <Link to={journey.path} key={index}>
+            <div 
+              key={index}
+              onClick={() => handleNavigate(journey.path)}
+              className="cursor-pointer"
+            >
               <Card className="hover:shadow-lg transition-all duration-300 h-full overflow-hidden border-0">
                 <div className={`${journey.color} p-6 h-full flex flex-col`}>
                   <div className="bg-white/20 p-4 rounded-xl inline-block mb-4">
@@ -76,7 +88,7 @@ const JourneysSection: React.FC = () => {
                   </div>
                 </div>
               </Card>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
