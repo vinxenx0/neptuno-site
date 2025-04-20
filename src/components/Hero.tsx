@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Code, Shield, Zap } from 'lucide-react';
 import SlotMachine from './SlotMachine';
@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Deploy MVP in minutes, launch in a week
+              Deploy MVP in minutes, in-game engagement in moments
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300">
@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
           </div>
           
           <div className="lg:w-1/2 animate-slide-in">
-            <SlotMachine />
+            <SlotMachine autoSpin={true} />
           </div>
         </div>
       </div>

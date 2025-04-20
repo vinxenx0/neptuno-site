@@ -40,6 +40,10 @@ const MarketplaceWelcome: React.FC<MarketplaceWelcomeProps> = ({ onStart }) => {
                   <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
                   <span>Añade 5 productos al carrito: +50 puntos y cupón de 15% de descuento</span>
                 </li>
+                <li className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                  <span>¡Tus puntos se pueden usar para obtener descuentos! (1 punto = 0.10€)</span>
+                </li>
               </ul>
             </div>
             

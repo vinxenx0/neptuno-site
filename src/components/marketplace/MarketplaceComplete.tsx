@@ -4,14 +4,20 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Star, Trophy, Gift } from 'lucide-react';
 import Badge from '@/components/journey/Badge';
-import { MarketplaceProps } from '@/data/marketplace-data';
+import { useMarketplace } from '@/marketplace/MarketplaceContext';
 
-const MarketplaceComplete: React.FC<MarketplaceProps> = ({
-  totalPoints,
-  badges,
-  coupons,
-  resetJourney
-}) => {
+const MarketplaceComplete: React.FC = () => {
+  const {
+    totalPoints,
+    badges,
+    coupons,
+    resetJourney,
+    discountApplied,
+    discountValue,
+    finalPrice,
+    totalPrice
+  } = useMarketplace();
+
   return (
     <div className="container mx-auto max-w-7xl px-4 py-12">
       <div className="max-w-3xl mx-auto">
@@ -24,6 +30,20 @@ const MarketplaceComplete: React.FC<MarketplaceProps> = ({
             <h2 className="text-2xl font-bold mb-3">
               ¡Gracias por tu compra simulada!
             </h2>
+            
+            {discountApplied && (
+              <div className="mb-6 bg-green-50 border border-green-100 p-4 rounded-lg">
+                <p className="text-green-800">
+                  Se han canjeado {totalPoints} puntos por un descuento de {discountValue.toFixed(2)}€
+                </p>
+                <p className="flex items-center justify-center gap-2 mt-2 font-bold">
+                  Precio final: {finalPrice.toFixed(2)}€
+                  <span className="text-sm line-through text-gray-500">
+                    {totalPrice.toFixed(2)}€
+                  </span>
+                </p>
+              </div>
+            )}
             
             <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 rounded-lg p-6 mb-6">
               <p className="text-xl font-medium text-emerald-800 mb-3">

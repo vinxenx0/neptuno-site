@@ -2,16 +2,23 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trophy, Gift } from 'lucide-react';
-import { MarketplaceProps } from '@/data/marketplace-data';
+import { Trophy, Gift, Coins } from 'lucide-react';
+import { useMarketplace } from '@/marketplace/MarketplaceContext';
 
-const MarketplaceCheckout: React.FC<MarketplaceProps> = ({
-  cartItems,
-  categoryCounts,
-  totalPrice,
-  cart,
-  handleComplete
-}) => {
+const MarketplaceCheckout: React.FC = () => {
+  const {
+    cartItems,
+    categoryCounts,
+    totalPrice,
+    cart,
+    totalPoints,
+    handleComplete,
+    applyPointsDiscount,
+    discountApplied,
+    discountValue,
+    finalPrice
+  } = useMarketplace();
+
   return (
     <div className="container mx-auto max-w-7xl px-4 py-12">
       <div className="max-w-3xl mx-auto">
@@ -49,13 +56,42 @@ const MarketplaceCheckout: React.FC<MarketplaceProps> = ({
                 <span>Subtotal:</span>
                 <span>{totalPrice.toFixed(2)}€</span>
               </div>
+              
+              {totalPoints > 0 && (
+                <div className="flex justify-between items-center mb-1">
+                  <span className="flex items-center">
+                    <Coins className="h-4 w-4 mr-1 text-yellow-500" />
+                    Puntos disponibles ({totalPoints}):
+                  </span>
+                  {discountApplied ? (
+                    <span className="text-green-600">-{discountValue.toFixed(2)}€</span>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-xs border-yellow-500 text-yellow-700 h-7"
+                      onClick={applyPointsDiscount}
+                    >
+                      Canjear ({(totalPoints * 0.1).toFixed(2)}€)
+                    </Button>
+                  )}
+                </div>
+              )}
+              
               <div className="flex justify-between mb-1">
                 <span>Envío:</span>
                 <span>Gratis</span>
               </div>
               <div className="flex justify-between font-bold text-lg">
                 <span>Total:</span>
-                <span>{totalPrice.toFixed(2)}€</span>
+                <span className={discountApplied ? "text-green-600" : ""}>
+                  {finalPrice.toFixed(2)}€
+                  {discountApplied && (
+                    <span className="text-xs line-through text-gray-500 ml-2">
+                      {totalPrice.toFixed(2)}€
+                    </span>
+                  )}
+                </span>
               </div>
             </div>
             

@@ -6,21 +6,23 @@ import { CheckCircle, Minus, Plus } from 'lucide-react';
 import RewardCard from '@/components/journey/RewardCard';
 import Badge from '@/components/journey/Badge';
 import { Star, Trophy, Gift } from 'lucide-react';
-import { MarketplaceProps } from '@/data/marketplace-data';
 import { products } from '@/data/marketplace-data';
+import { useMarketplace } from '@/marketplace/MarketplaceContext';
 
-const MarketplaceCatalog: React.FC<MarketplaceProps> = ({
-  cart,
-  cartItems,
-  categoryCounts,
-  totalPoints,
-  badges,
-  coupons,
-  totalPrice,
-  handleAddToCart,
-  handleRemoveFromCart,
-  handleNext
-}) => {
+const MarketplaceCatalog: React.FC = () => {
+  const {
+    cart,
+    cartItems,
+    categoryCounts,
+    totalPoints,
+    badges,
+    coupons,
+    totalPrice,
+    handleAddToCart,
+    handleRemoveFromCart,
+    handleNext
+  } = useMarketplace();
+
   return (
     <div className="container mx-auto max-w-7xl px-4 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

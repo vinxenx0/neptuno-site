@@ -15,6 +15,7 @@ import MarketplaceJourney from "./pages/journey/MarketplaceJourney";
 import PizzaJourney from "./pages/journey/PizzaJourney";
 import ContactFormJourney from "./pages/journey/ContactFormJourney";
 import NewsletterJourney from "./pages/journey/NewsletterJourney";
+import GamesJourney from "./pages/journey/GamesJourney";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/journey/pizza" element={<PizzaJourney />} />
             <Route path="/journey/contact-form" element={<ContactFormJourney />} />
             <Route path="/journey/newsletter" element={<NewsletterJourney />} />
+            <Route path="/journey/games" element={<GamesJourney />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

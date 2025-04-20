@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { Card } from './ui/card';
-import { Link } from 'react-router-dom';
-import { ArrowRight, UserRound, Users, ShoppingBag, Pizza, FormInput, Mail } from 'lucide-react';
+import { ArrowRight, UserRound, Users, ShoppingBag, Pizza, FormInput, Mail, Gamepad } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const JourneysSection: React.FC = () => {
@@ -55,6 +54,13 @@ const JourneysSection: React.FC = () => {
       description: "Aumenta suscriptores con recompensas por interacción",
       color: "bg-gradient-to-br from-violet-600 to-purple-700",
       path: "/journey/newsletter"
+    },
+    {
+      icon: <Gamepad className="h-8 w-8 text-white" />,
+      title: "Juegos online",
+      description: "Máquinas tragaperras y juegos para engagement",
+      color: "bg-gradient-to-br from-amber-500 to-red-600",
+      path: "/journey/games"
     }
   ];
 

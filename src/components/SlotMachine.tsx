@@ -7,7 +7,11 @@ import SlotMachineControls from './slot-machine/SlotMachineControls';
 import SlotMachineHeader from './slot-machine/SlotMachineHeader';
 import SlotMachineResult from './slot-machine/SlotMachineResult';
 
-const SlotMachine: React.FC = () => {
+interface SlotMachineProps {
+  autoSpin?: boolean;
+}
+
+const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
   const symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '💰', '7️⃣'];
   const [credits, setCredits] = useState(100);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -20,6 +24,18 @@ const SlotMachine: React.FC = () => {
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const spinSound = useRef(new Audio('/slot-machine-spin.mp3'));
   const winSound = useRef(new Audio('/slot-machine-win.mp3'));
+  const spinTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  
+  useEffect(() => {
+    // Auto spin once when the component mounts if autoSpin is true
+    if (autoSpin) {
+      const timer = setTimeout(() => {
+        spin();
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [autoSpin]);
   
   const spin = () => {
     if (credits < 10 || isSpinning) return;
@@ -34,14 +50,8 @@ const SlotMachine: React.FC = () => {
       // Silent fallback
     }
     
-    // Start the spinning animation
-    const spinDuration = 2000; // 2 seconds total
-    const reelDelay = 300; // Delay between reels for natural effect
-    
-    // Create temporary state for animation
-    let finalResults: { top: string, current: string, bottom: string }[] = [];
-    
-    // Prepare final results in advance for each reel
+    // Prepare the result symbols
+    const finalResults = [];
     for (let i = 0; i < 3; i++) {
       const randomIndex = Math.floor(Math.random() * symbols.length);
       const prevIndex = (randomIndex - 1 + symbols.length) % symbols.length;
@@ -54,38 +64,19 @@ const SlotMachine: React.FC = () => {
       });
     }
     
-    // Stop the reels sequentially
-    setTimeout(() => {
-      setReels(prev => {
-        const newReels = [...prev];
-        newReels[0] = finalResults[0];
-        return newReels;
-      });
-      
-      setTimeout(() => {
-        setReels(prev => {
-          const newReels = [...prev];
-          newReels[1] = finalResults[1];
-          return newReels;
-        });
-        
-        setTimeout(() => {
-          setReels(prev => {
-            const newReels = [...prev];
-            newReels[2] = finalResults[2];
-            return newReels;
-          });
-          
-          // Finalize the spin
-          setTimeout(() => finalizeSpin(finalResults.map(r => r.current)), 300);
-        }, reelDelay);
-      }, reelDelay);
-    }, spinDuration);
+    // Stop all reels together after the animation duration
+    if (spinTimerRef.current) {
+      clearTimeout(spinTimerRef.current);
+    }
+    
+    spinTimerRef.current = setTimeout(() => {
+      setReels(finalResults);
+      setIsSpinning(false);
+      checkWin(finalResults.map(r => r.current));
+    }, 2000);
   };
   
-  const finalizeSpin = (finalSymbols: string[]) => {
-    setIsSpinning(false);
-    
+  const checkWin = (finalSymbols: string[]) => {
     if (finalSymbols[0] === finalSymbols[1] && finalSymbols[1] === finalSymbols[2]) {
       const winAmount = getWinAmount(finalSymbols[0]);
       setWin(winAmount);
@@ -137,7 +128,8 @@ const SlotMachine: React.FC = () => {
                 <SlotReel 
                   key={index} 
                   reel={reel} 
-                  isSpinning={isSpinning && index >= reels.findIndex(r => r.current === '❓')} 
+                  isSpinning={isSpinning} 
+                  index={index}
                 />
               ))}
             </div>
