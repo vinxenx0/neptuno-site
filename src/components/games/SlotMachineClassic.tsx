@@ -77,8 +77,8 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
         winAmount = currentBet * 5;
       }
       
-      // Use setCredits with the previous state updated properly
-      setCredits(prevCredits => prevCredits + winAmount);
+      // Corrección: Usar el valor directo en lugar de una función de actualización
+      setCredits(credits + winAmount);
       setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
       
       if (reelsRef.current) {
@@ -98,7 +98,8 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
     } else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
       // Just two matching symbols
       const winAmount = currentBet * 2;
-      setCredits(prevCredits => prevCredits + winAmount);
+      // Corrección: Usar el valor directo en lugar de una función de actualización
+      setCredits(credits + winAmount);
       setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
     }
   };

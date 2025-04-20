@@ -100,8 +100,8 @@ const SlotMachineFruit: React.FC<SlotMachineFruitProps> = ({ credits, setCredits
     }
     
     if (winAmount > 0) {
-      // Use proper function to update state that depends on previous state
-      setCredits(prevCredits => prevCredits + winAmount);
+      // Corrección: Usar el valor directo en lugar de una función de actualización
+      setCredits(credits + winAmount);
       setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
       
       if (reelsRef.current) {
