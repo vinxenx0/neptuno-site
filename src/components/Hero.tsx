@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Code, Shield, Zap } from 'lucide-react';
+import { ArrowRight, Shield, Zap, Code } from 'lucide-react';
 import SlotMachine from './SlotMachine';
 
 const Hero: React.FC = () => {
@@ -27,11 +27,11 @@ const Hero: React.FC = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300">
-              De la idea al MRR en tiempo record: no arranques de cero, empieza desde Neptuno.
+              <span className="font-bold">De la idea al MRR en tiempo record:</span> no arranques de cero, empieza desde Neptuno.
             </p>
             
             <p className="text-lg md:text-xl text-gray-300">
-              Crea MVP ilimitados con autenficación, seguridad, balanceo, cache, api abierta, dashboard, etc todo configurado de inicio
+              Crea MVP ilimitados listos para producción con todo lo que necesitas para lanzar tu proyecto al mercado
             </p>
             
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
