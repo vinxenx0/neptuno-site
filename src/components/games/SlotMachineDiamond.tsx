@@ -87,9 +87,10 @@ const SlotMachineDiamond: React.FC<SlotMachineDiamondProps> = ({ credits, setCre
         winAmount = currentBet * 5;
       }
       
-      setCredits(prev => prev + winAmount);
+      // Fix: Use function form for setting state that depends on previous state
+      setCredits(prevCredits => prevCredits + winAmount);
       
-      if (!results[0] === '💎') {
+      if (results[0] !== '💎') {
         setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
       }
       
@@ -110,7 +111,8 @@ const SlotMachineDiamond: React.FC<SlotMachineDiamondProps> = ({ credits, setCre
     } else if (unique.length === 2) {
       // Two identical symbols
       const winAmount = currentBet * 3;
-      setCredits(prev => prev + winAmount);
+      // Fix: Use function form for setting state that depends on previous state
+      setCredits(prevCredits => prevCredits + winAmount);
       setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
     }
   };
@@ -127,7 +129,7 @@ const SlotMachineDiamond: React.FC<SlotMachineDiamondProps> = ({ credits, setCre
             isSpinning={isSpinning}
             index={index}
             result={results[index] || '❓'}
-            height={120}
+            height={100}
             isDeluxe={true}
           />
         ))}

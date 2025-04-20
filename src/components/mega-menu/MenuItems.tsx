@@ -88,3 +88,30 @@ export const FeaturedItem = ({
     </a>
   );
 };
+
+// MenuItems component for navigation menus
+export const MenuItems = ({ 
+  title, 
+  items 
+}: { 
+  title: string; 
+  items: Array<{ name: string; href: string }> 
+}) => {
+  return (
+    <div>
+      <h3 className="font-medium text-sm text-gray-500 mb-2">{title}</h3>
+      <ul className="space-y-1">
+        {items.map((item) => (
+          <li key={item.name}>
+            <a 
+              href={item.href} 
+              className="block text-sm py-1 hover:text-neptuno-blue transition-colors"
+            >
+              {item.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};

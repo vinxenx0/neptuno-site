@@ -9,7 +9,7 @@ interface SlotMachineClassicProps {
 }
 
 const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCredits }) => {
-  const symbols = ['7️⃣', 'BAR', '🍒', '🍋', '🍊'];
+  const symbols = ['7️⃣', 'BAR', '🍒', '🍋', '🍊', '💰'];
   const [isSpinning, setIsSpinning] = useState(false);
   const [results, setResults] = useState<string[]>([]);
   const [currentBet, setCurrentBet] = useState(10);
@@ -18,14 +18,6 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
   const reelsRef = useRef<HTMLDivElement>(null);
   const spinSound = useRef(new Audio('/slot-machine-spin.mp3'));
   const winSound = useRef(new Audio('/slot-machine-win.mp3'));
-
-  // Auto-spin once on mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      handleSpin();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const changeBet = (amount: number) => {
     const newBet = currentBet + amount;
@@ -56,7 +48,7 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
           const randomIndex = Math.floor(Math.random() * symbols.length);
           newResults.push(symbols[randomIndex]);
           resolve();
-        }, i * 200);
+        }, i * 150);
       });
     }
     
@@ -65,13 +57,11 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
     setTimeout(() => {
       checkWin(newResults);
       setIsSpinning(false);
-    }, 500);
+    }, 300);
   };
   
   const checkWin = (results: string[]) => {
-    const unique = [...new Set(results)];
-    
-    if (unique.length === 1) {
+    if (results[0] === results[1] && results[1] === results[2]) {
       // Three of a kind
       let winAmount = 0;
       
@@ -81,11 +71,14 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
         winAmount = currentBet * 20;
       } else if (results[0] === '🍒') {
         winAmount = currentBet * 10;
+      } else if (results[0] === '💰') {
+        winAmount = currentBet * 30;
       } else {
         winAmount = currentBet * 5;
       }
       
-      setCredits(prev => prev + winAmount);
+      // Use setCredits with the previous state updated properly
+      setCredits(prevCredits => prevCredits + winAmount);
       setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
       
       if (reelsRef.current) {
@@ -102,19 +95,28 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
       } catch (error) {
         // Silent fallback
       }
-    } else if (unique.length === 2) {
-      // Two of a kind
+    } else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+      // Just two matching symbols
       const winAmount = currentBet * 2;
-      setCredits(prev => prev + winAmount);
+      setCredits(prevCredits => prevCredits + winAmount);
       setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
     }
   };
 
+  // Auto-spin on load
+  useEffect(() => {
+    if (credits >= currentBet) {
+      setTimeout(() => {
+        handleSpin();
+      }, 500);
+    }
+  }, []);
+
   return (
-    <div className="bg-gradient-to-b from-gray-700 to-gray-900 p-5 rounded-lg">
-      <h2 className="text-xl font-bold text-center mb-4 text-amber-400">MÁQUINA CLÁSICA</h2>
+    <div className="bg-gradient-to-b from-amber-700/70 to-amber-900/70 p-5 rounded-lg">
+      <h2 className="text-xl font-bold text-center mb-4 text-yellow-300">TRAGAPERRAS CLÁSICA</h2>
       
-      <div ref={reelsRef} className="flex justify-center gap-4 bg-gradient-to-b from-gray-800 to-gray-900 p-4 rounded-lg mb-4">
+      <div ref={reelsRef} className="flex justify-center gap-2 bg-gradient-to-b from-gray-800 to-gray-900 p-4 rounded-lg mb-4">
         {[0, 1, 2].map((index) => (
           <SlotReel 
             key={index}
@@ -122,7 +124,7 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
             isSpinning={isSpinning}
             index={index}
             result={results[index] || '❓'}
-            height={120}
+            height={80}
           />
         ))}
       </div>
@@ -135,15 +137,15 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
       
       <div className="flex flex-col items-center gap-4">
         <div className="flex items-center gap-2">
-          <Button size="sm" onClick={() => changeBet(-10)} variant="outline" className="h-8 w-8 p-0">-</Button>
+          <Button size="sm" onClick={() => changeBet(-5)} variant="outline" className="h-8 w-8 p-0">-</Button>
           <Button size="sm" onClick={() => changeBet(-1)} variant="outline" className="h-8 w-8 p-0">-</Button>
           <div className="min-w-16 text-center font-bold">{currentBet}</div>
           <Button size="sm" onClick={() => changeBet(1)} variant="outline" className="h-8 w-8 p-0">+</Button>
-          <Button size="sm" onClick={() => changeBet(10)} variant="outline" className="h-8 w-8 p-0">+</Button>
+          <Button size="sm" onClick={() => changeBet(5)} variant="outline" className="h-8 w-8 p-0">+</Button>
         </div>
         
         <Button 
-          className="bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 transition-all hover:scale-105"
+          className="bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-600 hover:to-red-700 transition-all hover:scale-105"
           size="lg"
           disabled={isSpinning || credits < currentBet}
           onClick={handleSpin}
@@ -159,13 +161,16 @@ const SlotMachineClassic: React.FC<SlotMachineClassicProps> = ({ credits, setCre
             <span className="text-lg">7️⃣7️⃣7️⃣</span> = x50
           </li>
           <li className="flex items-center gap-2">
+            <span className="text-lg">💰💰💰</span> = x30
+          </li>
+          <li className="flex items-center gap-2">
             <span className="text-lg">BAR BAR BAR</span> = x20
           </li>
           <li className="flex items-center gap-2">
             <span className="text-lg">🍒🍒🍒</span> = x10
           </li>
           <li className="flex items-center gap-2">
-            <span className="text-lg">Cualquier 2 iguales</span> = x2
+            <span className="text-lg">2 iguales</span> = x2
           </li>
         </ul>
       </div>

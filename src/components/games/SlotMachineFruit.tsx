@@ -100,7 +100,8 @@ const SlotMachineFruit: React.FC<SlotMachineFruitProps> = ({ credits, setCredits
     }
     
     if (winAmount > 0) {
-      setCredits(prev => prev + winAmount);
+      // Use proper function to update state that depends on previous state
+      setCredits(prevCredits => prevCredits + winAmount);
       setMessage(`¡GANASTE ${winAmount} CRÉDITOS!`);
       
       if (reelsRef.current) {
@@ -132,7 +133,7 @@ const SlotMachineFruit: React.FC<SlotMachineFruitProps> = ({ credits, setCredits
             isSpinning={isSpinning}
             index={index}
             result={results[index] || '❓'}
-            height={100}
+            height={60}
           />
         ))}
       </div>
