@@ -16,34 +16,25 @@ export function MegaMenu() {
   return (
     <NavigationMenu className="hidden md:flex">
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <MenuButton>Producto</MenuButton>
-          <NavigationMenuContent>
-            <ProductMenu />
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <MenuButton>Usos</MenuButton>
-          <NavigationMenuContent>
-            <UsesMenu />
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <MenuButton>SDK</MenuButton>
-          <NavigationMenuContent>
-            <SdkMenu />
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <MenuButton>Corporate</MenuButton>
-          <NavigationMenuContent>
-            <CorporateMenu />
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        <MegaMenuItem label="Producto" content={<ProductMenu />} />
+        <MegaMenuItem label="Usos" content={<UsesMenu />} />
+        <MegaMenuItem label="SDK" content={<SdkMenu />} />
+        <MegaMenuItem label="Corporate" content={<CorporateMenu />} />
       </NavigationMenuList>
     </NavigationMenu>
   );
 }
+
+type MegaMenuItemProps = {
+  label: string;
+  content: React.ReactNode;
+};
+
+const MegaMenuItem: React.FC<MegaMenuItemProps> = ({ label, content }) => {
+  return (
+    <NavigationMenuItem>
+      <MenuButton>{label}</MenuButton>
+      <NavigationMenuContent>{content}</NavigationMenuContent>
+    </NavigationMenuItem>
+  );
+};

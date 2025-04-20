@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Pizza, Burger, Coffee, Utensils } from 'lucide-react';
+import { Pizza, Coffee, Utensils } from 'lucide-react';
 import { FoodItem } from '@/data/pizza-data';
 
 interface FoodTypeSelectorProps {
@@ -35,7 +35,8 @@ const FoodTypeSelector: React.FC<FoodTypeSelectorProps> = ({
           <span className="hidden sm:inline">Pizzas</span>
         </TabsTrigger>
         <TabsTrigger value="burger" className="flex items-center gap-2">
-          <Burger className="h-4 w-4" />
+          {/* Replace Burger with a different icon */}
+          <Utensils className="h-4 w-4" />
           <span className="hidden sm:inline">Hamburguesas</span>
         </TabsTrigger>
         <TabsTrigger value="side" className="flex items-center gap-2">
