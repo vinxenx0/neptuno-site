@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Deploy MVP in minutes, in-game engagement in moments
+              Go-to market in minutes, in-game engagement in moments
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300">

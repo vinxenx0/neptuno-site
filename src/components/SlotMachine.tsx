@@ -2,10 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import SlotReel from './slot-machine/SlotReel';
-import SlotMachineControls from './slot-machine/SlotMachineControls';
-import SlotMachineHeader from './slot-machine/SlotMachineHeader';
-import SlotMachineResult from './slot-machine/SlotMachineResult';
 
 interface SlotMachineProps {
   autoSpin?: boolean;
@@ -15,16 +11,11 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
   const symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '💰', '7️⃣'];
   const [credits, setCredits] = useState(100);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [reels, setReels] = useState([
-    { top: '❓', current: '❓', bottom: '❓' },
-    { top: '❓', current: '❓', bottom: '❓' },
-    { top: '❓', current: '❓', bottom: '❓' }
-  ]);
+  const [results, setResults] = useState(['❓', '❓', '❓']);
   const [win, setWin] = useState<number | null>(null);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const spinSound = useRef(new Audio('/slot-machine-spin.mp3'));
   const winSound = useRef(new Audio('/slot-machine-win.mp3'));
-  const spinTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   useEffect(() => {
     // Auto spin once when the component mounts if autoSpin is true
@@ -41,7 +32,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
     if (credits < 10 || isSpinning) return;
     
     setIsSpinning(true);
-    setCredits(prev => prev - 10);
+    setCredits(credits - 10);
     setWin(null);
 
     try {
@@ -50,43 +41,61 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
       // Silent fallback
     }
     
-    // Prepare the result symbols
-    const finalResults = [];
+    // Simple slot machine effect without complicated animations
+    const newResults = [];
+    const delays = [400, 600, 800];  // Staggered delays for each reel
+    
+    // Start a random spin animation on the symbols
+    const spinInterval = setInterval(() => {
+      const tempResults = [];
+      for (let i = 0; i < 3; i++) {
+        const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+        tempResults.push(randomSymbol);
+      }
+      setResults(tempResults);
+    }, 100);
+    
+    // Determine the final results and stop the reels one by one
     for (let i = 0; i < 3; i++) {
-      const randomIndex = Math.floor(Math.random() * symbols.length);
-      const prevIndex = (randomIndex - 1 + symbols.length) % symbols.length;
-      const nextIndex = (randomIndex + 1) % symbols.length;
-      
-      finalResults.push({
-        top: symbols[prevIndex],
-        current: symbols[randomIndex],
-        bottom: symbols[nextIndex]
-      });
+      setTimeout(() => {
+        const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+        newResults[i] = randomSymbol;
+        
+        // Update the display with locked reels
+        const currentDisplay = [...results];
+        currentDisplay[i] = newResults[i];
+        setResults([...currentDisplay]);
+        
+        // When the last reel stops
+        if (i === 2) {
+          clearInterval(spinInterval);
+          setIsSpinning(false);
+          checkWin(newResults);
+        }
+      }, delays[i]);
     }
-    
-    // Stop all reels together after the animation duration
-    if (spinTimerRef.current) {
-      clearTimeout(spinTimerRef.current);
-    }
-    
-    spinTimerRef.current = setTimeout(() => {
-      setReels(finalResults);
-      setIsSpinning(false);
-      checkWin(finalResults.map(r => r.current));
-    }, 2000);
   };
   
   const checkWin = (finalSymbols: string[]) => {
     if (finalSymbols[0] === finalSymbols[1] && finalSymbols[1] === finalSymbols[2]) {
       const winAmount = getWinAmount(finalSymbols[0]);
       setWin(winAmount);
-      setCredits(prev => prev + winAmount);
+      setCredits(credits + winAmount);
       
       try {
         winSound.current.play().catch(() => {});
       } catch (error) {
         // Silent fallback
       }
+    } else if (
+      finalSymbols[0] === finalSymbols[1] || 
+      finalSymbols[1] === finalSymbols[2] || 
+      finalSymbols[0] === finalSymbols[2]
+    ) {
+      // Two matching symbols
+      const winAmount = 20;
+      setWin(winAmount);
+      setCredits(credits + winAmount);
     }
   };
   
@@ -104,46 +113,76 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
   };
   
   const buyCredits = (amount: number) => {
-    setCredits(prev => prev + amount);
+    setCredits(credits + amount);
     setBuyModalOpen(false);
   };
-
-  const generateCoupon = () => {
-    setCredits(prev => prev + 10);
-    setWin(10);
-    setTimeout(() => setWin(null), 2000);
-  };
-
+  
   return (
     <div className="glass-card overflow-hidden transform hover:scale-[1.02] transition-all duration-300">
-      <SlotMachineHeader />
+      <div className="bg-gray-800 text-white px-4 py-2 flex items-center space-x-2">
+        <div className="flex space-x-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+        </div>
+        <span className="font-mono flex-1 text-center">Prueba Neptuno</span>
+      </div>
       
       <div className="bg-gradient-to-b from-[#1e293b] to-[#0f172a] p-6">
         <div className="flex flex-col items-center">
-          <div className="bg-gradient-to-b from-gray-700 to-gray-900 p-5 rounded-lg mb-6 w-full shadow-inner">
-            <SlotMachineHeader credits={credits} />
-            
-            <div className="grid grid-cols-3 gap-2 bg-white rounded-lg p-4">
-              {reels.map((reel, index) => (
-                <SlotReel 
-                  key={index} 
-                  reel={reel} 
-                  isSpinning={isSpinning} 
-                  index={index}
-                />
-              ))}
-            </div>
-            
-            <SlotMachineResult win={win} />
+          <div className="text-center mb-3">
+            <span className="text-yellow-400 text-sm font-bold">Créditos: {credits}</span>
           </div>
           
-          <SlotMachineControls
-            onSpin={spin}
-            onBuyCredits={() => setBuyModalOpen(true)}
-            onGenerateCoupon={generateCoupon}
-            isSpinning={isSpinning}
-            credits={credits}
-          />
+          <div className="bg-gray-700 p-4 rounded-lg mb-6 w-full flex justify-center">
+            <div className="grid grid-cols-3 gap-3 bg-white rounded-lg p-3">
+              {results.map((symbol, index) => (
+                <div 
+                  key={index} 
+                  className={`w-16 h-16 flex items-center justify-center text-4xl bg-gray-100 rounded border-2 ${
+                    isSpinning ? 'animate-bounce' : ''
+                  } ${win && !isSpinning ? 'border-yellow-500' : 'border-gray-300'}`}
+                >
+                  {symbol}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {win !== null && !isSpinning && (
+            <div className="mb-4">
+              <span className="text-yellow-300 font-bold animate-bounce">
+                {win === 0 ? '¡Casi!' : `¡Ganaste ${win} créditos!`}
+              </span>
+            </div>
+          )}
+          
+          <div className="grid grid-cols-3 gap-4 w-full">
+            <Button 
+              variant="default" 
+              onClick={spin}
+              disabled={isSpinning || credits < 10}
+              className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 hover:scale-105 transition-all"
+            >
+              {isSpinning ? "Girando..." : "Jugar (10)"}
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              onClick={() => setBuyModalOpen(true)}
+              className="border-yellow-500 text-yellow-500 hover:bg-yellow-50 hover:text-yellow-600 hover:scale-105 transition-all"
+            >
+              Comprar
+            </Button>
+            
+            <Button
+              variant="outline"
+              onClick={() => setCredits(credits + 10)}
+              className="border-green-500 text-green-500 hover:bg-green-50 hover:text-green-600 hover:scale-105 transition-all"
+            >
+              Cupón
+            </Button>
+          </div>
         </div>
       </div>
       
@@ -152,7 +191,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
           <DialogHeader>
             <DialogTitle>Comprar créditos</DialogTitle>
             <DialogDescription>
-              Selecciona la cantidad de créditos que deseas comprar
+              Selecciona la cantidad de créditos
             </DialogDescription>
           </DialogHeader>
           
@@ -160,7 +199,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
             <Button 
               variant="outline" 
               onClick={() => buyCredits(10)}
-              className="flex flex-col h-auto py-6 hover:bg-yellow-50 hover:scale-105 transition-all"
+              className="flex flex-col h-auto py-6"
             >
               <span className="text-xl font-bold">10</span>
               <span className="text-sm">créditos</span>
@@ -169,21 +208,21 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ autoSpin = false }) => {
             <Button 
               variant="outline" 
               onClick={() => buyCredits(50)}
-              className="flex flex-col h-auto py-6 border-yellow-500 hover:bg-yellow-50 hover:scale-105 transition-all"
+              className="flex flex-col h-auto py-6 border-yellow-500"
             >
               <span className="text-xl font-bold text-yellow-600">50</span>
               <span className="text-sm">créditos</span>
-              <span className="text-xs text-green-600 font-medium mt-1">+5 gratis</span>
+              <span className="text-xs text-green-600 mt-1">+5 gratis</span>
             </Button>
             
             <Button 
               variant="outline" 
               onClick={() => buyCredits(100)}
-              className="flex flex-col h-auto py-6 border-yellow-600 hover:bg-yellow-50 hover:scale-105 transition-all"
+              className="flex flex-col h-auto py-6 border-yellow-600"
             >
               <span className="text-xl font-bold text-yellow-700">100</span>
               <span className="text-sm">créditos</span>
-              <span className="text-xs text-green-600 font-medium mt-1">+20 gratis</span>
+              <span className="text-xs text-green-600 mt-1">+20 gratis</span>
             </Button>
           </div>
           
