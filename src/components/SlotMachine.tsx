@@ -3,6 +3,25 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+interface SlotReelItemProps {
+  symbol: string;
+  isSpinning: boolean;
+}
+
+const SlotReelItem: React.FC<SlotReelItemProps> = ({ symbol, isSpinning }) => {
+  return (
+    <div 
+      className={`text-4xl aspect-square flex items-center justify-center rounded-md border-2 border-gray-300 bg-gray-50
+        ${isSpinning ? 'animate-spin-slow' : ''}`}
+      style={{ 
+        transition: isSpinning ? 'none' : 'all 0.3s ease-out',
+      }}
+    >
+      {symbol}
+    </div>
+  );
+};
+
 interface SlotMachineProps {
   className?: string;
 }
@@ -23,7 +42,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
     if (credits < 10 || isSpinning) return;
     
     setIsSpinning(true);
-    setCredits(prev => prev - 10); // Cost to play
+    setCredits(credits - 10); // Cost to play
     setWin(null);
 
     try {
@@ -64,7 +83,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
     if (finalResult[0] === finalResult[1] && finalResult[1] === finalResult[2]) {
       const winAmount = getWinAmount(finalResult[0]);
       setWin(winAmount);
-      setCredits(prev => prev + winAmount);
+      setCredits(credits + winAmount);
       
       try {
         winSound.current.play().catch(() => {}); // Ignore autoplay errors
@@ -88,7 +107,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
   };
   
   const buyCredits = (amount: number) => {
-    setCredits(prev => prev + amount);
+    setCredits(credits + amount);
     setBuyModalOpen(false);
   };
 
@@ -112,13 +131,11 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
             
             <div className="grid grid-cols-3 gap-2 bg-white rounded-lg p-4">
               {reels.map((symbol, index) => (
-                <div 
-                  key={index} 
-                  className={`text-4xl aspect-square flex items-center justify-center rounded-md border-2 border-gray-300 bg-gray-50
-                    ${isSpinning ? 'animate-pulse' : ''}`}
-                >
-                  {symbol}
-                </div>
+                <SlotReelItem 
+                  key={index}
+                  symbol={symbol}
+                  isSpinning={isSpinning} 
+                />
               ))}
             </div>
             

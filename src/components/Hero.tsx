@@ -23,15 +23,15 @@ const Hero: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Deploy MVP in minutes, launch in a week
+              🚀Launch in minutes, engagement in moments
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300">
-              De la idea al MRR en tiempo record: no arranques de cero, empieza desde Neptuno.
+              De la idea al MRR en tiempo record: no arranques de cero arranca desde Neptuno.
             </p>
             
             <p className="text-lg md:text-xl text-gray-300">
-              Crea MVP ilimitados con autenficación, seguridad, balanceo, cache, api abierta, dashboard, etc todo configurado de inicio
+              Crea MVP ilimitados listos para producción con todo lo que necesitas para lanzar tu idea al mercado
             </p>
             
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">

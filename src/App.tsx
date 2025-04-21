@@ -15,6 +15,8 @@ import MarketplaceJourney from "./pages/journey/MarketplaceJourney";
 import PizzaJourney from "./pages/journey/PizzaJourney";
 import ContactFormJourney from "./pages/journey/ContactFormJourney";
 import NewsletterJourney from "./pages/journey/NewsletterJourney";
+import About from "./pages/About";
+import Games from "./pages/Games";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/user-dashboard" element={<UserDashboard />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/games" element={<Games />} />
             
             {/* Journey routes */}
             <Route path="/journey/registration" element={<RegistrationJourney />} />
