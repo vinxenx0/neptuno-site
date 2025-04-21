@@ -1,279 +1,281 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from 'sonner';
 
-// Array of symbols for the slot machine
-const symbols = ['7', '💰', '💎', '🔥', '⭐', '🎰'];
-const bonusSymbols = ['🎁', '🏆'];
-const allSymbols = [...symbols, ...bonusSymbols];
+interface JackpotReelProps {
+  symbol: string;
+  spinning: boolean;
+}
 
-// Points for winning combinations
-const pointValues = {
-  '7': 100,
-  '💰': 75,
-  '💎': 50,
-  '🔥': 40,
-  '⭐': 30,
-  '🎰': 20,
-  '🎁': 200,
-  '🏆': 250
+const JackpotReel: React.FC<JackpotReelProps> = ({ symbol, spinning }) => {
+  return (
+    <div className="relative h-24 w-full overflow-hidden bg-gradient-to-b from-gray-700 to-black rounded-md border-2 border-yellow-500">
+      <div 
+        className={`flex items-center justify-center h-full text-4xl
+          ${spinning ? 'animate-slot-reel' : 'animate-none'}`}
+        style={{ transition: spinning ? 'none' : 'all 0.3s ease-out' }}
+      >
+        {symbol}
+      </div>
+    </div>
+  );
 };
 
 const SlotMachineJackpot: React.FC = () => {
-  const [reels, setReels] = useState<string[][]>([
-    [symbols[0], symbols[1], symbols[2]],
-    [symbols[1], symbols[2], symbols[3]],
-    [symbols[2], symbols[3], symbols[4]],
-    [symbols[3], symbols[4], symbols[5]],
-    [symbols[4], symbols[5], symbols[0]]
-  ]);
-  const [spinning, setSpinning] = useState<boolean>(false);
-  const [credits, setCredits] = useState<number>(100);
-  const [bet, setBet] = useState<number>(1);
-  const [win, setWin] = useState<number>(0);
-  const [jackpotValue, setJackpotValue] = useState<number>(1000);
-  const [jackpotProgress, setJackpotProgress] = useState<number>(0);
-  const [winningLines, setWinningLines] = useState<number[]>([]);
-  const { toast } = useToast();
-
-  // Possible winning lines (horizontal, diagonal, etc)
-  const lines = [
-    [[0,0], [1,0], [2,0], [3,0], [4,0]], // Top row
-    [[0,1], [1,1], [2,1], [3,1], [4,1]], // Middle row
-    [[0,2], [1,2], [2,2], [3,2], [4,2]], // Bottom row
-    [[0,0], [1,1], [2,2], [3,1], [4,0]], // V shape
-    [[0,2], [1,1], [2,0], [3,1], [4,2]]  // Inverted V shape
-  ];
-
-  // Slow down the reel spin animation
-  const spinDuration = 2000; // 2 seconds for a slower spin
-
+  const symbols = ['💰', '🏆', '👑', '💎', '🔔'];
+  const [credits, setCredits] = useState(100);
+  const [spinning, setSpinning] = useState(false);
+  const [reels, setReels] = useState(['❓', '❓', '❓', '❓', '❓']);
+  const [win, setWin] = useState<number | null>(null);
+  const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [jackpot, setJackpot] = useState(1000);
+  const [jackpotWon, setJackpotWon] = useState(false);
+  const [bonusLevel, setBonusLevel] = useState(0);
+  const [bonusProgress, setBonusProgress] = useState(0);
+  
+  // Incrementar jackpot cada segundo
   useEffect(() => {
-    const jackpotInterval = setInterval(() => {
-      setJackpotValue(prev => Math.floor(prev * 1.001));
-    }, 5000);
+    const interval = setInterval(() => {
+      setJackpot(prev => Math.round(prev + 1));
+    }, 1000);
     
-    return () => clearInterval(jackpotInterval);
+    return () => clearInterval(interval);
   }, []);
-
+  
   const spin = () => {
-    if (spinning || credits < bet) return;
+    if (credits < 20 || spinning) return;
     
-    // Deduct bet amount from credits
-    setCredits(prev => prev - bet);
-    setWin(0);
-    setWinningLines([]);
     setSpinning(true);
+    setCredits(credits - 20); // Cost to play
+    setWin(null);
+    setJackpotWon(false);
     
-    // Contribute to jackpot
-    const contribution = bet * 0.1;
-    setJackpotValue(prev => Math.floor(prev + contribution));
-    setJackpotProgress(prev => Math.min(prev + (bet * 2), 100));
-
-    // Generate new random symbols for each reel
-    const newReels: string[][] = [];
+    // Contribuir al jackpot
+    setJackpot(prev => prev + 5);
     
-    for (let i = 0; i < 5; i++) {
-      const reelSymbols: string[] = [];
-      for (let j = 0; j < 3; j++) {
-        // Add a small chance for bonus symbols
-        const useBonus = Math.random() < 0.05;
-        if (useBonus) {
-          reelSymbols.push(bonusSymbols[Math.floor(Math.random() * bonusSymbols.length)]);
-        } else {
-          reelSymbols.push(symbols[Math.floor(Math.random() * symbols.length)]);
-        }
-      }
-      newReels.push(reelSymbols);
-    }
-    
-    // Simulate spinning effect
+    // Animation timing
     setTimeout(() => {
-      setReels(newReels);
-      checkWin(newReels);
+      const result = Array(5).fill('').map(() => 
+        symbols[Math.floor(Math.random() * symbols.length)]
+      );
+      
+      setReels(result);
       setSpinning(false);
-    }, spinDuration);
+      
+      // Increment bonus progress
+      setBonusProgress(prev => {
+        const newProgress = Math.min(prev + 10, 100);
+        if (newProgress === 100 && bonusLevel < 3) {
+          toast.success(`¡Has alcanzado el nivel de bonus ${bonusLevel + 1}!`);
+          setBonusLevel(prev => prev + 1);
+          return 0;
+        }
+        return newProgress;
+      });
+      
+      // Check for wins
+      const uniqueSymbols = new Set(result);
+      if (uniqueSymbols.size === 1) {
+        // 5 iguales - jackpot!
+        setJackpotWon(true);
+        setWin(jackpot);
+        setCredits(credits + jackpot);
+        setJackpot(1000); // Reset jackpot
+        toast.success('¡JACKPOT! 🎉🎊', {
+          description: `¡Has ganado ${jackpot} créditos!`,
+          duration: 8000,
+        });
+      } else if (countMaxOccurrences(result) >= 4) {
+        // 4 iguales
+        const winAmount = 200 * (bonusLevel + 1);
+        setWin(winAmount);
+        setCredits(credits + winAmount);
+        toast('¡Gran victoria! 🎉', {
+          description: `¡Has ganado ${winAmount} créditos!`
+        });
+      } else if (countMaxOccurrences(result) === 3) {
+        // 3 iguales
+        const winAmount = 50 * (bonusLevel + 1);
+        setWin(winAmount);
+        setCredits(credits + winAmount);
+      }
+    }, 3000); // Longer animation for jackpot machine
   };
-
-  const checkWin = (finalReels: string[][]) => {
-    let totalWin = 0;
-    const winners: number[] = [];
+  
+  // Helper to count max occurrences of any symbol
+  const countMaxOccurrences = (arr: string[]) => {
+    const counts: Record<string, number> = {};
+    let maxCount = 0;
     
-    // Check each winning line
-    lines.forEach((line, lineIndex) => {
-      const lineSymbols = line.map(([reel, pos]) => finalReels[reel][pos]);
-      
-      // Count occurrences of each symbol in the line
-      const counts: Record<string, number> = {};
-      lineSymbols.forEach(sym => {
-        counts[sym] = (counts[sym] || 0) + 1;
-      });
-      
-      // Find the most common symbol and its count
-      let maxCount = 0;
-      let maxSymbol = '';
-      
-      Object.entries(counts).forEach(([symbol, count]) => {
-        if (count > maxCount) {
-          maxCount = count;
-          maxSymbol = symbol;
-        }
-      });
-      
-      // Award win based on consecutive matches starting from left
-      let consecutiveCount = 0;
-      for (let i = 0; i < lineSymbols.length; i++) {
-        if (lineSymbols[i] === maxSymbol) {
-          consecutiveCount++;
-        } else {
-          break;
-        }
-      }
-      
-      // Only count wins of 3 or more consecutive symbols
-      if (consecutiveCount >= 3) {
-        const lineWin = bet * (pointValues[maxSymbol] || 10) * (consecutiveCount - 2);
-        totalWin += lineWin;
-        winners.push(lineIndex);
-        
-        // Check for jackpot (all 5 symbols match and are 7s)
-        if (consecutiveCount === 5 && maxSymbol === '7') {
-          toast({
-            title: "¡JACKPOT!",
-            description: `¡Has ganado el jackpot de ${jackpotValue} créditos!`,
-          });
-          totalWin += jackpotValue;
-          setJackpotValue(1000);
-          setJackpotProgress(0);
-        }
-      }
-    });
-    
-    if (totalWin > 0) {
-      setCredits(prev => prev + totalWin);
-      setWin(totalWin);
-      setWinningLines(winners);
-      
-      toast({
-        title: "¡Ganaste!",
-        description: `Has ganado ${totalWin} créditos`,
-      });
+    for (const item of arr) {
+      counts[item] = (counts[item] || 0) + 1;
+      maxCount = Math.max(maxCount, counts[item]);
     }
     
-    // Check if jackpot progress is full
-    if (jackpotProgress >= 100) {
-      const bonusCredits = Math.floor(Math.random() * 50) + 10;
-      toast({
-        title: "¡Bonus de Jackpot!",
-        description: `Has recibido ${bonusCredits} créditos de bonus`,
-      });
-      setCredits(prev => prev + bonusCredits);
-      setJackpotProgress(0);
-    }
+    return maxCount;
+  };
+  
+  const buyCredits = (amount: number) => {
+    setCredits(credits + amount);
+    setBuyModalOpen(false);
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-900 via-purple-900 to-blue-900 rounded-lg shadow-xl p-5 w-full flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <div className="text-yellow-400 font-bold text-xl">MEGA JACKPOT</div>
-        <div className="bg-black bg-opacity-50 text-yellow-300 px-3 py-1 rounded-full animate-pulse">
-          Jackpot: {jackpotValue} créditos
-        </div>
+    <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg shadow-xl overflow-hidden">
+      <div className="bg-gradient-to-r from-yellow-500 to-amber-600 text-white px-4 py-3 font-bold text-center text-xl">
+        MEGA JACKPOT
       </div>
       
-      {/* Jackpot meter */}
-      <div className="mb-4">
-        <p className="text-white text-xs mb-1">Progreso de Jackpot:</p>
-        <Progress 
-          value={jackpotProgress} 
-          className="h-2 bg-gray-700"
-        />
-      </div>
-      
-      {/* Slot display */}
-      <div className="bg-gray-900 border-4 border-yellow-700 rounded-lg p-3 mb-4 shadow-inner">
-        <div className="flex justify-between">
-          {reels.map((reel, reelIndex) => (
-            <div 
-              key={reelIndex} 
-              className={`flex flex-col bg-gradient-to-b from-gray-800 to-gray-900 p-2 rounded mx-0.5 relative overflow-hidden ${spinning ? 'spinning' : ''}`}
-            >
-              {reel.map((symbol, symbolIndex) => (
-                <div 
-                  key={symbolIndex}
-                  className={`text-4xl h-16 w-16 flex items-center justify-center my-0.5 rounded
-                    ${winningLines.some(lineIdx => lines[lineIdx].some(([r, p]) => r === reelIndex && p === symbolIndex)) 
-                      ? 'bg-yellow-500 animate-pulse' : 'bg-gray-700'}`}
-                >
-                  <span className={`${spinning ? 'animate-pulse' : ''}`}>{symbol}</span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Controls */}
-      <div className="flex justify-between items-center">
-        <div className="bg-gray-800 rounded-lg p-2 text-white">
-          <p>Créditos: <span className="text-yellow-400">{credits}</span></p>
-          <p>Apuesta: <span className="text-yellow-400">{bet}</span></p>
-          {win > 0 && <p>Ganancia: <span className="text-green-400">{win}</span></p>}
+      <div className="p-6">
+        {/* Jackpot display */}
+        <div className="bg-black flex justify-center items-center mb-4 border-2 border-yellow-500 rounded-md p-2">
+          <div className="text-yellow-500 text-2xl md:text-4xl font-bold font-mono animate-pulse">
+            {jackpot.toLocaleString()} 
+          </div>
         </div>
         
-        <div className="flex flex-col items-center">
-          <div className="flex space-x-2 mb-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setBet(prev => Math.max(1, prev - 1))}
-              disabled={spinning}
-              className="bg-gray-700 text-white hover:bg-gray-600"
+        <div className="bg-gray-900 p-4 rounded-lg mb-4 border border-yellow-600">
+          <div className="flex justify-between mb-3">
+            <span className="text-yellow-400 text-sm font-bold">Créditos: {credits}</span>
+            <span className="text-amber-400 text-sm font-bold">Bonus Lvl: {bonusLevel}</span>
+          </div>
+          
+          <div className="grid grid-cols-5 gap-2 mb-3">
+            {reels.map((symbol, index) => (
+              <JackpotReel 
+                key={index} 
+                spinning={spinning} 
+                symbol={symbol} 
+              />
+            ))}
+          </div>
+          
+          {win && (
+            <div className={`text-center p-2 rounded-md ${jackpotWon ? 'bg-yellow-500 animate-ping' : 'bg-yellow-600/30 animate-pulse'}`}>
+              <span className={`${jackpotWon ? 'text-black text-xl' : 'text-yellow-300'} font-bold`}>
+                ¡GANASTE {win} CRÉDITOS!
+              </span>
+            </div>
+          )}
+          
+          {/* Bonus progress */}
+          <div className="mt-4">
+            <div className="flex justify-between text-xs text-gray-400 mb-1">
+              <span>Progreso de bonus</span>
+              <span>{bonusProgress}%</span>
+            </div>
+            <Progress value={bonusProgress} className="h-2" indicatorClassName="bg-amber-500" />
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <Button 
+            variant="default" 
+            onClick={spin}
+            disabled={spinning || credits < 20}
+            className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold"
+          >
+            {spinning ? "Girando..." : "Jugar (20 créditos)"}
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            onClick={() => setBuyModalOpen(true)}
+            className="border-yellow-500 text-yellow-500"
+          >
+            Comprar créditos
+          </Button>
+        </div>
+        
+        <div className="mt-4 bg-gray-800/50 p-3 rounded text-xs text-gray-300 grid grid-cols-2">
+          <div>
+            <h3 className="font-bold mb-1 text-yellow-500">Premios:</h3>
+            <ul className="space-y-0.5">
+              <li className="flex justify-between">
+                <span>5 iguales</span>
+                <span className="text-yellow-400">¡JACKPOT!</span>
+              </li>
+              <li className="flex justify-between">
+                <span>4 iguales</span>
+                <span>200 x Nivel</span>
+              </li>
+              <li className="flex justify-between">
+                <span>3 iguales</span>
+                <span>50 x Nivel</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-bold mb-1 text-amber-500">Niveles de Bonus:</h3>
+            <ul className="space-y-0.5">
+              <li className="flex items-center">
+                <div className={`w-2 h-2 rounded-full ${bonusLevel >= 1 ? 'bg-amber-500' : 'bg-gray-600'} mr-1`}></div>
+                <span>Nivel 1: x2 ganancias</span>
+              </li>
+              <li className="flex items-center">
+                <div className={`w-2 h-2 rounded-full ${bonusLevel >= 2 ? 'bg-amber-500' : 'bg-gray-600'} mr-1`}></div>
+                <span>Nivel 2: x3 ganancias</span>
+              </li>
+              <li className="flex items-center">
+                <div className={`w-2 h-2 rounded-full ${bonusLevel >= 3 ? 'bg-amber-500' : 'bg-gray-600'} mr-1`}></div>
+                <span>Nivel 3: x4 ganancias</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      {/* Buy Credits Modal */}
+      <Dialog open={buyModalOpen} onOpenChange={setBuyModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Comprar créditos</DialogTitle>
+            <DialogDescription>
+              ¡Compra más créditos para seguir jugando!
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid grid-cols-3 gap-4 py-4">
+            <Button 
+              variant="outline" 
+              onClick={() => buyCredits(100)}
+              className="flex flex-col h-auto py-6"
             >
-              -
+              <span className="text-xl font-bold">100</span>
+              <span className="text-sm">créditos</span>
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setBet(prev => Math.min(10, prev + 1))}
-              disabled={spinning}
-              className="bg-gray-700 text-white hover:bg-gray-600"
+            
+            <Button 
+              variant="outline" 
+              onClick={() => buyCredits(250)}
+              className="flex flex-col h-auto py-6 border-yellow-500"
             >
-              +
+              <span className="text-xl font-bold text-yellow-600">250</span>
+              <span className="text-sm">créditos</span>
+              <span className="text-xs text-green-600 font-medium mt-1">+10% bonus</span>
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              onClick={() => buyCredits(500)}
+              className="flex flex-col h-auto py-6 border-amber-500"
+            >
+              <span className="text-xl font-bold text-amber-600">500</span>
+              <span className="text-sm">créditos</span>
+              <span className="text-xs text-green-600 font-medium mt-1">+20% bonus</span>
             </Button>
           </div>
-          <Button
-            onClick={spin}
-            disabled={spinning || credits < bet}
-            className={`bg-red-600 hover:bg-red-700 text-white w-24 ${spinning ? 'opacity-50' : ''}`}
-          >
-            {spinning ? "Girando..." : "¡Girar!"}
-          </Button>
-        </div>
-        
-        <div className="bg-gray-800 rounded-lg p-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCredits(prev => prev + 100)}
-            className="bg-green-700 text-white hover:bg-green-600"
-          >
-            +100 créditos
-          </Button>
-        </div>
-      </div>
-      
-      <style jsx>{`
-        @keyframes spin {
-          0% { transform: translateY(-300px); }
-          100% { transform: translateY(300px); }
-        }
-        .spinning span {
-          animation: spin ${spinDuration/1000}s linear;
-        }
-      `}</style>
+          
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setBuyModalOpen(false)}>
+              Cancelar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

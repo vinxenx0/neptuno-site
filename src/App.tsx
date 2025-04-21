@@ -17,9 +17,6 @@ import ContactFormJourney from "./pages/journey/ContactFormJourney";
 import NewsletterJourney from "./pages/journey/NewsletterJourney";
 import About from "./pages/About";
 import Games from "./pages/Games";
-import TermsOfService from "./pages/legal/TermsOfService";
-import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
-import CookiePolicy from "./pages/legal/CookiePolicy";
 
 const queryClient = new QueryClient();
 
@@ -44,11 +41,6 @@ const App = () => (
             <Route path="/journey/pizza" element={<PizzaJourney />} />
             <Route path="/journey/contact-form" element={<ContactFormJourney />} />
             <Route path="/journey/newsletter" element={<NewsletterJourney />} />
-            
-            {/* Legal pages */}
-            <Route path="/legal/terms-of-service" element={<TermsOfService />} />
-            <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/legal/cookie-policy" element={<CookiePolicy />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
