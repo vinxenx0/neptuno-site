@@ -1,17 +1,10 @@
 
 import React from 'react';
 import { Card } from './ui/card';
-import { ArrowRight, UserRound, Users, ShoppingBag, Pizza, FormInput, Mail, Gamepad } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { ArrowRight, UserRound, Users, ShoppingBag, Pizza, FormInput, Mail } from 'lucide-react';
 
 const JourneysSection: React.FC = () => {
-  const navigate = useNavigate();
-
-  const handleNavigate = (path: string) => {
-    navigate(path);
-    window.scrollTo(0, 0);
-  };
-  
   const journeys = [
     {
       icon: <UserRound className="h-8 w-8 text-white" />,
@@ -54,13 +47,6 @@ const JourneysSection: React.FC = () => {
       description: "Aumenta suscriptores con recompensas por interacción",
       color: "bg-gradient-to-br from-violet-600 to-purple-700",
       path: "/journey/newsletter"
-    },
-    {
-      icon: <Gamepad className="h-8 w-8 text-white" />,
-      title: "Juegos online",
-      description: "Máquinas tragaperras y juegos para engagement",
-      color: "bg-gradient-to-br from-amber-500 to-red-600",
-      path: "/journey/games"
     }
   ];
 
@@ -76,11 +62,7 @@ const JourneysSection: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {journeys.map((journey, index) => (
-            <div 
-              key={index}
-              onClick={() => handleNavigate(journey.path)}
-              className="cursor-pointer"
-            >
+            <Link to={journey.path} key={index}>
               <Card className="hover:shadow-lg transition-all duration-300 h-full overflow-hidden border-0">
                 <div className={`${journey.color} p-6 h-full flex flex-col`}>
                   <div className="bg-white/20 p-4 rounded-xl inline-block mb-4">
@@ -94,7 +76,7 @@ const JourneysSection: React.FC = () => {
                   </div>
                 </div>
               </Card>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

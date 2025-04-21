@@ -1,7 +1,7 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Shield, Zap, Code } from 'lucide-react';
+import { ArrowRight, Code, Shield, Zap } from 'lucide-react';
 import SlotMachine from './SlotMachine';
 
 const Hero: React.FC = () => {
@@ -23,15 +23,15 @@ const Hero: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Go-to market in minutes, in-game engagement in moments
+              Deploy MVP in minutes, launch in a week
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300">
-              <span className="font-bold">De la idea al MRR en tiempo record:</span> no arranques de cero, empieza desde Neptuno.
+              De la idea al MRR en tiempo record: no arranques de cero, empieza desde Neptuno.
             </p>
             
             <p className="text-lg md:text-xl text-gray-300">
-              Crea MVP ilimitados listos para producción con todo lo que necesitas para lanzar tu proyecto al mercado
+              Crea MVP ilimitados con autenficación, seguridad, balanceo, cache, api abierta, dashboard, etc todo configurado de inicio
             </p>
             
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
           </div>
           
           <div className="lg:w-1/2 animate-slide-in">
-            <SlotMachine autoSpin={true} />
+            <SlotMachine />
           </div>
         </div>
       </div>

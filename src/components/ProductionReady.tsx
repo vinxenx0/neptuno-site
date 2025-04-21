@@ -14,99 +14,86 @@ const ProductionReady: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Architecture Card - Enhanced with better animations */}
+          {/* Architecture Card */}
           <div className="bg-gradient-to-br from-white to-gray-100 rounded-xl shadow-xl overflow-hidden col-span-1 lg:col-span-2 border border-gray-200">
             <div className="p-6">
               <h3 className="text-xl font-bold mb-6 text-gray-800">Arquitectura Dockerizada y Balanceada</h3>
               
-              <div className="relative h-80 overflow-hidden bg-gradient-to-br from-blue-50 to-gray-50 rounded-lg p-4">
-                {/* Animated Architecture Diagram - Enhanced version */}
+              <div className="relative h-80 overflow-hidden">
+                {/* Animated Architecture Diagram */}
                 <div className="absolute w-full h-full">
                   {/* Internet/Users */}
-                  <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-white/90 border border-blue-200 rounded-lg p-3 text-center w-40 shadow-lg animate-pulse-slow">
-                    <div className="text-sm font-medium text-gray-800 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
-                        <path d="M12 8v8"/>
-                        <path d="M8 12h8"/>
-                      </svg>
-                      Usuario/Internet
-                    </div>
+                  <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 rounded-lg p-2 text-center w-36 animate-pulse-gentle">
+                    <div className="text-sm font-medium text-gray-800">Usuario/Internet</div>
                   </div>
                   
-                  {/* Connection lines animated */}
-                  <div className="absolute top-[60px] left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-blue-300 animate-pulse-slow"></div>
+                  {/* Connection line */}
+                  <div className="absolute top-[60px] left-1/2 transform -translate-x-1/2 w-0.5 h-8 bg-gray-300"></div>
                   
                   {/* Nginx Proxy */}
-                  <div className="absolute top-[70px] left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-300 rounded-lg p-4 text-center w-64 shadow-md hover:shadow-lg transition-all">
+                  <div className="absolute top-[70px] left-1/2 transform -translate-x-1/2 bg-blue-50 border border-blue-200 rounded-lg p-3 text-center w-60">
                     <div className="flex items-center justify-center mb-1">
-                      <Network size={20} className="text-blue-600 mr-2" />
+                      <Network size={18} className="text-neptuno-blue mr-2" />
                       <span className="font-medium text-gray-800">Neptuno Proxy</span>
                     </div>
-                    <div className="text-xs text-gray-600 bg-white/70 rounded p-1">
-                      Nginx + SSL + HTTP/2 + Cache Distribuido
-                    </div>
+                    <div className="text-xs text-gray-600">Nginx + SSL + HTTP/2 + Cache</div>
                   </div>
                   
-                  {/* Connection lines animated */}
-                  <div className="absolute top-[125px] left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gradient-to-b from-blue-300 to-green-300"></div>
-                  <div className="absolute top-[130px] left-[calc(50%-60px)] transform -translate-x-1/2 w-0.5 h-20 bg-gradient-to-br from-blue-300 to-purple-300 rotate-45"></div>
-                  <div className="absolute top-[130px] left-[calc(50%+60px)] transform -translate-x-1/2 w-0.5 h-20 bg-gradient-to-br from-blue-300 to-indigo-300 -rotate-45"></div>
+                  {/* Connection lines */}
+                  <div className="absolute top-[125px] left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gray-300"></div>
+                  <div className="absolute top-[130px] left-[calc(50%-60px)] transform -translate-x-1/2 w-0.5 h-20 bg-gray-300 rotate-45"></div>
+                  <div className="absolute top-[130px] left-[calc(50%+60px)] transform -translate-x-1/2 w-0.5 h-20 bg-gray-300 -rotate-45"></div>
                   
-                  {/* API Containers with enhanced animations */}
-                  <div className="absolute top-[170px] left-1/4 transform -translate-x-1/2 bg-gradient-to-br from-green-50 to-green-100 border border-green-300 rounded-lg p-3 text-center w-40 shadow-md animate-float hover:shadow-lg transition-all">
+                  {/* API Containers */}
+                  <div className="absolute top-[170px] left-1/4 transform -translate-x-1/2 bg-green-50 border border-green-200 rounded-lg p-3 text-center w-40 animate-float">
                     <div className="flex items-center justify-center mb-1">
                       <Server size={18} className="text-green-600 mr-2" />
                       <span className="font-medium text-gray-800">Neptuno API</span>
                     </div>
-                    <div className="text-xs text-gray-600 bg-white/70 rounded p-1">FastAPI + OpenAPI</div>
-                    <div className="mt-2 bg-green-100 px-2 py-1 rounded text-xs text-green-800 animate-pulse-slow">Replica 1</div>
+                    <div className="text-xs text-gray-600">FastAPI + OpenAPI</div>
+                    <div className="mt-2 bg-green-100 px-2 py-1 rounded text-xs text-green-800">Replica 1</div>
                   </div>
                   
-                  <div className="absolute top-[145px] left-[40%] transform -translate-x-1/2 bg-gradient-to-br from-green-50 to-green-100 border border-green-300 rounded-lg p-3 text-center w-40 shadow-md animate-float hover:shadow-lg transition-all" style={{animationDelay: '0.5s'}}>
+                  <div className="absolute top-[145px] left-[40%] transform -translate-x-1/2 bg-green-50 border border-green-200 rounded-lg p-3 text-center w-40 animate-float" style={{animationDelay: '0.5s'}}>
                     <div className="flex items-center justify-center mb-1">
                       <Server size={18} className="text-green-600 mr-2" />
                       <span className="font-medium text-gray-800">Neptuno API</span>
                     </div>
-                    <div className="text-xs text-gray-600 bg-white/70 rounded p-1">FastAPI + OpenAPI</div>
-                    <div className="mt-2 bg-green-100 px-2 py-1 rounded text-xs text-green-800 animate-pulse-slow">Replica 2</div>
+                    <div className="text-xs text-gray-600">FastAPI + OpenAPI</div>
+                    <div className="mt-2 bg-green-100 px-2 py-1 rounded text-xs text-green-800">Replica 2</div>
                   </div>
                   
-                  {/* Dashboard Containers with enhanced animations */}
-                  <div className="absolute top-[140px] right-[30%] bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-300 rounded-lg p-3 text-center w-44 shadow-md animate-float hover:shadow-lg transition-all" style={{animationDelay: '0.7s'}}>
+                  {/* Dashboard Container */}
+                  <div className="absolute top-[140px] right-[30%] bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center w-44 animate-float" style={{animationDelay: '0.7s'}}>
                     <div className="flex items-center justify-center mb-1">
                       <BarChart size={18} className="text-indigo-600 mr-2" />
                       <span className="font-medium text-gray-800">Neptuno Dashboard</span>
                     </div>
-                    <div className="text-xs text-gray-600 bg-white/70 rounded p-1">Next.js + TailwindCSS</div>
+                    <div className="text-xs text-gray-600">Next.js + TailwindCSS</div>
                   </div>
                   
-                  <div className="absolute top-[185px] right-[15%] bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-300 rounded-lg p-3 text-center w-44 shadow-md animate-float hover:shadow-lg transition-all" style={{animationDelay: '0.9s'}}>
+                  <div className="absolute top-[185px] right-[15%] bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center w-44 animate-float" style={{animationDelay: '0.9s'}}>
                     <div className="flex items-center justify-center mb-1">
                       <BarChart size={18} className="text-indigo-600 mr-2" />
                       <span className="font-medium text-gray-800">Neptuno Dashboard</span>
                     </div>
-                    <div className="text-xs text-gray-600 bg-white/70 rounded p-1">Next.js + TailwindCSS</div>
-                    <div className="mt-2 bg-indigo-100 px-2 py-1 rounded text-xs text-indigo-800 animate-pulse-slow">Replica</div>
+                    <div className="text-xs text-gray-600">Next.js + TailwindCSS</div>
+                    <div className="mt-2 bg-indigo-100 px-2 py-1 rounded text-xs text-indigo-800">Replica</div>
                   </div>
                   
-                  {/* Connection lines to DB with better styling */}
-                  <div className="absolute top-[230px] left-1/4 transform -translate-x-1/2 w-0.5 h-12 bg-gradient-to-b from-green-300 to-purple-300"></div>
-                  <div className="absolute top-[230px] left-[40%] transform -translate-x-1/2 w-0.5 h-12 bg-gradient-to-b from-green-300 to-purple-300"></div>
-                  <div className="absolute top-[230px] right-[30%] w-0.5 h-12 bg-gradient-to-b from-indigo-300 to-purple-300"></div>
-                  <div className="absolute top-[230px] right-[15%] w-0.5 h-12 bg-gradient-to-b from-indigo-300 to-purple-300"></div>
+                  {/* Connection lines to DB */}
+                  <div className="absolute top-[230px] left-1/4 transform -translate-x-1/2 w-0.5 h-12 bg-gray-300"></div>
+                  <div className="absolute top-[230px] left-[40%] transform -translate-x-1/2 w-0.5 h-12 bg-gray-300"></div>
+                  <div className="absolute top-[230px] right-[30%] w-0.5 h-12 bg-gray-300"></div>
+                  <div className="absolute top-[230px] right-[15%] w-0.5 h-12 bg-gray-300"></div>
                   
-                  {/* DB Container with enhanced styling */}
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-300 rounded-lg p-4 text-center w-52 shadow-lg hover:shadow-xl transition-all">
+                  {/* DB Container */}
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-purple-50 border border-purple-200 rounded-lg p-3 text-center w-48">
                     <div className="flex items-center justify-center mb-1">
                       <Database size={18} className="text-purple-600 mr-2" />
-                      <span className="font-medium text-gray-800">Neptuno DB Cluster</span>
+                      <span className="font-medium text-gray-800">Neptuno DB</span>
                     </div>
-                    <div className="text-xs text-gray-600 bg-white/70 rounded p-1">PostgreSQL + TimescaleDB</div>
-                    <div className="flex justify-center gap-2 mt-2">
-                      <div className="bg-purple-100 px-2 py-1 rounded-full text-xs text-purple-800">Primary</div>
-                      <div className="bg-purple-100 px-2 py-1 rounded-full text-xs text-purple-800">Replica</div>
-                    </div>
+                    <div className="text-xs text-gray-600">PostgreSQL + Replicación</div>
                   </div>
                 </div>
               </div>

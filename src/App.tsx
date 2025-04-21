@@ -9,14 +9,12 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
-import About from "./pages/About";
 import RegistrationJourney from "./pages/journey/RegistrationJourney";
 import CorporateCultureJourney from "./pages/journey/CorporateCultureJourney";
 import MarketplaceJourney from "./pages/journey/MarketplaceJourney";
 import PizzaJourney from "./pages/journey/PizzaJourney";
 import ContactFormJourney from "./pages/journey/ContactFormJourney";
 import NewsletterJourney from "./pages/journey/NewsletterJourney";
-import GamesJourney from "./pages/journey/GamesJourney";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +29,6 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/user-dashboard" element={<UserDashboard />} />
-            <Route path="/about" element={<About />} />
             
             {/* Journey routes */}
             <Route path="/journey/registration" element={<RegistrationJourney />} />
@@ -40,7 +37,6 @@ const App = () => (
             <Route path="/journey/pizza" element={<PizzaJourney />} />
             <Route path="/journey/contact-form" element={<ContactFormJourney />} />
             <Route path="/journey/newsletter" element={<NewsletterJourney />} />
-            <Route path="/journey/games" element={<GamesJourney />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
