@@ -1,810 +1,1027 @@
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Beef, Check, ChevronRight, CookingPot, 
-  Home, Leaf, MapPin, ShoppingBasket, Truck, Utensils
-} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import JourneyLayout from '@/components/journey/JourneyLayout';
 import RewardCard from '@/components/journey/RewardCard';
 import RewardPopup from '@/components/journey/RewardPopup';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from 'sonner';
+import { Pizza, ChevronRight, Clock, MapPin, Home, ArrowRight, Star, Check } from "lucide-react";
 
-const SIZES = [
-  { name: "Pequeña", price: 8.95 },
-  { name: "Mediana", price: 12.95 },
-  { name: "Grande", price: 15.95 },
-  { name: "Familiar", price: 19.95 },
+// Pizza options
+const bases = [
+  { id: "clasica", name: "Clásica", price: 8.99, points: 5, description: "Masa tradicional de borde grueso" },
+  { id: "fina", name: "Fina", price: 8.99, points: 5, description: "Masa crujiente extrafina" },
+  { id: "integral", name: "Integral", price: 9.99, points: 8, description: "Masa de harina integral" },
+  { id: "singluten", name: "Sin gluten", price: 10.99, points: 10, description: "Especial para celíacos" },
 ];
 
-const CRUSTS = [
-  { name: "Fina", price: 0 },
-  { name: "Normal", price: 0 },
-  { name: "Pan", price: 1.5 },
-  { name: "Borde de queso", price: 2.5 },
+const sauces = [
+  { id: "tomate", name: "Tomate", price: 0, points: 2, description: "Salsa de tomate casera" },
+  { id: "bbq", name: "Barbacoa", price: 1, points: 3, description: "Salsa BBQ ahumada" },
+  { id: "carbonara", name: "Carbonara", price: 1.5, points: 3, description: "Cremosa salsa blanca" },
+  { id: "pesto", name: "Pesto", price: 2, points: 5, description: "Pesto de albahaca fresca" },
 ];
 
-const SAUCES = [
-  { name: "Tomate", price: 0 },
-  { name: "BBQ", price: 0.75 },
-  { name: "Crema fresca", price: 0.75 },
-  { name: "Pesto", price: 1.25 },
+const cheeses = [
+  { id: "mozzarella", name: "Mozzarella", price: 0, points: 2, description: "El clásico queso para pizza" },
+  { id: "cheddar", name: "Cheddar", price: 1, points: 3, description: "Queso fuerte de sabor intenso" },
+  { id: "gouda", name: "Gouda", price: 1.5, points: 3, description: "Suave y ligeramente dulce" },
+  { id: "azul", name: "Queso azul", price: 2, points: 5, description: "Intenso queso de venas azules" },
 ];
 
-const TOPPINGS = [
-  { name: "Mozzarella extra", emoji: "🧀", price: 1.5 },
-  { name: "Pepperoni", emoji: "🍕", price: 1.75 },
-  { name: "Champiñones", emoji: "🍄", price: 1.25 },
-  { name: "Bacon", emoji: "🥓", price: 1.75 },
-  { name: "Pollo", emoji: "🍗", price: 1.75 },
-  { name: "Cebolla", emoji: "🧅", price: 1 },
-  { name: "Pimientos", emoji: "🌶️", price: 1 },
-  { name: "Aceitunas", emoji: "🫒", price: 1.25 },
-  { name: "Piña", emoji: "🍍", price: 1.25 },
-  { name: "Maíz", emoji: "🌽", price: 1 },
-  { name: "Atún", emoji: "🐟", price: 1.75 },
-  { name: "Jamón", emoji: "🍖", price: 1.75 },
+const toppings = [
+  { id: "jamon", name: "Jamón", price: 1.50, points: 3, description: "Jamón cocido en dados" },
+  { id: "pepperoni", name: "Pepperoni", price: 1.50, points: 3, description: "Rodajas de pepperoni picante" },
+  { id: "champinones", name: "Champiñones", price: 1.00, points: 2, description: "Champiñones laminados" },
+  { id: "aceitunas", name: "Aceitunas", price: 1.00, points: 2, description: "Aceitunas negras" },
+  { id: "pimiento", name: "Pimiento", price: 1.00, points: 2, description: "Pimiento rojo en tiras" },
+  { id: "cebolla", name: "Cebolla", price: 0.75, points: 1, description: "Cebolla roja en aros" },
+  { id: "pina", name: "Piña", price: 1.25, points: 2, description: "Piña en dados" },
+  { id: "atun", name: "Atún", price: 1.50, points: 3, description: "Atún en conserva" },
+  { id: "bacon", name: "Bacon", price: 1.75, points: 4, description: "Bacon crujiente en tiras" },
+  { id: "maiz", name: "Maíz", price: 0.75, points: 1, description: "Granos de maíz dulce" },
 ];
 
-const DELIVERY_OPTIONS = [
-  { name: "Recoger en tienda", emoji: "🏬", price: 0 },
-  { name: "Envío a domicilio", emoji: "🛵", price: 2.95 },
-];
-
-interface PizzaSelection {
-  size: string;
-  crust: string;
-  sauce: string;
-  toppings: string[];
-  delivery: string;
-  notes: string;
-}
-
-interface PaymentInfo {
-  name: string;
-  phone: string;
-  address: string;
-  coupon: string;
-  pointsToUse: number;
-  cardNumber: string;
-  cardExpiry: string;
-  cardCVC: string;
-}
-
-const PizzaJourney = () => {
-  const [step, setStep] = useState(1);
-  const [points, setPoints] = useState(15);
-  const [selection, setSelection] = useState<PizzaSelection>({
-    size: "Mediana",
-    crust: "Normal",
-    sauce: "Tomate",
-    toppings: [],
-    delivery: "",
-    notes: "",
+const PizzaJourney: React.FC = () => {
+  const { toast } = useToast();
+  
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [selectedBase, setSelectedBase] = useState<string>("");
+  const [selectedSauce, setSelectedSauce] = useState<string>("");
+  const [selectedCheese, setSelectedCheese] = useState<string>("");
+  const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
+  const [extraIndications, setExtraIndications] = useState<string>("");
+  const [showPreview, setShowPreview] = useState<boolean>(false);
+  const [points, setPoints] = useState<number>(0);
+  const [showReward, setShowReward] = useState<boolean>(false);
+  const [currentReward, setCurrentReward] = useState<{ title: string; points: number }>({
+    title: "", points: 0
   });
-  const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>({
+  const [progress, setProgress] = useState<number>(0);
+  const [deliveryMethod, setDeliveryMethod] = useState<string>(""); // "delivery" or "pickup"
+  const [customerDetails, setCustomerDetails] = useState({
     name: "",
     phone: "",
     address: "",
-    coupon: "",
-    pointsToUse: 0,
-    cardNumber: "",
-    cardExpiry: "",
-    cardCVC: "",
+    postalCode: "",
   });
-  const [showReward, setShowReward] = useState(false);
-  const [lastReward, setLastReward] = useState({ title: "", points: 0 });
-  const [showCouponInput, setShowCouponInput] = useState(false);
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [coupon, setCoupon] = useState<string>("");
+  const [pointsToRedeem, setPointsToRedeem] = useState<number>(0);
+  const [couponApplied, setCouponApplied] = useState<boolean>(false);
   
-  // Calcular precio
+  // Calculate price
   const calculatePrice = () => {
     let price = 0;
-    // Tamaño
-    price += SIZES.find(s => s.name === selection.size)?.price || 0;
-    // Masa
-    price += CRUSTS.find(c => c.name === selection.crust)?.price || 0;
-    // Salsa
-    price += SAUCES.find(s => s.name === selection.sauce)?.price || 0;
-    // Ingredientes
-    price += selection.toppings.reduce((acc, topping) => {
-      return acc + (TOPPINGS.find(t => t.name === topping)?.price || 0);
-    }, 0);
-    // Envío
-    price += DELIVERY_OPTIONS.find(d => d.name === selection.delivery)?.price || 0;
     
-    // Descuento por cupón
-    if (appliedCoupon === "NEPTUNO10") {
-      price = price * 0.9; // 10% de descuento
-    } else if (appliedCoupon === "PIZZA5") {
-      price = Math.max(0, price - 5); // 5€ de descuento
+    if (selectedBase) {
+      const base = bases.find(b => b.id === selectedBase);
+      if (base) price += base.price;
     }
     
-    // Descuento por puntos
-    const pointDiscount = paymentInfo.pointsToUse * 0.10; // Cada punto vale 0.10€
-    price = Math.max(0, price - pointDiscount);
+    if (selectedSauce) {
+      const sauce = sauces.find(s => s.id === selectedSauce);
+      if (sauce) price += sauce.price;
+    }
     
-    return price.toFixed(2);
+    if (selectedCheese) {
+      const cheese = cheeses.find(c => c.id === selectedCheese);
+      if (cheese) price += cheese.price;
+    }
+    
+    selectedToppings.forEach(toppingId => {
+      const topping = toppings.find(t => t.id === toppingId);
+      if (topping) price += topping.price;
+    });
+    
+    // Add delivery fee if applicable
+    if (deliveryMethod === "delivery") {
+      price += 2.50;
+    }
+    
+    // Apply coupon discount
+    if (couponApplied) {
+      price = price * 0.9; // 10% off
+    }
+    
+    // Apply points discount (each point = 0.10€)
+    price -= pointsToRedeem * 0.10;
+    
+    return Math.max(price, 0);
   };
   
-  const handleSizeSelect = (size: string) => {
-    setSelection({ ...selection, size });
-    if (step === 1) {
-      setTimeout(() => setStep(2), 500);
+  // Calculate total points earned
+  const calculatePointsEarned = () => {
+    let earnedPoints = 0;
+    
+    if (selectedBase) {
+      const base = bases.find(b => b.id === selectedBase);
+      if (base) earnedPoints += base.points;
+    }
+    
+    if (selectedSauce) {
+      const sauce = sauces.find(s => s.id === selectedSauce);
+      if (sauce) earnedPoints += sauce.points;
+    }
+    
+    if (selectedCheese) {
+      const cheese = cheeses.find(c => c.id === selectedCheese);
+      if (cheese) earnedPoints += cheese.points;
+    }
+    
+    selectedToppings.forEach(toppingId => {
+      const topping = toppings.find(t => t.id === toppingId);
+      if (topping) earnedPoints += topping.points;
+    });
+    
+    // Bonus points for selecting 3 or more toppings
+    if (selectedToppings.length >= 3) {
+      earnedPoints += 5;
+    }
+    
+    return earnedPoints;
+  };
+  
+  // Update progress
+  useEffect(() => {
+    let newProgress = 0;
+    
+    switch (currentStep) {
+      case 1:
+        newProgress = selectedBase ? 20 : 0;
+        break;
+      case 2:
+        newProgress = 20 + (selectedSauce ? 15 : 0);
+        break;
+      case 3:
+        newProgress = 35 + (selectedCheese ? 15 : 0);
+        break;
+      case 4:
+        newProgress = 50 + Math.min(selectedToppings.length * 5, 25);
+        break;
+      case 5:
+        newProgress = 75 + (deliveryMethod ? 10 : 0);
+        break;
+      case 6:
+        // Check if customer details are filled
+        const detailsFilled = customerDetails.name && customerDetails.phone &&
+          (deliveryMethod === "pickup" || (customerDetails.address && customerDetails.postalCode));
+        newProgress = 85 + (detailsFilled ? 15 : 0);
+        break;
+    }
+    
+    setProgress(newProgress);
+  }, [
+    currentStep, selectedBase, selectedSauce, 
+    selectedCheese, selectedToppings, 
+    deliveryMethod, customerDetails
+  ]);
+  
+  const handleNextStep = () => {
+    if (currentStep === 1 && !selectedBase) {
+      toast({
+        title: "Selecciona una base",
+        description: "Debes seleccionar una base para tu pizza.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (currentStep === 2 && !selectedSauce) {
+      toast({
+        title: "Selecciona una salsa",
+        description: "Debes seleccionar una salsa para tu pizza.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (currentStep === 3 && !selectedCheese) {
+      toast({
+        title: "Selecciona un queso",
+        description: "Debes seleccionar un queso para tu pizza.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (currentStep === 5 && !deliveryMethod) {
+      toast({
+        title: "Selecciona método de entrega",
+        description: "Debes seleccionar si quieres entrega a domicilio o recoger en tienda.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (currentStep === 6) {
+      if (!customerDetails.name || !customerDetails.phone) {
+        toast({
+          title: "Información incompleta",
+          description: "Debes proporcionar tu nombre y teléfono.",
+          variant: "destructive",
+        });
+        return;
+      }
       
-      // Reward for first selection
-      if (!lastReward.title) {
-        setLastReward({ title: "¡Primera elección!", points: 5 });
-        setPoints(prev => prev + 5);
-        setShowReward(true);
+      if (deliveryMethod === "delivery" && (!customerDetails.address || !customerDetails.postalCode)) {
+        toast({
+          title: "Dirección incompleta",
+          description: "Debes proporcionar tu dirección completa para la entrega.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Place order
+      finishOrder();
+      return;
+    }
+    
+    // Award points when moving to next steps
+    if (currentStep === 1 && selectedBase) {
+      const base = bases.find(b => b.id === selectedBase);
+      awardPointsWithPopup(`¡Base ${base?.name} seleccionada!`, base?.points || 0);
+    }
+    
+    if (currentStep === 2 && selectedSauce) {
+      const sauce = sauces.find(s => s.id === selectedSauce);
+      awardPointsWithPopup(`¡Salsa ${sauce?.name} añadida!`, sauce?.points || 0);
+    }
+    
+    if (currentStep === 3 && selectedCheese) {
+      const cheese = cheeses.find(c => c.id === selectedCheese);
+      awardPointsWithPopup(`¡Queso ${cheese?.name} añadido!`, cheese?.points || 0);
+    }
+    
+    if (currentStep === 4) {
+      if (selectedToppings.length > 0) {
+        awardPointsWithPopup("¡Toppings seleccionados!", 5);
+      }
+      
+      // Bonus for 3 or more toppings
+      if (selectedToppings.length >= 3) {
+        setTimeout(() => {
+          awardPointsWithPopup("¡Bonus por variedad!", 5);
+        }, 1500);
       }
     }
-  };
-  
-  const handleCrustSelect = (crust: string) => {
-    setSelection({ ...selection, crust });
-    if (step === 2) setTimeout(() => setStep(3), 500);
-  };
-  
-  const handleSauceSelect = (sauce: string) => {
-    setSelection({ ...selection, sauce });
-    if (step === 3) setTimeout(() => setStep(4), 500);
-  };
-  
-  const handleToppingToggle = (topping: string) => {
-    const newToppings = selection.toppings.includes(topping)
-      ? selection.toppings.filter(t => t !== topping)
-      : [...selection.toppings, topping];
     
-    setSelection({ ...selection, toppings: newToppings });
-    
-    // Reward for selecting 3+ toppings
-    if (newToppings.length === 3 && selection.toppings.length < 3) {
-      setLastReward({ title: "¡Gourmet!", points: 10 });
-      setPoints(prev => prev + 10);
-      setShowReward(true);
+    setCurrentStep(currentStep + 1);
+  };
+  
+  const handlePreviousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
     }
   };
   
-  const handleDeliverySelect = (delivery: string) => {
-    setSelection({ ...selection, delivery });
-    setTimeout(() => setStep(6), 500);
-    
-    // Reward for completing the pizza
-    setLastReward({ title: "¡Pizza personalizada!", points: 15 });
-    setPoints(prev => prev + 15);
+  const toggleTopping = (toppingId: string) => {
+    setSelectedToppings(prev => {
+      if (prev.includes(toppingId)) {
+        return prev.filter(id => id !== toppingId);
+      } else {
+        return [...prev, toppingId];
+      }
+    });
+  };
+  
+  const awardPointsWithPopup = (title: string, pts: number) => {
+    setPoints(prev => prev + pts);
+    setCurrentReward({
+      title,
+      points: pts
+    });
     setShowReward(true);
   };
   
-  const proceedToCheckout = () => {
-    if (!selection.delivery) {
-      toast.error("Por favor selecciona un método de entrega");
-      return;
-    }
-    setStep(6);
-  };
-  
-  const handleSubmit = () => {
-    if (paymentInfo.name && (selection.delivery === "Recoger en tienda" || paymentInfo.address)) {
-      setStep(7);
-      
-      // Final reward for completing order
-      setLastReward({ title: "¡Pedido completado!", points: 25 });
-      setPoints(prev => prev + 25 - paymentInfo.pointsToUse); // Restar puntos usados
-      setShowReward(true);
-      
-      toast.success("¡Tu pedido ha sido realizado con éxito!");
-    } else {
-      toast.error("Por favor completa todos los campos requeridos");
-    }
-  };
-  
-  const handlePointsChange = (value: number) => {
-    if (value >= 0 && value <= points) {
-      setPaymentInfo({ ...paymentInfo, pointsToUse: value });
-    }
+  const finishOrder = () => {
+    const earnedPoints = calculatePointsEarned();
+    awardPointsWithPopup("¡Pedido completo!", earnedPoints);
+    setProgress(100);
+    setShowPreview(true);
+    
+    toast({
+      title: "¡Pedido realizado con éxito!",
+      description: `Recibirás tu pizza ${deliveryMethod === "delivery" ? "en tu dirección" : "en tienda"} en breve.`,
+    });
   };
   
   const applyCoupon = () => {
-    if (paymentInfo.coupon === "NEPTUNO10" || paymentInfo.coupon === "PIZZA5") {
-      setAppliedCoupon(paymentInfo.coupon);
-      toast.success(`Cupón ${paymentInfo.coupon} aplicado correctamente`);
-      setShowCouponInput(false);
+    // Simple coupon validation
+    const validCoupons = ["PIZZA10", "NEPTUNO20", "GAMIFICA15"];
+    
+    if (validCoupons.includes(coupon.toUpperCase())) {
+      setCouponApplied(true);
+      toast({
+        title: "Cupón aplicado",
+        description: "10% de descuento añadido a tu pedido.",
+      });
+      
+      // Award points for using a coupon
+      awardPointsWithPopup("¡Cupón aplicado!", 5);
     } else {
-      toast.error("Cupón no válido");
+      toast({
+        title: "Cupón inválido",
+        description: "El código introducido no es válido.",
+        variant: "destructive",
+      });
     }
   };
   
-  const generateCoupon = () => {
-    const couponCode = "PIZZA" + Math.floor(Math.random() * 1000);
-    navigator.clipboard.writeText(couponCode).catch(() => {});
-    toast.success(`Cupón ${couponCode} generado y copiado al portapapeles`, {
-      description: "Válido para tu próximo pedido"
+  const redeemPoints = () => {
+    if (points < pointsToRedeem) {
+      toast({
+        title: "Puntos insuficientes",
+        description: `Sólo tienes ${points} puntos disponibles.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setPoints(prev => prev - pointsToRedeem);
+    
+    toast({
+      title: "Puntos canjeados",
+      description: `Has canjeado ${pointsToRedeem} puntos por ${(pointsToRedeem * 0.10).toFixed(2)}€ de descuento.`,
     });
   };
-
+  
+  const resetOrder = () => {
+    setCurrentStep(1);
+    setSelectedBase("");
+    setSelectedSauce("");
+    setSelectedCheese("");
+    setSelectedToppings([]);
+    setExtraIndications("");
+    setShowPreview(false);
+    setDeliveryMethod("");
+    setCustomerDetails({
+      name: "",
+      phone: "",
+      address: "",
+      postalCode: "",
+    });
+    setCoupon("");
+    setPointsToRedeem(0);
+    setCouponApplied(false);
+  };
+  
   return (
-    <JourneyLayout 
-      currentPoints={points} 
-      journeyTitle="Creador de Pizza con Lógica Gamificada"
-      progress={step >= 7 ? 100 : (step / 7) * 100}
-    >
-      <div className="max-w-4xl mx-auto">
-        {/* Pasos para pizza */}
-        <div className="mb-6 hidden sm:flex items-center justify-between">
-          <div className={`flex items-center ${step >= 1 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${step >= 1 ? 'border-purple-600 bg-purple-100' : 'border-gray-300'}`}>
-              {step > 1 ? <Check size={16} /> : 1}
-            </div>
-            <span className="ml-2 text-sm font-medium">Tamaño</span>
-          </div>
-          <div className="w-12 h-0.5 bg-gray-300"></div>
-          
-          <div className={`flex items-center ${step >= 2 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${step >= 2 ? 'border-purple-600 bg-purple-100' : 'border-gray-300'}`}>
-              {step > 2 ? <Check size={16} /> : 2}
-            </div>
-            <span className="ml-2 text-sm font-medium">Masa</span>
-          </div>
-          <div className="w-12 h-0.5 bg-gray-300"></div>
-          
-          <div className={`flex items-center ${step >= 3 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${step >= 3 ? 'border-purple-600 bg-purple-100' : 'border-gray-300'}`}>
-              {step > 3 ? <Check size={16} /> : 3}
-            </div>
-            <span className="ml-2 text-sm font-medium">Salsa</span>
-          </div>
-          <div className="w-12 h-0.5 bg-gray-300"></div>
-          
-          <div className={`flex items-center ${step >= 4 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${step >= 4 ? 'border-purple-600 bg-purple-100' : 'border-gray-300'}`}>
-              {step > 4 ? <Check size={16} /> : 4}
-            </div>
-            <span className="ml-2 text-sm font-medium">Ingredientes</span>
-          </div>
-          <div className="w-12 h-0.5 bg-gray-300"></div>
-          
-          <div className={`flex items-center ${step >= 5 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${step >= 5 ? 'border-purple-600 bg-purple-100' : 'border-gray-300'}`}>
-              {step > 5 ? <Check size={16} /> : 5}
-            </div>
-            <span className="ml-2 text-sm font-medium">Entrega</span>
-          </div>
-          <div className="w-12 h-0.5 bg-gray-300"></div>
-          
-          <div className={`flex items-center ${step >= 6 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${step >= 6 ? 'border-purple-600 bg-purple-100' : 'border-gray-300'}`}>
-              {step > 6 ? <Check size={16} /> : 6}
-            </div>
-            <span className="ml-2 text-sm font-medium">Pago</span>
-          </div>
-        </div>
-
-        {/* Step indicator for mobile */}
-        <div className="mb-4 sm:hidden">
-          <p className="text-sm text-gray-500 mb-1">Paso {step} de 7</p>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-purple-600 transition-all duration-500" 
-              style={{ width: `${(step / 7) * 100}%` }}
-            ></div>
-          </div>
-        </div>
-        
-        {/* Tamaño */}
-        {step === 1 && (
-          <div className="animate-fade-in">
-            <h2 className="text-2xl font-bold mb-6">Selecciona el tamaño de tu pizza</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {SIZES.map((size) => (
-                <Button
-                  key={size.name}
-                  variant={selection.size === size.name ? "default" : "outline"}
-                  className={`h-auto py-6 ${selection.size === size.name ? 'bg-purple-600' : ''}`}
-                  onClick={() => handleSizeSelect(size.name)}
-                >
-                  <div className="flex flex-col items-center">
-                    <span className="text-lg font-bold mb-1">{size.name}</span>
-                    <span className="text-sm">{size.price.toFixed(2)}€</span>
-                  </div>
-                </Button>
-              ))}
-            </div>
-            <div className="mt-6">
-              <RewardCard title="¡Gana puntos!" description="Completa tu pedido para ganar puntos que podrás canjear por descuentos." />
-            </div>
-          </div>
-        )}
-        
-        {/* Masa */}
-        {step === 2 && (
-          <div className="animate-fade-in">
-            <h2 className="text-2xl font-bold mb-6">Elige tu tipo de masa</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {CRUSTS.map((crust) => (
-                <Button
-                  key={crust.name}
-                  variant={selection.crust === crust.name ? "default" : "outline"}
-                  className={`h-auto py-6 ${selection.crust === crust.name ? 'bg-purple-600' : ''}`}
-                  onClick={() => handleCrustSelect(crust.name)}
-                >
-                  <div className="flex flex-col items-center">
-                    <span className="text-lg font-bold mb-1">{crust.name}</span>
-                    {crust.price > 0 && <span className="text-sm">+{crust.price.toFixed(2)}€</span>}
-                    {crust.price === 0 && <span className="text-sm text-green-600">Incluido</span>}
-                  </div>
-                </Button>
-              ))}
-            </div>
-            <div className="mt-6 flex">
-              <Button variant="ghost" onClick={() => setStep(1)}>
-                <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
-                Atrás
-              </Button>
-            </div>
-          </div>
-        )}
-        
-        {/* Salsa */}
-        {step === 3 && (
-          <div className="animate-fade-in">
-            <h2 className="text-2xl font-bold mb-6">Selecciona tu salsa base</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {SAUCES.map((sauce) => (
-                <Button
-                  key={sauce.name}
-                  variant={selection.sauce === sauce.name ? "default" : "outline"}
-                  className={`h-auto py-6 ${selection.sauce === sauce.name ? 'bg-purple-600' : ''}`}
-                  onClick={() => handleSauceSelect(sauce.name)}
-                >
-                  <div className="flex flex-col items-center">
-                    <span className="text-lg font-bold mb-1">{sauce.name}</span>
-                    {sauce.price > 0 && <span className="text-sm">+{sauce.price.toFixed(2)}€</span>}
-                    {sauce.price === 0 && <span className="text-sm text-green-600">Incluido</span>}
-                  </div>
-                </Button>
-              ))}
-            </div>
-            <div className="mt-6 flex">
-              <Button variant="ghost" onClick={() => setStep(2)}>
-                <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
-                Atrás
-              </Button>
-            </div>
-          </div>
-        )}
-        
-        {/* Ingredientes */}
-        {step === 4 && (
-          <div className="animate-fade-in">
-            <h2 className="text-2xl font-bold mb-6">Escoge tus ingredientes</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {TOPPINGS.map((topping) => (
-                <Button
-                  key={topping.name}
-                  variant={selection.toppings.includes(topping.name) ? "default" : "outline"}
-                  className={`h-auto py-4 ${selection.toppings.includes(topping.name) ? 'bg-purple-600' : ''}`}
-                  onClick={() => handleToppingToggle(topping.name)}
-                >
-                  <div className="flex flex-col items-center">
-                    <span className="text-2xl mb-1">{topping.emoji}</span>
-                    <span className="text-sm font-medium">{topping.name}</span>
-                    <span className="text-xs">+{topping.price.toFixed(2)}€</span>
-                  </div>
-                </Button>
-              ))}
-            </div>
-            <div className="mt-6 flex justify-between">
-              <Button variant="ghost" onClick={() => setStep(3)}>
-                <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
-                Atrás
-              </Button>
-              
-              <Button variant="default" onClick={() => setStep(5)}>
-                Continuar
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        )}
-        
-        {/* Opciones de entrega */}
-        {step === 5 && (
-          <div className="animate-fade-in">
-            <h2 className="text-2xl font-bold mb-6">¿Cómo prefieres recibir tu pedido?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {DELIVERY_OPTIONS.map((option) => (
-                <Button
-                  key={option.name}
-                  variant={selection.delivery === option.name ? "default" : "outline"}
-                  className={`h-auto py-8 ${selection.delivery === option.name ? 'bg-purple-600' : ''}`}
-                  onClick={() => handleDeliverySelect(option.name)}
-                >
-                  <div className="flex flex-col items-center">
-                    <span className="text-3xl mb-3">{option.emoji}</span>
-                    <span className="text-lg font-bold mb-1">{option.name}</span>
-                    {option.price > 0 && <span className="text-sm">+{option.price.toFixed(2)}€</span>}
-                    {option.price === 0 && <span className="text-sm text-green-600">Gratuito</span>}
-                  </div>
-                </Button>
-              ))}
-            </div>
-            
-            <div className="mt-8">
-              <h3 className="font-medium mb-2">Notas especiales (opcional)</h3>
-              <Textarea 
-                placeholder="Instrucciones adicionales para tu pedido..."
-                value={selection.notes}
-                onChange={(e) => setSelection({ ...selection, notes: e.target.value })}
-                className="mb-4"
-              />
-            </div>
-            
-            <div className="mt-6 flex justify-between">
-              <Button variant="ghost" onClick={() => setStep(4)}>
-                <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
-                Atrás
-              </Button>
-            </div>
-          </div>
-        )}
-        
-        {/* Checkout */}
-        {step === 6 && (
-          <div className="animate-fade-in">
-            <h2 className="text-2xl font-bold mb-6">Finalizar pedido</h2>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              <Card className="p-6">
-                <h3 className="text-lg font-bold mb-4">Datos de contacto</h3>
+    <JourneyLayout journeyTitle="Pizzería con lógica gamificada" progress={progress} currentPoints={points}>
+      <div className="max-w-5xl mx-auto">
+        {!showPreview ? (
+          <div className="grid md:grid-cols-4 gap-6">
+            {/* Left sidebar with steps */}
+            <div className="md:col-span-1">
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <h2 className="font-medium text-lg mb-4">Tu pizza</h2>
                 
                 <div className="space-y-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-1">
-                      Nombre completo <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      id="name"
-                      value={paymentInfo.name}
-                      onChange={(e) => setPaymentInfo({ ...paymentInfo, name: e.target.value })}
-                      placeholder="Tu nombre"
-                      required
-                    />
+                  <div className="flex items-start">
+                    <div className={`rounded-full p-2 ${currentStep >= 1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                      <span className="text-xs font-semibold">1</span>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium">Base</h3>
+                      {selectedBase && (
+                        <p className="text-xs text-gray-500">
+                          {bases.find(b => b.id === selectedBase)?.name}
+                        </p>
+                      )}
+                    </div>
                   </div>
                   
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium mb-1">
-                      Teléfono <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      id="phone"
-                      value={paymentInfo.phone}
-                      onChange={(e) => setPaymentInfo({ ...paymentInfo, phone: e.target.value })}
-                      placeholder="Tu teléfono"
-                      required
-                    />
+                  <div className="flex items-start">
+                    <div className={`rounded-full p-2 ${currentStep >= 2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                      <span className="text-xs font-semibold">2</span>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium">Salsa</h3>
+                      {selectedSauce && (
+                        <p className="text-xs text-gray-500">
+                          {sauces.find(s => s.id === selectedSauce)?.name}
+                        </p>
+                      )}
+                    </div>
                   </div>
                   
-                  {selection.delivery === "Envío a domicilio" && (
-                    <div>
-                      <label htmlFor="address" className="block text-sm font-medium mb-1">
-                        Dirección de entrega <span className="text-red-500">*</span>
-                      </label>
-                      <Textarea
-                        id="address"
-                        value={paymentInfo.address}
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, address: e.target.value })}
-                        placeholder="Tu dirección completa"
-                        required
-                      />
+                  <div className="flex items-start">
+                    <div className={`rounded-full p-2 ${currentStep >= 3 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                      <span className="text-xs font-semibold">3</span>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium">Queso</h3>
+                      {selectedCheese && (
+                        <p className="text-xs text-gray-500">
+                          {cheeses.find(c => c.id === selectedCheese)?.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className={`rounded-full p-2 ${currentStep >= 4 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                      <span className="text-xs font-semibold">4</span>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium">Ingredientes</h3>
+                      {selectedToppings.length > 0 && (
+                        <p className="text-xs text-gray-500">
+                          {selectedToppings.length} seleccionados
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className={`rounded-full p-2 ${currentStep >= 5 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                      <span className="text-xs font-semibold">5</span>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium">Entrega</h3>
+                      {deliveryMethod && (
+                        <p className="text-xs text-gray-500">
+                          {deliveryMethod === "delivery" ? "A domicilio" : "Recoger en tienda"}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className={`rounded-full p-2 ${currentStep >= 6 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                      <span className="text-xs font-semibold">6</span>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium">Pago</h3>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Price summary */}
+                <div className="mt-8 pt-6 border-t">
+                  <div className="flex justify-between text-sm">
+                    <span>Subtotal:</span>
+                    <span>{calculatePrice().toFixed(2)}€</span>
+                  </div>
+                  
+                  {currentStep >= 5 && deliveryMethod === "delivery" && (
+                    <div className="flex justify-between text-sm mt-2">
+                      <span>Envío:</span>
+                      <span>2.50€</span>
                     </div>
                   )}
                   
-                  {/* Opciones de entrega */}
-                  <div>
-                    <h4 className="font-medium text-sm mb-2">Método de entrega:</h4>
-                    <div className="flex items-center bg-gray-50 p-3 rounded-md">
-                      {selection.delivery === "Recoger en tienda" ? (
-                        <>
-                          <MapPin className="text-purple-500 mr-2" size={18} />
-                          <div>
-                            <p className="font-medium">Recoger en tienda</p>
-                            <p className="text-xs text-gray-500">Listo en aprox. 20 minutos</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <Truck className="text-purple-500 mr-2" size={18} />
-                          <div>
-                            <p className="font-medium">Envío a domicilio</p>
-                            <p className="text-xs text-gray-500">Entrega en aprox. 30-45 minutos</p>
-                          </div>
-                        </>
-                      )}
+                  {couponApplied && (
+                    <div className="flex justify-between text-sm text-green-600 mt-2">
+                      <span>Descuento cupón:</span>
+                      <span>-10%</span>
                     </div>
+                  )}
+                  
+                  {pointsToRedeem > 0 && (
+                    <div className="flex justify-between text-sm text-green-600 mt-2">
+                      <span>Descuento puntos:</span>
+                      <span>-{(pointsToRedeem * 0.10).toFixed(2)}€</span>
+                    </div>
+                  )}
+                  
+                  <div className="flex justify-between font-semibold mt-2 pt-2 border-t">
+                    <span>Total:</span>
+                    <span>{calculatePrice().toFixed(2)}€</span>
+                  </div>
+                  
+                  <div className="flex items-center mt-2 text-xs text-yellow-600">
+                    <Star size={12} className="mr-1 fill-yellow-500" />
+                    <span>Ganarás {calculatePointsEarned()} puntos</span>
                   </div>
                 </div>
                 
-                <h3 className="text-lg font-bold mt-8 mb-4">Método de pago</h3>
-                
-                <div className="space-y-4">
-                  <div>
-                    <label htmlFor="cardNumber" className="block text-sm font-medium mb-1">
-                      Número de tarjeta <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      id="cardNumber"
-                      value={paymentInfo.cardNumber}
-                      onChange={(e) => setPaymentInfo({ ...paymentInfo, cardNumber: e.target.value })}
-                      placeholder="0000 0000 0000 0000"
-                      required
+                {/* Rewards */}
+                {points >= 25 && currentStep >= 4 && (
+                  <div className="mt-6 pt-4 border-t">
+                    <RewardCard 
+                      title="¡Completa tu pedido!" 
+                      points={10}
                     />
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
+                )}
+              </div>
+            </div>
+            
+            {/* Main content area */}
+            <div className="md:col-span-3">
+              <Card className="shadow-sm">
+                <CardContent className="p-6">
+                  {currentStep === 1 && (
                     <div>
-                      <label htmlFor="cardExpiry" className="block text-sm font-medium mb-1">
-                        Caducidad <span className="text-red-500">*</span>
-                      </label>
-                      <Input
-                        id="cardExpiry"
-                        value={paymentInfo.cardExpiry}
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, cardExpiry: e.target.value })}
-                        placeholder="MM/AA"
-                        required
-                      />
+                      <h2 className="text-2xl font-bold mb-2">Elige tu base</h2>
+                      <p className="text-gray-600 mb-6">
+                        Comienza seleccionando el tipo de masa para tu pizza
+                      </p>
+                      
+                      <RadioGroup value={selectedBase} onValueChange={setSelectedBase} className="gap-4">
+                        {bases.map(base => (
+                          <div key={base.id} className="flex items-start space-x-2">
+                            <RadioGroupItem value={base.id} id={base.id} className="mt-1" />
+                            <Label htmlFor={base.id} className="flex-1 flex flex-col cursor-pointer">
+                              <div className="flex justify-between">
+                                <span className="font-medium">{base.name}</span>
+                                <div className="flex items-center">
+                                  <Badge variant="outline" className="mr-2">
+                                    <Star size={12} className="mr-1 text-yellow-500 fill-yellow-500" />
+                                    {base.points} pts
+                                  </Badge>
+                                  <span>{base.price.toFixed(2)}€</span>
+                                </div>
+                              </div>
+                              <span className="text-sm text-gray-500">{base.description}</span>
+                            </Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
                     </div>
-                    <div>
-                      <label htmlFor="cardCVC" className="block text-sm font-medium mb-1">
-                        CVC <span className="text-red-500">*</span>
-                      </label>
-                      <Input
-                        id="cardCVC"
-                        value={paymentInfo.cardCVC}
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, cardCVC: e.target.value })}
-                        placeholder="123"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-              </Card>
-              
-              <div>
-                <Card className="p-6 mb-6">
-                  <h3 className="text-lg font-bold mb-4">Resumen del pedido</h3>
+                  )}
                   
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <div className="flex items-center">
-                        <Utensils className="text-gray-400 mr-2" size={16} />
-                        <span>Tamaño {selection.size}</span>
-                      </div>
-                      <span className="font-medium">
-                        {SIZES.find(s => s.name === selection.size)?.price.toFixed(2)}€
-                      </span>
+                  {currentStep === 2 && (
+                    <div>
+                      <h2 className="text-2xl font-bold mb-2">Elige tu salsa</h2>
+                      <p className="text-gray-600 mb-6">
+                        Selecciona la salsa base para tu pizza
+                      </p>
+                      
+                      <RadioGroup value={selectedSauce} onValueChange={setSelectedSauce} className="gap-4">
+                        {sauces.map(sauce => (
+                          <div key={sauce.id} className="flex items-start space-x-2">
+                            <RadioGroupItem value={sauce.id} id={sauce.id} className="mt-1" />
+                            <Label htmlFor={sauce.id} className="flex-1 flex flex-col cursor-pointer">
+                              <div className="flex justify-between">
+                                <span className="font-medium">{sauce.name}</span>
+                                <div className="flex items-center">
+                                  <Badge variant="outline" className="mr-2">
+                                    <Star size={12} className="mr-1 text-yellow-500 fill-yellow-500" />
+                                    {sauce.points} pts
+                                  </Badge>
+                                  <span>{sauce.price > 0 ? `+${sauce.price.toFixed(2)}€` : 'Incluida'}</span>
+                                </div>
+                              </div>
+                              <span className="text-sm text-gray-500">{sauce.description}</span>
+                            </Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
                     </div>
-                    
-                    <div className="flex justify-between">
-                      <div className="flex items-center">
-                        <CookingPot className="text-gray-400 mr-2" size={16} />
-                        <span>Masa {selection.crust}</span>
-                      </div>
-                      <span className="font-medium">
-                        {CRUSTS.find(c => c.name === selection.crust)?.price.toFixed(2) === "0.00" 
-                          ? "Incluido" 
-                          : `+${CRUSTS.find(c => c.name === selection.crust)?.price.toFixed(2)}€`
-                        }
-                      </span>
+                  )}
+                  
+                  {currentStep === 3 && (
+                    <div>
+                      <h2 className="text-2xl font-bold mb-2">Elige tu queso</h2>
+                      <p className="text-gray-600 mb-6">
+                        Selecciona el tipo de queso para tu pizza
+                      </p>
+                      
+                      <RadioGroup value={selectedCheese} onValueChange={setSelectedCheese} className="gap-4">
+                        {cheeses.map(cheese => (
+                          <div key={cheese.id} className="flex items-start space-x-2">
+                            <RadioGroupItem value={cheese.id} id={cheese.id} className="mt-1" />
+                            <Label htmlFor={cheese.id} className="flex-1 flex flex-col cursor-pointer">
+                              <div className="flex justify-between">
+                                <span className="font-medium">{cheese.name}</span>
+                                <div className="flex items-center">
+                                  <Badge variant="outline" className="mr-2">
+                                    <Star size={12} className="mr-1 text-yellow-500 fill-yellow-500" />
+                                    {cheese.points} pts
+                                  </Badge>
+                                  <span>{cheese.price > 0 ? `+${cheese.price.toFixed(2)}€` : 'Incluido'}</span>
+                                </div>
+                              </div>
+                              <span className="text-sm text-gray-500">{cheese.description}</span>
+                            </Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
                     </div>
-                    
-                    <div className="flex justify-between">
-                      <div className="flex items-center">
-                        <Beef className="text-gray-400 mr-2" size={16} />
-                        <span>Salsa {selection.sauce}</span>
+                  )}
+                  
+                  {currentStep === 4 && (
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <h2 className="text-2xl font-bold">Elige tus ingredientes</h2>
+                        {selectedToppings.length >= 3 && (
+                          <Badge className="bg-green-500">
+                            +5 pts por combo
+                          </Badge>
+                        )}
                       </div>
-                      <span className="font-medium">
-                        {SAUCES.find(s => s.name === selection.sauce)?.price.toFixed(2) === "0.00" 
-                          ? "Incluido" 
-                          : `+${SAUCES.find(s => s.name === selection.sauce)?.price.toFixed(2)}€`
-                        }
-                      </span>
-                    </div>
-                    
-                    {selection.toppings.length > 0 && (
-                      <div>
-                        <p className="flex items-center mb-1">
-                          <Leaf className="text-gray-400 mr-2" size={16} />
-                          <span>Ingredientes:</span>
-                        </p>
-                        {selection.toppings.map((topping) => (
-                          <div key={topping} className="flex justify-between ml-6 mt-1">
-                            <span>{topping}</span>
-                            <span className="font-medium">
-                              +{TOPPINGS.find(t => t.name === topping)?.price.toFixed(2)}€
-                            </span>
+                      <p className="text-gray-600 mb-6">
+                        Selecciona los ingredientes que deseas añadir (opcional)
+                      </p>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {toppings.map(topping => (
+                          <div key={topping.id} className="flex items-start space-x-2">
+                            <Checkbox 
+                              id={topping.id} 
+                              checked={selectedToppings.includes(topping.id)}
+                              onCheckedChange={() => toggleTopping(topping.id)}
+                              className="mt-1"
+                            />
+                            <Label htmlFor={topping.id} className="flex-1 flex flex-col cursor-pointer">
+                              <div className="flex justify-between">
+                                <span className="font-medium">{topping.name}</span>
+                                <div className="flex items-center">
+                                  <Badge variant="outline" className="mr-2">
+                                    <Star size={12} className="mr-1 text-yellow-500 fill-yellow-500" />
+                                    {topping.points} pts
+                                  </Badge>
+                                  <span>+{topping.price.toFixed(2)}€</span>
+                                </div>
+                              </div>
+                              <span className="text-sm text-gray-500">{topping.description}</span>
+                            </Label>
                           </div>
                         ))}
                       </div>
-                    )}
-                    
-                    {selection.delivery && (
-                      <div className="flex justify-between pt-2 border-t">
-                        <div className="flex items-center">
-                          {selection.delivery === "Recoger en tienda" ? (
-                            <Home className="text-gray-400 mr-2" size={16} />
-                          ) : (
-                            <Truck className="text-gray-400 mr-2" size={16} />
-                          )}
-                          <span>{selection.delivery}</span>
-                        </div>
-                        <span className="font-medium">
-                          {DELIVERY_OPTIONS.find(d => d.name === selection.delivery)?.price.toFixed(2) === "0.00" 
-                            ? "Gratis" 
-                            : `+${DELIVERY_OPTIONS.find(d => d.name === selection.delivery)?.price.toFixed(2)}€`
-                          }
-                        </span>
-                      </div>
-                    )}
-                    
-                    {/* Cupón y puntos */}
-                    <div className="pt-3 border-t">
-                      {showCouponInput ? (
-                        <div className="flex items-center mb-3">
-                          <Input 
-                            value={paymentInfo.coupon}
-                            onChange={(e) => setPaymentInfo({...paymentInfo, coupon: e.target.value})}
-                            placeholder="Introduce tu código de cupón"
-                            className="mr-2"
-                          />
-                          <Button size="sm" onClick={applyCoupon}>Aplicar</Button>
-                        </div>
-                      ) : appliedCoupon ? (
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="flex items-center">
-                            <Badge className="mr-2" variant="secondary">Cupón</Badge>
-                            {appliedCoupon}
-                          </span>
-                          <span className="text-green-600 font-medium">
-                            {appliedCoupon === "NEPTUNO10" ? "-10%" : "-5.00€"}
-                          </span>
-                        </div>
-                      ) : (
-                        <button 
-                          className="text-sm text-purple-600 mb-3 hover:underline flex items-center"
-                          onClick={() => setShowCouponInput(true)}
-                        >
-                          <ShoppingBasket size={16} className="mr-1" />
-                          Tengo un cupón
-                        </button>
-                      )}
                       
-                      <div className="flex flex-col">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm">Tus puntos disponibles: <strong>{points}</strong></span>
-                          <div className="flex items-center">
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => handlePointsChange(0)}
-                              className="h-7 px-2"
-                            >
-                              0
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => handlePointsChange(Math.floor(points / 2))}
-                              className="h-7 px-2 mx-1"
-                            >
-                              {Math.floor(points / 2)}
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => handlePointsChange(points)}
-                              className="h-7 px-2"
-                            >
-                              Todos
-                            </Button>
+                      <div className="mt-6">
+                        <Label htmlFor="extra" className="font-medium mb-2 block">
+                          Instrucciones adicionales (opcional)
+                        </Label>
+                        <Input
+                          id="extra"
+                          value={extraIndications}
+                          onChange={(e) => setExtraIndications(e.target.value)}
+                          placeholder="Ej: poco hecha, sin borde, etc."
+                          className="max-w-md"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  
+                  {currentStep === 5 && (
+                    <div>
+                      <h2 className="text-2xl font-bold mb-2">Método de entrega</h2>
+                      <p className="text-gray-600 mb-6">
+                        Elige cómo quieres recibir tu pedido
+                      </p>
+                      
+                      <RadioGroup value={deliveryMethod} onValueChange={setDeliveryMethod} className="gap-4">
+                        <div className="flex items-start space-x-2">
+                          <RadioGroupItem value="delivery" id="delivery" className="mt-1" />
+                          <Label htmlFor="delivery" className="flex-1 flex flex-col cursor-pointer">
+                            <div className="flex items-center">
+                              <Home size={18} className="mr-2" />
+                              <span className="font-medium">Entrega a domicilio</span>
+                              <Badge className="ml-2 bg-blue-100 text-blue-800 hover:bg-blue-100">+2.50€</Badge>
+                            </div>
+                            <span className="text-sm text-gray-500">Recibe tu pedido en la dirección que indiques</span>
+                          </Label>
+                        </div>
+                        
+                        <div className="flex items-start space-x-2">
+                          <RadioGroupItem value="pickup" id="pickup" className="mt-1" />
+                          <Label htmlFor="pickup" className="flex-1 flex flex-col cursor-pointer">
+                            <div className="flex items-center">
+                              <MapPin size={18} className="mr-2" />
+                              <span className="font-medium">Recoger en tienda</span>
+                              <Badge className="ml-2 bg-green-100 text-green-800 hover:bg-green-100">Gratis</Badge>
+                            </div>
+                            <span className="text-sm text-gray-500">Recoge tu pedido en nuestra tienda</span>
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                      
+                      {deliveryMethod && (
+                        <div className="mt-8">
+                          <h3 className="font-semibold text-lg mb-4">Información de contacto</h3>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="name" className="mb-2 block text-sm">
+                                Nombre completo *
+                              </Label>
+                              <Input
+                                id="name"
+                                value={customerDetails.name}
+                                onChange={(e) => setCustomerDetails({...customerDetails, name: e.target.value})}
+                                placeholder="Tu nombre"
+                              />
+                            </div>
+                            
+                            <div>
+                              <Label htmlFor="phone" className="mb-2 block text-sm">
+                                Teléfono *
+                              </Label>
+                              <Input
+                                id="phone"
+                                value={customerDetails.phone}
+                                onChange={(e) => setCustomerDetails({...customerDetails, phone: e.target.value})}
+                                placeholder="Tu teléfono"
+                              />
+                            </div>
+                          </div>
+                          
+                          {deliveryMethod === "delivery" && (
+                            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="md:col-span-2">
+                                <Label htmlFor="address" className="mb-2 block text-sm">
+                                  Dirección *
+                                </Label>
+                                <Input
+                                  id="address"
+                                  value={customerDetails.address}
+                                  onChange={(e) => setCustomerDetails({...customerDetails, address: e.target.value})}
+                                  placeholder="Tu dirección"
+                                />
+                              </div>
+                              
+                              <div>
+                                <Label htmlFor="postal" className="mb-2 block text-sm">
+                                  Código postal *
+                                </Label>
+                                <Input
+                                  id="postal"
+                                  value={customerDetails.postalCode}
+                                  onChange={(e) => setCustomerDetails({...customerDetails, postalCode: e.target.value})}
+                                  placeholder="Código postal"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  {currentStep === 6 && (
+                    <div>
+                      <h2 className="text-2xl font-bold mb-2">Finalizar y pagar</h2>
+                      <p className="text-gray-600 mb-6">
+                        Revisa tu pedido y completa el pago
+                      </p>
+                      
+                      {/* Resumen del pedido */}
+                      <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                        <h3 className="font-medium mb-3">Resumen del pedido</h3>
+                        <div className="grid grid-cols-3 gap-2 text-sm">
+                          <div>
+                            <div className="text-gray-500">Base:</div>
+                            <div>{bases.find(b => b.id === selectedBase)?.name}</div>
+                          </div>
+                          <div>
+                            <div className="text-gray-500">Salsa:</div>
+                            <div>{sauces.find(s => s.id === selectedSauce)?.name}</div>
+                          </div>
+                          <div>
+                            <div className="text-gray-500">Queso:</div>
+                            <div>{cheeses.find(c => c.id === selectedCheese)?.name}</div>
                           </div>
                         </div>
-                        <div className="flex justify-between mb-1">
-                          <span className="flex items-center">
-                            <span>Puntos a utilizar: </span>
-                            <span className="font-bold ml-1">{paymentInfo.pointsToUse}</span>
-                          </span>
-                          {paymentInfo.pointsToUse > 0 && (
-                            <span className="text-green-600 font-medium">-{(paymentInfo.pointsToUse * 0.10).toFixed(2)}€</span>
-                          )}
+                        
+                        <div className="mt-3">
+                          <div className="text-gray-500 text-sm">Ingredientes:</div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {selectedToppings.length > 0 ? (
+                              selectedToppings.map(id => (
+                                <Badge key={id} variant="outline">
+                                  {toppings.find(t => t.id === id)?.name}
+                                </Badge>
+                              ))
+                            ) : (
+                              <span className="text-sm italic">Sin ingredientes adicionales</span>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>Cada punto = 0.10€</span>
-                          <button 
-                            className="text-purple-600 hover:underline"
-                            onClick={generateCoupon}
-                          >
-                            Generar cupón en su lugar
-                          </button>
+                        
+                        {extraIndications && (
+                          <div className="mt-3">
+                            <div className="text-gray-500 text-sm">Instrucciones:</div>
+                            <div className="text-sm italic">{extraIndications}</div>
+                          </div>
+                        )}
+                        
+                        <div className="mt-3">
+                          <div className="text-gray-500 text-sm">Método de entrega:</div>
+                          <div className="flex items-center">
+                            {deliveryMethod === "delivery" ? (
+                              <>
+                                <Home size={16} className="mr-1" />
+                                <span className="text-sm">Entrega a domicilio</span>
+                              </>
+                            ) : (
+                              <>
+                                <MapPin size={16} className="mr-1" />
+                                <span className="text-sm">Recoger en tienda</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {deliveryMethod === "delivery" && (
+                          <div className="mt-3 text-sm">
+                            <div className="text-gray-500">Dirección de entrega:</div>
+                            <div>{customerDetails.name}</div>
+                            <div>{customerDetails.address}</div>
+                            <div>{customerDetails.postalCode}</div>
+                            <div>Tel: {customerDetails.phone}</div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Cupones y puntos */}
+                      <div className="border rounded-lg p-4 mb-6">
+                        <h3 className="font-medium mb-3">Descuentos</h3>
+                        
+                        {!couponApplied ? (
+                          <div className="flex space-x-2 mb-4">
+                            <Input
+                              value={coupon}
+                              onChange={(e) => setCoupon(e.target.value)}
+                              placeholder="Código de cupón"
+                              className="max-w-xs"
+                            />
+                            <Button onClick={applyCoupon}>
+                              Aplicar
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center mb-4 text-green-600">
+                            <Check size={16} className="mr-1" />
+                            <span>Cupón aplicado: 10% de descuento</span>
+                          </div>
+                        )}
+                        
+                        <div className="border-t pt-4">
+                          <h4 className="text-sm font-medium mb-2">Tus puntos: {points}</h4>
+                          {points > 0 && (
+                            <div className="flex space-x-2">
+                              <Input
+                                type="number"
+                                min="0"
+                                max={points}
+                                value={pointsToRedeem}
+                                onChange={(e) => setPointsToRedeem(parseInt(e.target.value) || 0)}
+                                placeholder="Puntos a canjear"
+                                className="max-w-xs"
+                              />
+                              <Button onClick={redeemPoints}>
+                                Canjear ({(pointsToRedeem * 0.10).toFixed(2)}€)
+                              </Button>
+                            </div>
+                          )}
+                          <p className="text-sm text-gray-500 mt-2">
+                            Cada punto equivale a 0,10€ de descuento
+                          </p>
                         </div>
                       </div>
+                      
+                      {/* Payment methods */}
+                      <div>
+                        <h3 className="font-medium mb-3">Método de pago</h3>
+                        <RadioGroup defaultValue="card">
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="card" id="card" />
+                            <Label htmlFor="card">Tarjeta de crédito</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="paypal" id="paypal" />
+                            <Label htmlFor="paypal">PayPal</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="cash" id="cash" />
+                            <Label htmlFor="cash">Efectivo (solo recogida en tienda)</Label>
+                          </div>
+                        </RadioGroup>
+                      </div>
                     </div>
-                    
-                    <div className="flex justify-between pt-3 border-t text-lg font-bold">
-                      <span>Total:</span>
-                      <span>{calculatePrice()}€</span>
-                    </div>
-                  </div>
-                </Card>
-                
-                <div className="flex justify-between">
-                  <Button variant="ghost" onClick={() => setStep(5)}>
-                    <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
-                    Atrás
-                  </Button>
+                  )}
                   
-                  <Button onClick={handleSubmit} className="bg-purple-600 hover:bg-purple-700">
-                    Realizar pedido
-                    <ChevronRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  <div className="flex justify-between mt-8">
+                    {currentStep > 1 && (
+                      <Button variant="outline" onClick={handlePreviousStep}>
+                        Atrás
+                      </Button>
+                    )}
+                    <Button 
+                      onClick={handleNextStep}
+                      className={`ml-auto ${currentStep === 6 ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                    >
+                      {currentStep === 6 ? 'Realizar pedido' : 'Continuar'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-lg shadow-sm p-8 text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Check size={32} className="text-green-600" />
+            </div>
+            
+            <h2 className="text-2xl font-bold mb-2">¡Pedido realizado con éxito!</h2>
+            <p className="text-gray-600 mb-6">
+              Gracias por tu pedido. Hemos enviado una confirmación a tu teléfono.
+            </p>
+            
+            <div className="bg-gray-50 rounded-lg p-4 max-w-md mx-auto mb-6">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-medium">Detalles del pedido</h3>
+                <Badge>Pedido #12345</Badge>
+              </div>
+              
+              <div className="text-sm text-left">
+                <div className="flex justify-between py-1 border-b">
+                  <span>Pizza {bases.find(b => b.id === selectedBase)?.name}</span>
+                  <span>{bases.find(b => b.id === selectedBase)?.price.toFixed(2)}€</span>
+                </div>
+                
+                {selectedSauce && sauces.find(s => s.id === selectedSauce)?.price > 0 && (
+                  <div className="flex justify-between py-1 border-b">
+                    <span>Salsa {sauces.find(s => s.id === selectedSauce)?.name}</span>
+                    <span>{sauces.find(s => s.id === selectedSauce)?.price.toFixed(2)}€</span>
+                  </div>
+                )}
+                
+                {selectedCheese && cheeses.find(c => c.id === selectedCheese)?.price > 0 && (
+                  <div className="flex justify-between py-1 border-b">
+                    <span>Queso {cheeses.find(c => c.id === selectedCheese)?.name}</span>
+                    <span>{cheeses.find(c => c.id === selectedCheese)?.price.toFixed(2)}€</span>
+                  </div>
+                )}
+                
+                {selectedToppings.map(toppingId => {
+                  const topping = toppings.find(t => t.id === toppingId);
+                  return topping && (
+                    <div key={toppingId} className="flex justify-between py-1 border-b">
+                      <span>{topping.name}</span>
+                      <span>{topping.price.toFixed(2)}€</span>
+                    </div>
+                  );
+                })}
+                
+                {deliveryMethod === "delivery" && (
+                  <div className="flex justify-between py-1 border-b">
+                    <span>Entrega a domicilio</span>
+                    <span>2.50€</span>
+                  </div>
+                )}
+                
+                {couponApplied && (
+                  <div className="flex justify-between py-1 border-b text-green-600">
+                    <span>Descuento cupón (10%)</span>
+                    <span>-{(calculatePrice() * 0.1).toFixed(2)}€</span>
+                  </div>
+                )}
+                
+                {pointsToRedeem > 0 && (
+                  <div className="flex justify-between py-1 border-b text-green-600">
+                    <span>Descuento puntos ({pointsToRedeem} pts)</span>
+                    <span>-{(pointsToRedeem * 0.10).toFixed(2)}€</span>
+                  </div>
+                )}
+                
+                <div className="flex justify-between py-2 font-medium">
+                  <span>Total</span>
+                  <span>{calculatePrice().toFixed(2)}€</span>
+                </div>
+                
+                <div className="mt-3 flex items-center justify-center text-yellow-600">
+                  <Star size={16} className="mr-1 fill-yellow-500" />
+                  <span>Has ganado {calculatePointsEarned()} puntos</span>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-        
-        {/* Confirmation */}
-        {step === 7 && (
-          <div className="animate-fade-in text-center py-12">
-            <div className="bg-green-100 text-green-700 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-              <Check size={32} />
+            
+            <div className="flex items-center justify-center mb-6">
+              <Clock size={20} className="mr-2 text-gray-600" />
+              <span className="text-lg">
+                Tiempo estimado de {deliveryMethod === "delivery" ? "entrega" : "recogida"}: 35-45 minutos
+              </span>
             </div>
             
-            <h2 className="text-2xl font-bold mb-3">¡Pedido realizado con éxito!</h2>
-            <p className="text-lg mb-6">
-              {selection.delivery === "Recoger en tienda" 
-                ? "Podrás recoger tu pedido en aproximadamente 20 minutos." 
-                : "Tu pedido llegará en aproximadamente 30-45 minutos."}
-            </p>
+            <Button onClick={resetOrder} className="mr-4" variant="outline">
+              Volver al inicio
+            </Button>
             
-            <div className="max-w-md mx-auto bg-purple-50 rounded-lg p-4 mb-6">
-              <h3 className="font-bold mb-2">Resumen:</h3>
-              <p className="text-sm">
-                Pizza {selection.size} con masa {selection.crust}, salsa {selection.sauce}
-                {selection.toppings.length > 0 && (
-                  <span> y {selection.toppings.join(", ")}</span>
-                )}
-              </p>
-            </div>
-            
-            <div className="mb-8">
-              <p className="text-lg font-bold text-purple-600">
-                ¡Has ganado {25} puntos con este pedido!
-              </p>
-              <p className="text-sm text-gray-600">
-                {paymentInfo.pointsToUse > 0 
-                  ? `Has utilizado ${paymentInfo.pointsToUse} puntos para obtener un descuento.`
-                  : "Acumula puntos con cada pedido para obtener descuentos."}
-              </p>
-            </div>
-            
-            <Button className="bg-purple-600 hover:bg-purple-700" onClick={() => setStep(1)}>
+            <Button onClick={resetOrder} className="bg-green-600 hover:bg-green-700">
               Hacer otro pedido
             </Button>
           </div>
         )}
       </div>
       
-      {/* Reward popup */}
       <RewardPopup 
+        title={currentReward.title} 
+        points={currentReward.points}
         open={showReward}
         onClose={() => setShowReward(false)}
-        title={lastReward.title}
-        points={lastReward.points}
       />
     </JourneyLayout>
   );

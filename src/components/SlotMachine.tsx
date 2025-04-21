@@ -1,254 +1,178 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
 
-interface SlotReelItemProps {
-  symbol: string;
-  isSpinning: boolean;
-}
+type SlotReelProps = {
+  spinning: boolean;
+  value: string;
+  duration: number;
+  index: number;
+};
 
-const SlotReelItem: React.FC<SlotReelItemProps> = ({ symbol, isSpinning }) => {
+const symbols = ['🚀', '💻', '💎', '🔥', '🎮', '🏆'];
+
+const SlotReel: React.FC<SlotReelProps> = ({ spinning, value, duration, index }) => {
+  const [position, setPosition] = useState<number>(0);
+  const [animationKey, setAnimationKey] = useState<number>(0);
+  const spinDelay = index * 100; // Stagger the spin start
+  const spinDuration = duration;
+
+  useEffect(() => {
+    if (spinning) {
+      setAnimationKey(prev => prev + 1);
+      
+      // Start the slot spinning animation after a delay based on reel index
+      const timeout = setTimeout(() => {
+        const targetIndex = symbols.findIndex(s => s === value);
+        setPosition(-targetIndex * 100);
+      }, spinDuration + spinDelay);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [spinning, value, spinDuration, spinDelay]);
+
   return (
-    <div 
-      className={`text-4xl aspect-square flex items-center justify-center rounded-md border-2 border-gray-300 bg-gray-50
-        ${isSpinning ? 'animate-spin-slow' : ''}`}
-      style={{ 
-        transition: isSpinning ? 'none' : 'all 0.3s ease-out',
-      }}
-    >
-      {symbol}
+    <div className="h-20 w-20 bg-gray-800 rounded-lg overflow-hidden relative">
+      <div 
+        key={animationKey}
+        className={`absolute w-full transition-transform ${
+          spinning 
+            ? `duration-[${spinDuration}ms] ease-in-out` 
+            : 'duration-500 ease-out'
+        }`}
+        style={{
+          transform: spinning 
+            ? `translateY(500%)` 
+            : `translateY(${position}%)`,
+          transition: spinning 
+            ? `transform ${spinDuration}ms cubic-bezier(0.5, 0, 0.75, 0)` 
+            : `transform 500ms cubic-bezier(0.3, 0.1, 0.3, 1.5)`
+        }}
+      >
+        {symbols.map((symbol, i) => (
+          <div 
+            key={i} 
+            className="h-20 w-20 flex items-center justify-center text-4xl"
+          >
+            {symbol}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-interface SlotMachineProps {
-  className?: string;
-}
+const SlotMachine: React.FC = () => {
+  const [spinning, setSpinning] = useState<boolean>(false);
+  const [results, setResults] = useState<string[]>(['🚀', '💻', '💎']);
+  const [credits, setCredits] = useState<number>(100);
+  const [win, setWin] = useState<number>(0);
+  const { toast } = useToast();
+  const spinDuration = 3000; // Slower spin duration (3 seconds)
 
-const SlotMachine: React.FC<SlotMachineProps> = ({ className }) => {
-  const symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '💰', '7️⃣'];
-  const [credits, setCredits] = useState(100);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [reels, setReels] = useState(['❓', '❓', '❓']);
-  const [win, setWin] = useState<number | null>(null);
-  const [buyModalOpen, setBuyModalOpen] = useState(false);
-  
-  // Refs for the animation
-  const spinSound = useRef(new Audio('/slot-machine-spin.mp3'));
-  const winSound = useRef(new Audio('/slot-machine-win.mp3'));
-  
   const spin = () => {
-    if (credits < 10 || isSpinning) return;
+    if (spinning || credits < 10) return;
     
-    setIsSpinning(true);
-    setCredits(credits - 10); // Cost to play
-    setWin(null);
+    setCredits(credits - 10);
+    setSpinning(true);
+    setWin(0);
+    
+    // Generate random results after a delay
+    setTimeout(() => {
+      const newResults = Array.from({ length: 3 }, () => 
+        symbols[Math.floor(Math.random() * symbols.length)]
+      );
+      
+      setResults(newResults);
+      checkWin(newResults);
+      setSpinning(false);
+    }, spinDuration + 400); // Add a bit more time for the animation to complete
+  };
 
-    try {
-      spinSound.current.play().catch(() => {}); // Ignore autoplay errors
-    } catch (error) {
-      // Silent fallback for browsers that don't support audio
-    }
-    
-    // Animate the spinning
-    const spinDuration = 2000; // 2 seconds spin
-    const spinInterval = 50; // Update every 50ms for smooth animation
-    const iterations = spinDuration / spinInterval;
-    let count = 0;
-    
-    const spinIntervalId = setInterval(() => {
-      setReels(reels.map(() => symbols[Math.floor(Math.random() * symbols.length)]));
-      count++;
-      
-      if (count >= iterations) {
-        clearInterval(spinIntervalId);
-        finalizeSpin();
-      }
-    }, spinInterval);
-  };
-  
-  const finalizeSpin = () => {
-    // Generate final results
-    const finalResult = [
-      symbols[Math.floor(Math.random() * symbols.length)],
-      symbols[Math.floor(Math.random() * symbols.length)],
-      symbols[Math.floor(Math.random() * symbols.length)]
-    ];
-    
-    setReels(finalResult);
-    setIsSpinning(false);
-    
-    // Check for wins
-    if (finalResult[0] === finalResult[1] && finalResult[1] === finalResult[2]) {
-      const winAmount = getWinAmount(finalResult[0]);
+  const checkWin = (results: string[]) => {
+    // Check for win conditions
+    if (results[0] === results[1] && results[1] === results[2]) {
+      // Jackpot! All three match
+      const winAmount = 100;
+      setCredits(prev => prev + winAmount);
       setWin(winAmount);
-      setCredits(credits + winAmount);
       
-      try {
-        winSound.current.play().catch(() => {}); // Ignore autoplay errors
-      } catch (error) {
-        // Silent fallback
-      }
+      toast({
+        title: "¡Jackpot!",
+        description: `Has ganado ${winAmount} créditos!`,
+      });
+    } else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+      // Two matching symbols
+      const winAmount = 20;
+      setCredits(prev => prev + winAmount);
+      setWin(winAmount);
+      
+      toast({
+        title: "¡Ganaste!",
+        description: `Has ganado ${winAmount} créditos!`,
+      });
     }
-  };
-  
-  const getWinAmount = (symbol: string) => {
-    switch (symbol) {
-      case '7️⃣': return 500; // Jackpot
-      case '💰': return 200;
-      case '🔔': return 100;
-      case '🍇': return 50;
-      case '🍊': return 30;
-      case '🍋': return 20;
-      case '🍒': return 15;
-      default: return 0;
-    }
-  };
-  
-  const buyCredits = (amount: number) => {
-    setCredits(credits + amount);
-    setBuyModalOpen(false);
   };
 
   return (
-    <div className={`glass-card overflow-hidden ${className}`}>
-      <div className="bg-gray-800 text-white px-4 py-2 flex items-center space-x-2 text-sm">
-        <div className="flex space-x-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+    <div className="bg-gradient-to-r from-purple-700 to-blue-700 rounded-xl shadow-xl p-6 max-w-md mx-auto">
+      <div className="flex flex-col items-center">
+        <div className="mb-6">
+          <Badge variant="outline" className="bg-yellow-500/20 text-yellow-300 border-yellow-500/50 text-lg px-4 py-1">
+            Demo Slot
+          </Badge>
         </div>
-        <span className="font-mono flex-1 text-center">neptuno slots</span>
-      </div>
-      
-      <div className="bg-[#1e293b] p-6">
+        
+        {/* Slot display */}
+        <div className="bg-gray-900 border-4 border-gray-700 rounded-lg p-4 shadow-inner mb-6">
+          <div className="flex justify-center gap-2">
+            {[0, 1, 2].map((i) => (
+              <SlotReel 
+                key={i} 
+                spinning={spinning} 
+                value={results[i]} 
+                duration={spinDuration}
+                index={i}
+              />
+            ))}
+          </div>
+        </div>
+        
+        {/* Controls */}
         <div className="flex flex-col items-center">
-          <div className="bg-gradient-to-b from-gray-700 to-gray-900 p-5 rounded-lg mb-6 w-full">
-            <div className="text-center mb-3">
-              <span className="text-yellow-400 text-sm font-bold">Créditos: {credits}</span>
+          <div className="flex justify-between w-full mb-4">
+            <div className="bg-gray-800 text-white px-4 py-2 rounded">
+              Créditos: <span className="text-yellow-400 font-bold">{credits}</span>
             </div>
-            
-            <div className="grid grid-cols-3 gap-2 bg-white rounded-lg p-4">
-              {reels.map((symbol, index) => (
-                <SlotReelItem 
-                  key={index}
-                  symbol={symbol}
-                  isSpinning={isSpinning} 
-                />
-              ))}
-            </div>
-            
-            {win && (
-              <div className="mt-3 text-center animate-bounce">
-                <span className="text-yellow-300 font-bold">¡GANASTE {win} CRÉDITOS!</span>
+            {win > 0 && (
+              <div className="bg-green-800 text-white px-4 py-2 rounded animate-pulse">
+                Ganancia: <span className="text-green-400 font-bold">+{win}</span>
               </div>
             )}
           </div>
           
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <Button 
-              variant="default" 
-              onClick={spin}
-              disabled={isSpinning || credits < 10}
-              className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700"
-            >
-              {isSpinning ? "Girando..." : "Jugar (10 créditos)"}
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              onClick={() => setBuyModalOpen(true)}
-              className="border-yellow-500 text-yellow-500 hover:bg-yellow-50"
-            >
-              Comprar créditos
-            </Button>
-          </div>
+          <Button
+            onClick={spin}
+            disabled={spinning || credits < 10}
+            className={`bg-red-600 hover:bg-red-700 text-white px-8 py-6 text-lg rounded-lg ${
+              spinning ? 'opacity-50' : 'animate-pulse'
+            }`}
+          >
+            {spinning ? "Girando..." : "¡Girar! (10 créditos)"}
+          </Button>
           
-          <div className="mt-4 bg-gray-700/50 p-3 rounded text-xs text-gray-300 w-full">
-            <h3 className="font-bold mb-1">Premios:</h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-              <div className="flex justify-between">
-                <span>3 × 7️⃣</span>
-                <span>500 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 💰</span>
-                <span>200 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🔔</span>
-                <span>100 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍇</span>
-                <span>50 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍊</span>
-                <span>30 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍋</span>
-                <span>20 créditos</span>
-              </div>
-              <div className="flex justify-between">
-                <span>3 × 🍒</span>
-                <span>15 créditos</span>
-              </div>
-            </div>
-          </div>
+          {credits < 10 && (
+            <Button
+              onClick={() => setCredits(100)}
+              className="mt-4 bg-green-600 hover:bg-green-700"
+            >
+              Recargar créditos
+            </Button>
+          )}
         </div>
       </div>
-      
-      {/* Buy Credits Modal */}
-      <Dialog open={buyModalOpen} onOpenChange={setBuyModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Comprar créditos</DialogTitle>
-            <DialogDescription>
-              Selecciona la cantidad de créditos que deseas comprar
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="grid grid-cols-3 gap-4 py-4">
-            <Button 
-              variant="outline" 
-              onClick={() => buyCredits(10)}
-              className="flex flex-col h-auto py-6"
-            >
-              <span className="text-xl font-bold">10</span>
-              <span className="text-sm">créditos</span>
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              onClick={() => buyCredits(50)}
-              className="flex flex-col h-auto py-6 border-yellow-500"
-            >
-              <span className="text-xl font-bold text-yellow-600">50</span>
-              <span className="text-sm">créditos</span>
-              <span className="text-xs text-green-600 font-medium mt-1">+5 gratis</span>
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              onClick={() => buyCredits(100)}
-              className="flex flex-col h-auto py-6 border-yellow-600"
-            >
-              <span className="text-xl font-bold text-yellow-700">100</span>
-              <span className="text-sm">créditos</span>
-              <span className="text-xs text-green-600 font-medium mt-1">+20 gratis</span>
-            </Button>
-          </div>
-          
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setBuyModalOpen(false)}>
-              Cancelar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
