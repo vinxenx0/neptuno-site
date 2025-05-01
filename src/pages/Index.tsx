@@ -15,6 +15,12 @@ import DashboardInfoWrapper from '@/components/DashboardInfoWrapper';
 import CeoMessage from '@/components/CeoMessage';
 import JourneysSection from '@/components/JourneysSection';
 import CodeReadySection from '@/components/CodeReadySection';
+import ValueProposition from '@/components/ValueProposition';
+import EnhancedFeatures from '@/components/EnhancedFeatures';
+import Testimonials from '@/components/Testimonials';
+import WhyChooseNeptuno from '@/components/WhyChooseNeptuno';
+import ComparisonTable from '@/components/ComparisonTable';
+import ModulesIntegration from '@/components/ModulesIntegration';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -25,16 +31,24 @@ const Index = () => {
       <Navbar />
       <main className={`flex-grow ${isMobile ? 'pb-20' : ''}`}>
         <Hero />
-        <Features />
-        <ProductionReady />
+        <ValueProposition />
+        <Features>
+          <EnhancedFeatures />
+        </Features>
+        <ProductionReady>
+          <ModulesIntegration />
+        </ProductionReady>
+        <CodeReadySection />
         <DashboardInfoWrapper />
+        <UseCases />
         <GamificationDemo />
         <JourneysSection />
         <SdkSection />
-        <CodeReadySection />
-        <ApiExplorer />
-        <UseCases />
         <CeoMessage />
+        <WhyChooseNeptuno />
+        <Testimonials />
+        <ComparisonTable />
+        <ApiExplorer />
         <Pricing />
         <Cta />
       </main>

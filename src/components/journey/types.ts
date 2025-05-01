@@ -11,6 +11,7 @@ export interface JourneyLayoutProps {
 export interface RewardPopupProps {
   title: string;
   points: number;
+  description?: string;
   open?: boolean;
   onClose?: () => void;
 }

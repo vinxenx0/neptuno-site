@@ -1,8 +1,12 @@
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Shield, Database, Scale, Server, Cpu, Network, BarChart, Lock } from 'lucide-react';
 
-const ProductionReady: React.FC = () => {
+interface ProductionReadyProps {
+  children?: ReactNode;
+}
+
+const ProductionReady: React.FC<ProductionReadyProps> = ({ children }) => {
   return (
     <section id="production-ready" className="section py-24 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -184,6 +188,8 @@ const ProductionReady: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {children}
       </div>
     </section>
   );
