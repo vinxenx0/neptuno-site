@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Tag, Trophy, Award } from 'lucide-react';
+import { CreditCard, Tag, Trophy, Award, ShoppingCart } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export const MobileBottomBar = () => {
@@ -25,12 +25,12 @@ export const MobileBottomBar = () => {
         
         <div className="flex flex-col items-center">
           <div className="relative">
-            <Tag className="h-5 w-5 text-gray-600" />
-            <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-purple-500 text-white rounded-full text-xs font-bold">
+            <ShoppingCart className="h-5 w-5 text-gray-600" />
+            <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-purple-600 text-white rounded-full text-xs font-bold">
               1
             </span>
           </div>
-          <span className="text-xs mt-1">Cupones</span>
+          <span className="text-xs mt-1">Carrito</span>
         </div>
         
         <div 

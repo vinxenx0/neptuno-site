@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Code, Layout, Cpu } from 'lucide-react';
+import { Code, Layout, Cpu, Shield, Database, FileCode } from 'lucide-react';
 
 const FeatureCard = ({ 
   icon, 
@@ -68,6 +68,42 @@ const EnhancedFeatures: React.FC = () => {
           "Scripts one-click para despliegue",
           "Balanceo de carga incluido",
           "Monitorización y logs centralizados"
+        ]}
+      />
+
+      <FeatureCard
+        icon={<Shield className="text-neptuno-teal" size={24} />}
+        title="Infraestructura lista"
+        description="HTTP/2, CORS, CSRF, HTTPS, y seguridad incluida."
+        listItems={[
+          "Auto-scaling incluido",
+          "Balanceo de carga configurado",
+          "Réplicas de base de datos",
+          "Scripts de desarrollo y despliegue one-click"
+        ]}
+      />
+
+      <FeatureCard
+        icon={<Database className="text-neptuno-amber" size={24} />}
+        title="ORM integrado"
+        description="Modelos, migraciones y backups automáticos."
+        listItems={[
+          "Base de datos relacional o NoSQL",
+          "Migraciones automáticas",
+          "Respaldo programado de datos",
+          "Interfaz de administración de datos"
+        ]}
+      />
+
+      <FeatureCard
+        icon={<FileCode className="text-purple-500" size={24} />}
+        title="Herramientas Dev"
+        description="CI/CD, tests, métricas y documentación automática."
+        listItems={[
+          "Tests unitarios y de integración",
+          "Medición de cobertura de código",
+          "CI/CD con GitHub Actions o GitLab",
+          "Documentación generada automáticamente"
         ]}
       />
     </div>
