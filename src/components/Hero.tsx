@@ -7,9 +7,9 @@ import TechStackLogos from './TechStackLogos';
 
 const Hero: React.FC = () => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-gray-100 via-[#f4f6f9] to-gray-200 text-gray-900">
+    <div className="relative overflow-hidden bg-gradient-to-br from-gray-200 via-[#f0f2f5] to-gray-300 text-gray-900">
       {/* Abstract shapes */}
-      <div className="absolute inset-0 overflow-hidden opacity-10">
+      <div className="absolute inset-0 overflow-hidden opacity-20">
         <div className="absolute top-40 -right-40 w-80 h-80 bg-neptuno-blue rounded-full filter blur-3xl"></div>
         <div className="absolute -top-20 -left-20 w-60 h-60 bg-neptuno-teal rounded-full filter blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-neptuno-amber rounded-full filter blur-3xl"></div>

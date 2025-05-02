@@ -22,6 +22,8 @@ import WhyChooseNeptuno from '@/components/WhyChooseNeptuno';
 import ComparisonTable from '@/components/ComparisonTable';
 import ModulesIntegration from '@/components/ModulesIntegration';
 import Roadmap from '@/components/Roadmap';
+import LaunchBanner from '@/components/LaunchBanner';
+import Newsletter from '@/components/Newsletter';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -30,6 +32,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
+      <LaunchBanner />
       <main className={`flex-grow ${isMobile ? 'pb-20' : ''}`}>
         <Hero />
         <ValueProposition />
@@ -41,6 +44,7 @@ const Index = () => {
         <DashboardInfoWrapper />
         <UseCases />
         <GamificationDemo />
+        <Newsletter />
         <JourneysSection />
         <SdkSection />
         <ProductionReady>

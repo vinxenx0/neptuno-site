@@ -1,23 +1,29 @@
 
-import { ReactNode } from 'react';
-
 export interface JourneyLayoutProps {
-  children: ReactNode;
-  journeyTitle: string;
-  progress: number;
+  title?: string;
+  subtitle?: string;
+  bgColor?: string;
+  children: React.ReactNode;
+  progress?: number;
   currentPoints?: number;
-}
-
-export interface RewardPopupProps {
-  title: string;
-  points: number;
-  description?: string;
-  open?: boolean;
-  onClose?: () => void;
+  journeyTitle?: string;
 }
 
 export interface RewardCardProps {
   title: string;
-  points: number;
+  value?: number;
+  icon?: React.ReactNode;
+  bgColor?: string;
+  points?: number;
   description?: string;
+}
+
+export interface RewardPopupProps {
+  title: string;
+  description?: string;
+  icon?: React.ReactNode;
+  isVisible?: boolean;
+  onClose?: () => void;
+  points?: number;
+  open?: boolean;
 }
