@@ -36,20 +36,19 @@ const Index = () => {
       <main className={`flex-grow ${isMobile ? 'pb-20' : ''}`}>
         <Hero />
         <ValueProposition />
-        <ApiExplorer />
         <Features>
           <EnhancedFeatures />
         </Features>
         <CodeReadySection />
+        <ApiExplorer />
         <DashboardInfoWrapper />
         <UseCases />
         <GamificationDemo />
-        <Newsletter />
-        <JourneysSection />
         <SdkSection />
         <ProductionReady>
           <ModulesIntegration />
         </ProductionReady>
+        <JourneysSection />
         <Roadmap />
         <CeoMessage />
         <WhyChooseNeptuno />
@@ -57,6 +56,7 @@ const Index = () => {
         <ComparisonTable />
         <Pricing />
         <Cta />
+        <Newsletter />
       </main>
       <Footer />
     </div>
