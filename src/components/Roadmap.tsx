@@ -18,7 +18,7 @@ const RoadmapItem = ({
   color: string;
 }) => {
   return (
-    <div className="relative">
+    <div className="relative mb-8">
       {/* Timeline connector */}
       {status !== 'completed' && (
         <div className="absolute left-6 top-16 h-full border-l-2 border-dashed border-gray-200"></div>
@@ -91,7 +91,7 @@ const Roadmap: React.FC = () => {
         "Tracking de eventos y sistema de sesiones listo",
         "APIs REST completas con OpenAPI"
       ],
-      status: "completed",
+      status: 'completed' as const,
       color: "bg-blue-500"
     },
     {
@@ -106,7 +106,7 @@ const Roadmap: React.FC = () => {
         "Documentación completa + SDK inicial (Python/JS)",
         "Opt-in para hosting autoescalable vía Docker Compose o Kubernetes"
       ],
-      status: "current",
+      status: 'current' as const,
       color: "bg-indigo-600"
     },
     {
@@ -121,7 +121,7 @@ const Roadmap: React.FC = () => {
         "Multi-tenant support (opcional en configuración avanzada)",
         "Escalado horizontal con balanceo vía Nginx y Gunicorn"
       ],
-      status: "upcoming",
+      status: 'upcoming' as const,
       color: "bg-purple-600"
     },
     {
@@ -135,7 +135,7 @@ const Roadmap: React.FC = () => {
         "Licencia abierta con add-ons premium opcionales",
         "Ejemplos de integración con Vue, Svelte y Astro"
       ],
-      status: "upcoming",
+      status: 'upcoming' as const,
       color: "bg-emerald-600"
     },
     {
@@ -148,7 +148,7 @@ const Roadmap: React.FC = () => {
         "Integración con plataformas externas vía Zapier o APIs personalizadas",
         "Webhooks bidireccionales y sync de datos externos"
       ],
-      status: "upcoming",
+      status: 'upcoming' as const,
       color: "bg-amber-600"
     }
   ];
@@ -163,36 +163,52 @@ const Roadmap: React.FC = () => {
           </p>
         </div>
         
-        <div className="space-y-12">
-          {roadmapItems.map((item, index) => (
-            <RoadmapItem 
-              key={index}
-              title={item.title}
-              date={item.date}
-              description={item.description}
-              items={item.items}
-              status={item.status}
-              color={item.color}
-            />
-          ))}
-        </div>
-        
-        <div className="mt-16 p-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-white text-center">
-          <h3 className="text-xl font-semibold mb-2">En curso — Mejoras continuas</h3>
-          <p className="mb-6">Nuestro compromiso con la calidad y la innovación</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-8">
+            {roadmapItems.slice(0, 3).map((item, index) => (
+              <RoadmapItem 
+                key={index}
+                title={item.title}
+                date={item.date}
+                description={item.description}
+                items={item.items}
+                status={item.status}
+                color={item.color}
+              />
+            ))}
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
-            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
-              <p className="text-sm">Refactor continuo del core para mantener bajo acoplamiento</p>
-            </div>
-            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
-              <p className="text-sm">Compatibilidad con OpenTelemetry y Prometheus para observabilidad</p>
-            </div>
-            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
-              <p className="text-sm">Extensiones oficiales (experimentos: NFT rewards, IA para scoring)</p>
-            </div>
-            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
-              <p className="text-sm">Feedback-driven development desde la comunidad</p>
+          <div className="space-y-8">
+            {roadmapItems.slice(3).map((item, index) => (
+              <RoadmapItem 
+                key={index + 3}
+                title={item.title}
+                date={item.date}
+                description={item.description}
+                items={item.items}
+                status={item.status}
+                color={item.color}
+              />
+            ))}
+            
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-white p-6">
+              <h3 className="text-xl font-semibold mb-2">En curso — Mejoras continuas</h3>
+              <p className="mb-6">Nuestro compromiso con la calidad y la innovación</p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+                <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                  <p className="text-sm">Refactor continuo del core para mantener bajo acoplamiento</p>
+                </div>
+                <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                  <p className="text-sm">Compatibilidad con OpenTelemetry y Prometheus para observabilidad</p>
+                </div>
+                <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                  <p className="text-sm">Extensiones oficiales (experimentos: NFT rewards, IA para scoring)</p>
+                </div>
+                <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                  <p className="text-sm">Feedback-driven development desde la comunidad</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
