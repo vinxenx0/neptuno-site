@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Heart, CreditCard, Tag, Trophy, Award, Settings, ShoppingCart } from 'lucide-react';
+import { Mail, Heart, CreditCard, Tag, Trophy, Award, Settings } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export const DesktopNotifications = () => {
@@ -22,14 +22,6 @@ export const DesktopNotifications = () => {
         <Heart className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
         <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-pink-500 text-white rounded-full text-xs font-bold">
           5
-        </span>
-      </div>
-      
-      {/* Shopping Cart */}
-      <div className="relative">
-        <ShoppingCart className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
-        <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-purple-600 text-white rounded-full text-xs font-bold">
-          1
         </span>
       </div>
       

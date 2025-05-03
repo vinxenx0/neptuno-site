@@ -1,15 +1,15 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Shield, Code, Zap, ShoppingCart } from 'lucide-react';
+import { ArrowRight, Shield, Code, Zap } from 'lucide-react';
 import DashboardPreview from './DashboardPreview';
 import TechStackLogos from './TechStackLogos';
 
 const Hero: React.FC = () => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-gray-200 via-[#f0f2f5] to-gray-300 text-gray-900">
+    <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#f8fafc] to-gray-100 text-gray-900">
       {/* Abstract shapes */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
+      <div className="absolute inset-0 overflow-hidden opacity-10">
         <div className="absolute top-40 -right-40 w-80 h-80 bg-neptuno-blue rounded-full filter blur-3xl"></div>
         <div className="absolute -top-20 -left-20 w-60 h-60 bg-neptuno-teal rounded-full filter blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-neptuno-amber rounded-full filter blur-3xl"></div>
@@ -24,17 +24,15 @@ const Hero: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Go-to market in days, engagement in a moments
+              🚀Launch in minutes, engagement in moments
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-700">
-              Lanza tu producto o servicio al mercado cumpliendo con
-              los estandares de seguridad, privacidad y accesibilidad por la
-              mitad de precio y tiempo que te cuesta un MVP.
+              De la idea al MRR en tiempo record: no arranques de cero arranca desde Neptuno.
             </p>
             
             <p className="text-lg md:text-xl text-gray-600">
-              De la idea al MRR en tiempo record: no arrancues de cero lanza desde Neptuno.
+              Crea MVP ilimitados listos para producción con todo lo que necesitas para lanzar tu idea al mercado
             </p>
             
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
