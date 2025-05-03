@@ -24,15 +24,17 @@ const Hero: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              🚀Launch in minutes, engagement in moments
+              Go-to market in days, engagement in a moments
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-700">
-              De la idea al MRR en tiempo record: no arranques de cero arranca desde Neptuno.
+              Lanza tu producto o servicio al mercado cumpliendo con
+              los estandares de seguridad, privacidad y accesibilidad por la
+              mitad de precio y tiempo que te cuesta un MVP.
             </p>
             
             <p className="text-lg md:text-xl text-gray-600">
-              Crea MVP ilimitados listos para producción con todo lo que necesitas para lanzar tu idea al mercado
+              De la idea al MRR en tiempo record: no arrancues de cero lanza desde Neptuno.
             </p>
             
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">

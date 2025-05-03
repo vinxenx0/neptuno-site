@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Mail, Heart, Settings } from 'lucide-react';
+import { Menu, X, Mail, Heart, Settings, ShoppingCart } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MegaMenu } from './MegaMenu';
 import { DesktopNotifications } from './navbar/DesktopNotifications';
@@ -44,7 +44,13 @@ const Navbar: React.FC = () => {
             <div className="md:hidden flex items-center space-x-4">
               <div className="relative">
                 <Heart className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
-                <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-purple-500 text-white rounded-full text-xs font-bold">
+                <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-pink-500 text-white rounded-full text-xs font-bold">
+                  2
+                </span>
+              </div>
+              <div className="relative">
+                <ShoppingCart className="h-5 w-5 text-gray-600 hover:text-purple-600 transition-colors cursor-pointer" />
+                <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-green-500 text-white rounded-full text-xs font-bold">
                   2
                 </span>
               </div>
