@@ -1,42 +1,37 @@
 
 import React from 'react';
-import { Card } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { Card, CardContent } from '@/components/ui/card';
+import { ReactNode } from 'react';
 
-interface RewardCardProps {
+export interface RewardCardProps {
   title: string;
-  value: string | number;
-  icon: React.ReactNode;
+  value?: number; 
+  icon?: ReactNode;
   bgColor?: string;
-  textColor?: string;
-  className?: string;
+  points?: number; // Added for backward compatibility
 }
 
-const RewardCard: React.FC<RewardCardProps> = ({
-  title,
-  value,
-  icon,
-  bgColor = "bg-gradient-to-br from-blue-600 to-indigo-800",
-  textColor = "text-white",
-  className
+const RewardCard: React.FC<RewardCardProps> = ({ 
+  title, 
+  value, 
+  icon, 
+  bgColor = "bg-gradient-to-br from-blue-600 to-indigo-600", 
+  points // New prop
 }) => {
+  // Use points as fallback if value is not provided
+  const displayValue = value !== undefined ? value : points;
+  
   return (
-    <Card 
-      className={cn(
-        "overflow-hidden border-none", 
-        bgColor, 
-        className
-      )}
-    >
-      <div className="flex items-center p-4">
-        <div className={`mr-4 p-2 rounded-lg ${textColor === 'text-white' ? 'bg-white/20' : 'bg-gray-100'}`}>
-          {icon}
+    <Card className={`border-0 overflow-hidden ${bgColor} text-white`}>
+      <CardContent className="p-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm font-medium">{title}</h3>
+          {icon && <div>{icon}</div>}
         </div>
-        <div>
-          <h4 className={`text-xs font-medium ${textColor}/70`}>{title}</h4>
-          <p className={`text-2xl font-bold ${textColor}`}>{value}</p>
-        </div>
-      </div>
+        {displayValue !== undefined && (
+          <p className="text-2xl font-bold mt-2">{displayValue}</p>
+        )}
+      </CardContent>
     </Card>
   );
 };

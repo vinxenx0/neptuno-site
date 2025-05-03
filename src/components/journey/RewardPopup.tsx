@@ -1,15 +1,15 @@
 
 import React, { useEffect, useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { Star, X } from 'lucide-react';
 
-interface RewardPopupProps {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  isVisible: boolean;
-  onClose: () => void;
+export interface RewardPopupProps {
+  title?: string;
+  description?: string;
+  icon?: React.ReactNode;
+  isVisible?: boolean;
+  onClose?: () => void;
+  points?: number; // Added for backward compatibility
+  open?: boolean; // Added for backward compatibility
 }
 
 const RewardPopup: React.FC<RewardPopupProps> = ({
@@ -17,51 +17,57 @@ const RewardPopup: React.FC<RewardPopupProps> = ({
   description,
   icon,
   isVisible,
-  onClose
+  onClose,
+  points, // New prop
+  open, // New prop
 }) => {
-  const [show, setShow] = useState(false);
-
+  const [visible, setVisible] = useState(false);
+  
+  // Handle both isVisible and open props for backward compatibility
+  const isPopupVisible = isVisible !== undefined ? isVisible : open;
+  
   useEffect(() => {
-    if (isVisible) {
-      setShow(true);
-    } else {
+    if (isPopupVisible) {
+      setVisible(true);
       const timer = setTimeout(() => {
-        setShow(false);
-      }, 300);
+        setVisible(false);
+        if (onClose) onClose();
+      }, 3000);
+      
       return () => clearTimeout(timer);
     }
-  }, [isVisible]);
-
-  if (!show) return null;
-
+  }, [isPopupVisible, onClose]);
+  
+  if (!isPopupVisible && !visible) return null;
+  
   return (
-    <div className={`fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-      <Card className={`w-full max-w-sm p-6 bg-white rounded-xl shadow-xl transition-all duration-300 transform ${isVisible ? 'translate-y-0 scale-100' : 'translate-y-4 scale-95'}`}>
-        <div className="flex justify-between items-start mb-4">
-          <div className="text-xl font-bold text-gray-900">{title}</div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-8 w-8 p-0" 
-            onClick={onClose}
+    <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+      <div className="bg-white rounded-lg shadow-xl border border-gray-100 p-6 max-w-md w-full animate-bounce-in pointer-events-auto">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            <h3 className="text-lg font-bold flex items-center">
+              {icon || <Star className="h-5 w-5 text-yellow-500 mr-2" />}
+              {title || "¡Recompensa!"}
+            </h3>
+            
+            {description && <p className="mt-2 text-gray-600">{description}</p>}
+            
+            {points !== undefined && (
+              <div className="mt-3 flex items-center text-yellow-500">
+                <Star className="h-5 w-5 fill-yellow-500 mr-2" />
+                <span className="font-medium">+{points} puntos</span>
+              </div>
+            )}
+          </div>
+          
+          <button 
+            onClick={onClose} 
+            className="text-gray-400 hover:text-gray-500"
           >
-            <X size={16} />
-          </Button>
+            <X size={18} />
+          </button>
         </div>
-        
-        <div className="flex items-center mb-4">
-          <div className="mr-4 p-3 rounded-full bg-indigo-100">
-            {icon}
-          </div>
-          <div className="text-gray-700">
-            {description}
-          </div>
-        </div>
-        
-        <div className="flex justify-center">
-          <Button onClick={onClose}>Aceptar</Button>
-        </div>
-      </Card>
+      </div>
     </div>
   );
 };

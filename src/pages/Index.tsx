@@ -39,6 +39,7 @@ const Index = () => {
         <Features>
           <EnhancedFeatures />
         </Features>
+        <JourneysSection />
         <ApiExplorer />
         <ProductionReady>
           <ModulesIntegration />
@@ -47,7 +48,6 @@ const Index = () => {
         <DashboardInfoWrapper />
         <UseCases />
         <GamificationDemo />
-        <JourneysSection />
         <SdkSection />
         <Roadmap />
         <CeoMessage />

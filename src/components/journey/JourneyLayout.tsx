@@ -1,50 +1,70 @@
 
 import React, { ReactNode } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
+import { Star } from 'lucide-react';
 
-interface JourneyLayoutProps {
+export interface JourneyLayoutProps {
   children: ReactNode;
-  title: string;
-  subtitle: string;
-  bgColor: string;
+  title?: string;
+  subtitle?: string;
+  bgColor?: string;
+  journeyTitle?: string; // Added for compatibility
+  progress?: number;
+  currentPoints?: number;
 }
 
 const JourneyLayout: React.FC<JourneyLayoutProps> = ({
   children,
   title,
   subtitle,
-  bgColor
+  bgColor = 'bg-white',
+  journeyTitle, // Now correctly typed
+  progress = 0,
+  currentPoints = 0
 }) => {
+  // Use journeyTitle as a fallback if title is not provided
+  const displayTitle = title || journeyTitle || '';
+  
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
-      <header className={`pt-24 pb-10 px-4 ${bgColor} text-white`}>
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col items-center text-center">
-            <div className="text-sm mb-2 text-white/70 flex items-center">
-              <Link to="/" className="hover:text-white transition-colors">Inicio</Link> 
-              <ChevronRight className="h-4 w-4 mx-1" />
-              <span>Journey</span>
+      {/* Header */}
+      <header className={`${bgColor} text-white py-16 px-4`}>
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">{displayTitle}</h1>
+          {subtitle && <p className="text-xl opacity-90">{subtitle}</p>}
+          
+          {progress > 0 && (
+            <div className="mt-6">
+              <div className="flex justify-between text-sm mb-2">
+                <span>Progreso</span>
+                <span>{progress}%</span>
+              </div>
+              <Progress value={progress} className="h-2" />
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-3">
-              {title}
-            </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl">
-              {subtitle}
-            </p>
-          </div>
+          )}
+          
+          {currentPoints > 0 && (
+            <div className="flex items-center mt-4 text-yellow-300">
+              <Star className="mr-2 h-5 w-5 fill-yellow-300" />
+              <span className="font-medium">{currentPoints} puntos</span>
+            </div>
+          )}
         </div>
       </header>
       
-      <main className="flex-grow">
+      {/* Content */}
+      <div className="flex-grow py-12 px-4 bg-gray-50">
         {children}
-      </main>
-
-      <Footer />
+      </div>
+      
+      <Separator />
+      
+      <footer className="py-6 px-4 bg-white">
+        <div className="max-w-7xl mx-auto text-center text-sm text-gray-500">
+          Powered by Neptuno — La plataforma para crear experiencias gamificadas
+        </div>
+      </footer>
     </div>
   );
 };

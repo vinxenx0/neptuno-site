@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Blocks, Zap, Users } from 'lucide-react';
+import { Blocks, Zap, Users, Code, Layout, Cpu, Shield, Server } from 'lucide-react';
 
 const ValueProposition: React.FC = () => {
   return (
@@ -85,6 +85,136 @@ const ValueProposition: React.FC = () => {
               <li className="flex items-start">
                 <span className="h-1.5 w-1.5 rounded-full bg-neptuno-teal mr-2 mt-2"></span>
                 Actualizaciones constantes y mejoras basadas en feedback.
+              </li>
+            </ul>
+          </div>
+
+          {/* API REST */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all">
+            <div className="h-12 w-12 rounded-lg bg-neptuno-blue/10 flex items-center justify-center mb-5">
+              <Code className="text-neptuno-blue" size={24} />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">⚙️ API REST</h3>
+            <ul className="space-y-3 text-gray-600">
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                Documentada con OpenAPI, GraphQL-ready, SDK JS/TS incluido.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                Autogenerada a partir de modelos.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                SDK completo para JS/TS.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                Versionado y documentación automática.
+              </li>
+            </ul>
+          </div>
+
+          {/* Frontend Next.js */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all">
+            <div className="h-12 w-12 rounded-lg bg-neptuno-amber/10 flex items-center justify-center mb-5">
+              <Layout className="text-neptuno-amber" size={24} />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">⚡ Frontend Next.js</h3>
+            <ul className="space-y-3 text-gray-600">
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                SSR, SEO-ready, UI modular y dashboards de gestión.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                Componentes UI preconfigurados.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                Optimizado para SEO y performance.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                Diseño responsivo y adaptable.
+              </li>
+            </ul>
+          </div>
+
+          {/* Despliegue Docker */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all">
+            <div className="h-12 w-12 rounded-lg bg-neptuno-teal/10 flex items-center justify-center mb-5">
+              <Cpu className="text-neptuno-teal" size={24} />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">🐳 Despliegue Docker</h3>
+            <ul className="space-y-3 text-gray-600">
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-teal mr-2 mt-2"></span>
+                Deploy en Railway, Render o local; balanceo con Nginx/Gunicorn.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-teal mr-2 mt-2"></span>
+                Configuración Docker optimizada.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-teal mr-2 mt-2"></span>
+                Scripts one-click para despliegue.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-teal mr-2 mt-2"></span>
+                Monitorización y logs centralizados.
+              </li>
+            </ul>
+          </div>
+
+          {/* Infraestructura lista para producción */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all">
+            <div className="h-12 w-12 rounded-lg bg-neptuno-blue/10 flex items-center justify-center mb-5">
+              <Server className="text-neptuno-blue" size={24} />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">🔧 Infraestructura lista</h3>
+            <ul className="space-y-3 text-gray-600">
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                HTTP/2, CORS, CSRF, HTTPS.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                Auto-scaling, balanceo de carga, réplicas de base de datos.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                Scripts de desarrollo y despliegue "one-click".
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mr-2 mt-2"></span>
+                Configuración de escalado automático.
+              </li>
+            </ul>
+          </div>
+
+          {/* Security */}
+          <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all">
+            <div className="h-12 w-12 rounded-lg bg-neptuno-amber/10 flex items-center justify-center mb-5">
+              <Shield className="text-neptuno-amber" size={24} />
+            </div>
+            <h3 className="text-xl font-semibold mb-3">🛡️ Seguridad de primera</h3>
+            <ul className="space-y-3 text-gray-600">
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                Implementación segura desde el primer día con HTTPS, CORS y autenticación JWT.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                Configuración OAuth2 preconfigurada.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                CSRF Protection y medidas anti XSS.
+              </li>
+              <li className="flex items-start">
+                <span className="h-1.5 w-1.5 rounded-full bg-neptuno-amber mr-2 mt-2"></span>
+                Roles y permisos granulares.
               </li>
             </ul>
           </div>
