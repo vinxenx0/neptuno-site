@@ -1,179 +1,199 @@
 
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, Code, Users, Layers, CreditCard, Zap, Workflow } from 'lucide-react';
+import { Check, Clock, ArrowRightCircle } from 'lucide-react';
 
 const RoadmapItem = ({ 
-  quarter, 
-  year, 
   title, 
-  objective, 
-  features, 
-  icon,
-  gradient 
+  date, 
+  description, 
+  items, 
+  status, 
+  color 
 }: { 
-  quarter: string; 
-  year: string; 
   title: string; 
-  objective: string; 
-  features: string[]; 
-  icon: React.ReactNode;
-  gradient: string;
+  date: string; 
+  description: string; 
+  items: string[]; 
+  status: 'completed' | 'current' | 'upcoming';
+  color: string;
 }) => {
   return (
     <div className="relative">
       {/* Timeline connector */}
-      <div className="absolute top-0 left-6 bottom-0 w-0.5 bg-gradient-to-b from-gray-300 to-transparent -z-10"></div>
+      {status !== 'completed' && (
+        <div className="absolute left-6 top-16 h-full border-l-2 border-dashed border-gray-200"></div>
+      )}
       
-      <div className={`rounded-xl p-6 shadow-md mb-8 border border-gray-100 hover:shadow-lg transition-all ${gradient}`}>
-        <div className="flex items-start gap-4">
-          <div className="h-12 w-12 rounded-full flex items-center justify-center bg-white/80 shadow-inner">
-            {icon}
+      <div className="flex">
+        {/* Status indicator */}
+        <div className="flex-shrink-0 mr-4">
+          <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
+            status === 'completed' 
+              ? 'bg-green-100 text-green-600' 
+              : status === 'current' 
+                ? `${color} text-white` 
+                : 'bg-gray-100 text-gray-400'
+          }`}>
+            {status === 'completed' ? (
+              <Check size={24} />
+            ) : status === 'current' ? (
+              <Clock size={24} />
+            ) : (
+              <ArrowRightCircle size={24} />
+            )}
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className={`bg-white rounded-xl p-6 shadow-md border border-gray-100 transition-all duration-300 
+          ${status === 'current' ? 'ring-2 ring-offset-2 ' + color.replace('bg-', 'ring-') : ''}
+        `}>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-xl font-semibold">{title}</h3>
+            <span className={`text-sm px-3 py-1 rounded-full ${
+              status === 'completed' 
+                ? 'bg-green-100 text-green-700' 
+                : status === 'current' 
+                  ? `${color} bg-opacity-20 ${color.replace('bg-', 'text-')}`
+                  : 'bg-gray-100 text-gray-500'
+            }`}>
+              {date}
+            </span>
           </div>
           
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-2">
-              <Badge variant="outline" className="text-xs bg-white/60 backdrop-blur-sm">
-                {quarter} {year}
-              </Badge>
-              <span className="text-sm font-medium text-gray-600">v{title.split('v')[1]}</span>
-            </div>
-            
-            <h3 className="text-xl font-bold mb-1">{title.split('v')[0].trim()}</h3>
-            <p className="text-sm text-gray-600 mb-4 font-medium">Objetivo: {objective}</p>
-            
-            <ul className="space-y-2">
-              {features.map((feature, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-neptuno-blue mt-2"></span>
-                  <span className="text-sm">{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p className="text-gray-600 mb-4">{description}</p>
+          
+          <ul className="space-y-2">
+            {items.map((item, idx) => (
+              <li key={idx} className="flex items-start">
+                <span className={`h-1.5 w-1.5 rounded-full ${color} mr-2 mt-2`}></span>
+                <span className="text-gray-600 text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
   );
 };
 
-const Roadmap = () => {
+const Roadmap: React.FC = () => {
   const roadmapItems = [
     {
-      quarter: "Q2",
-      year: "2025",
-      title: "Beta Privada v0.x",
-      objective: "Validación temprana con feedback real",
-      features: [
-        "Acceso cerrado con early adopters.",
-        "Deploys dockerizados con stack base (FastAPI + Next.js SSR).",
-        "Autenticación OAuth2 y JWT estable.",
-        "Primeros módulos de gamificación (puntos, niveles, badges).",
-        "Tracking de eventos y sistema de sesiones listo.",
-        "APIs REST completas con OpenAPI."
+      title: "Beta Privada (v0.x)",
+      date: "Q2 2025",
+      description: "Validación temprana con feedback real",
+      items: [
+        "Acceso cerrado con early adopters",
+        "Deploys dockerizados con stack base (FastAPI + Next.js SSR)",
+        "Autenticación OAuth2 y JWT estable",
+        "Primeros módulos de gamificación (puntos, niveles, badges)",
+        "Tracking de eventos y sistema de sesiones listo",
+        "APIs REST completas con OpenAPI"
       ],
-      icon: <Code className="text-neptuno-blue" size={24} />,
-      gradient: "bg-gradient-to-br from-white to-blue-50"
+      status: "completed",
+      color: "bg-blue-500"
     },
     {
-      quarter: "Q3",
-      year: "2025",
       title: "Lanzamiento Público v1.0",
-      objective: "Versión funcional para producción",
-      features: [
-        "Dashboards admin con gestión avanzada de usuarios.",
-        "Subscripciones y pagos integrados (Stripe + crypto opcional).",
-        "Sistema de automatización con triggers y segmentaciones.",
-        "Eventos con webhooks configurables y sistema de colas básico.",
-        "Documentación completa + SDK inicial (Python/JS).",
-        "Opt-in para hosting autoescalable vía Docker Compose o Kubernetes."
+      date: "Q3 2025",
+      description: "Versión funcional para producción",
+      items: [
+        "Dashboards admin con gestión avanzada de usuarios",
+        "Subscripciones y pagos integrados (Stripe + crypto opcional)",
+        "Sistema de automatización con triggers y segmentaciones",
+        "Eventos con webhooks configurables y sistema de colas básico",
+        "Documentación completa + SDK inicial (Python/JS)",
+        "Opt-in para hosting autoescalable vía Docker Compose o Kubernetes"
       ],
-      icon: <Zap className="text-neptuno-amber" size={24} />,
-      gradient: "bg-gradient-to-br from-white to-amber-50"
+      status: "current",
+      color: "bg-indigo-600"
     },
     {
-      quarter: "Q1",
-      year: "2026",
       title: "Neptuno Enterprise v2.0",
-      objective: "Funcionalidades para escalado de negocio",
-      features: [
-        "Integración con Google Ads (API) para gestión de campañas.",
-        "Módulo de email marketing (SMTP, plantillas, automatización).",
-        "Módulo Social Layer: perfiles, feed, followers, notificaciones.",
-        "Auditoría y logs para trazabilidad.",
-        "Multi-tenant support (opcional en configuración avanzada).",
-        "Escalado horizontal con balanceo vía Nginx y Gunicorn."
+      date: "Q1 2026",
+      description: "Funcionalidades para escalado de negocio",
+      items: [
+        "Integración con Google Ads (API) para gestión de campañas",
+        "Módulo de email marketing (SMTP, plantillas, automatización)",
+        "Módulo Social Layer: perfiles, feed, followers, notificaciones",
+        "Auditoría y logs para trazabilidad",
+        "Multi-tenant support (opcional en configuración avanzada)",
+        "Escalado horizontal con balanceo vía Nginx y Gunicorn"
       ],
-      icon: <CreditCard className="text-neptuno-teal" size={24} />,
-      gradient: "bg-gradient-to-br from-white to-teal-50"
+      status: "upcoming",
+      color: "bg-purple-600"
     },
     {
-      quarter: "Q2",
-      year: "2026",
-      title: "Community Edition v2.x LTS",
-      objective: "Versión OSS lista para auto-hosting",
-      features: [
-        "Repositorio público, CI/CD de ejemplo, entorno local en minutos.",
-        "CLI para scaffolding, extensiones y updates.",
-        "Core modular desacoplado del frontend por defecto.",
-        "Licencia abierta con add-ons premium opcionales.",
-        "Ejemplos de integración con Vue, Svelte y Astro."
+      title: "Community Edition (v2.x LTS)",
+      date: "Q2 2026",
+      description: "Versión OSS lista para auto-hosting",
+      items: [
+        "Repositorio público, CI/CD de ejemplo, entorno local en minutos",
+        "CLI para scaffolding, extensiones y updates",
+        "Core modular desacoplado del frontend por defecto",
+        "Licencia abierta con add-ons premium opcionales",
+        "Ejemplos de integración con Vue, Svelte y Astro"
       ],
-      icon: <Users className="text-purple-500" size={24} />,
-      gradient: "bg-gradient-to-br from-white to-purple-50"
+      status: "upcoming",
+      color: "bg-emerald-600"
     },
     {
-      quarter: "Q3",
-      year: "2026",
-      title: "Módulo CRM v2.5",
-      objective: "Gestión de relaciones y automatización avanzada",
-      features: [
-        "Segmentación dinámica de usuarios y lead scoring.",
-        "Tareas, notas, embudos y workflows.",
-        "Integración con plataformas externas vía Zapier o APIs personalizadas.",
-        "Webhooks bidireccionales y sync de datos externos."
+      title: "Módulo CRM (Enterprise v2.5)",
+      date: "Q3 2026",
+      description: "Gestión de relaciones y automatización avanzada",
+      items: [
+        "Segmentación dinámica de usuarios y lead scoring",
+        "Tareas, notas, embudos y workflows",
+        "Integración con plataformas externas vía Zapier o APIs personalizadas",
+        "Webhooks bidireccionales y sync de datos externos"
       ],
-      icon: <Workflow className="text-rose-500" size={24} />,
-      gradient: "bg-gradient-to-br from-white to-rose-50"
-    },
-    {
-      quarter: "Continuo",
-      year: "",
-      title: "Mejoras continuas",
-      objective: "Evolución y perfeccionamiento",
-      features: [
-        "Refactor continuo del core para mantener bajo acoplamiento.",
-        "Compatibilidad con OpenTelemetry y Prometheus para observabilidad.",
-        "Extensiones oficiales (experimentos: NFT rewards, IA para scoring).",
-        "Feedback-driven development desde la comunidad."
-      ],
-      icon: <Layers className="text-indigo-500" size={24} />,
-      gradient: "bg-gradient-to-br from-white to-indigo-50"
+      status: "upcoming",
+      color: "bg-amber-600"
     }
   ];
 
   return (
-    <section id="roadmap" className="section py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+    <section id="roadmap" className="section py-20 bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">🛠️ Roadmap de Neptuno</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Roadmap de Neptuno</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Seguimos una estrategia modular, centrada en entregar valor incremental con cada release.
-            Estas son las etapas clave previstas en nuestro ciclo de desarrollo.
+            Seguimos una estrategia modular, centrada en entregar valor incremental con cada release
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            {roadmapItems.slice(0, 3).map((item, index) => (
-              <RoadmapItem key={index} {...item} />
-            ))}
-          </div>
+        <div className="space-y-12">
+          {roadmapItems.map((item, index) => (
+            <RoadmapItem 
+              key={index}
+              title={item.title}
+              date={item.date}
+              description={item.description}
+              items={item.items}
+              status={item.status}
+              color={item.color}
+            />
+          ))}
+        </div>
+        
+        <div className="mt-16 p-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-white text-center">
+          <h3 className="text-xl font-semibold mb-2">En curso — Mejoras continuas</h3>
+          <p className="mb-6">Nuestro compromiso con la calidad y la innovación</p>
           
-          <div className="space-y-6 lg:mt-16">
-            {roadmapItems.slice(3).map((item, index) => (
-              <RoadmapItem key={index} {...item} />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+              <p className="text-sm">Refactor continuo del core para mantener bajo acoplamiento</p>
+            </div>
+            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+              <p className="text-sm">Compatibilidad con OpenTelemetry y Prometheus para observabilidad</p>
+            </div>
+            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+              <p className="text-sm">Extensiones oficiales (experimentos: NFT rewards, IA para scoring)</p>
+            </div>
+            <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+              <p className="text-sm">Feedback-driven development desde la comunidad</p>
+            </div>
           </div>
         </div>
       </div>

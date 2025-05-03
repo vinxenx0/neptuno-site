@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const LaunchBanner = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white py-2 px-4 text-center relative overflow-hidden">
+    <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white py-2 px-4 text-center relative overflow-hidden z-10">
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 left-1/4 w-12 h-12 bg-white rounded-full filter blur-xl animate-pulse"></div>
         <div className="absolute top-1/2 left-1/3 w-8 h-8 bg-yellow-300 rounded-full filter blur-xl animate-pulse delay-300"></div>
