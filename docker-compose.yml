@@ -1,10 +1,18 @@
 version: '3.8'
 
 services:
-  neptuno-site:
+  vite-app:
     build: .
-    ports:
-      - "5173:5173"  # Mapea el puerto 5173 del contenedor al host
-    environment:
-      - NODE_ENV=production
+    container_name: vite-app
+    networks:
+      vite-network:
+        ipv4_address: 172.20.0.100  # IP fija para este contenedor
     restart: unless-stopped
+
+networks:
+  vite-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24  # Rango de la red
+          gateway: 172.20.0.1    # Gateway por defecto
