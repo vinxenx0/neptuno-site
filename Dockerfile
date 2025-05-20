@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Expone el puerto donde corre Vite (normalmente 5173)
-EXPOSE 5173
+EXPOSE 4173
 
 # Comando para iniciar el servidor de desarrollo (opcional)
 # CMD ["npm", "run", "dev"]
