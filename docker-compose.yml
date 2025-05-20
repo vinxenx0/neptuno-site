@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  neptuno-site:
+    build: .
+    ports:
+      - "5173:5173"  # Mapea el puerto 5173 del contenedor al host
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
